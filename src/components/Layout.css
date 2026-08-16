@@ -3,9 +3,9 @@
   top: 0;
   z-index: 40;
   height: var(--header-h);
-  background: rgba(26, 36, 44, 0.94);
+  background: rgba(12, 18, 25, 0.94);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(91, 135, 163, 0.35);
+  border-bottom: 1px solid rgba(232, 168, 74, 0.28);
   color: var(--white);
 }
 
@@ -117,7 +117,7 @@
 }
 
 .site-nav__cta:hover {
-  background: #f08a3d;
+  background: #f0b85c;
   transform: translateY(-1px);
 }
 
@@ -181,7 +181,7 @@
 }
 
 .site-footer__links a {
-  color: var(--sky);
+  color: var(--mist);
   text-decoration: none;
   font-weight: 600;
 }

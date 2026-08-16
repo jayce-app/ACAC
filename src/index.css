@@ -1,19 +1,20 @@
 :root {
-  --iron: #1a242c;
-  --slate: #2c3a45;
-  --zinc: #6d7a86;
-  --mist: #a8b4bf;
-  --sky: #5b87a3;
-  --sky-deep: #3d647c;
-  --spark: #e07a2f;
-  --spark-deep: #b85e1f;
-  --field: #e4ebf0;
-  --field-deep: #cfd9e1;
-  --white: #f5f8fa;
+  /* Night arena palette — indigo sky, floodlight amber, brushed steel */
+  --iron: #0c1219;
+  --slate: #162033;
+  --zinc: #7b8796;
+  --mist: #c4ced9;
+  --sky: #6d849c;
+  --sky-deep: #3d5168;
+  --spark: #e8a84a;
+  --spark-deep: #c4892f;
+  --field: #e7ebf0;
+  --field-deep: #cfd5de;
+  --white: #f3f6f8;
   --success: #3f6b52;
 
-  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
-  --font-body: "Sora", system-ui, sans-serif;
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-body: "Outfit", system-ui, sans-serif;
 
   --space-xs: 0.5rem;
   --space-sm: 0.85rem;
@@ -45,9 +46,9 @@ body {
   line-height: 1.65;
   color: var(--iron);
   background:
-    radial-gradient(ellipse 70% 45% at 0% 0%, rgba(91, 135, 163, 0.18), transparent 55%),
-    radial-gradient(ellipse 55% 40% at 100% 5%, rgba(224, 122, 47, 0.1), transparent 50%),
-    linear-gradient(180deg, var(--field) 0%, var(--field-deep) 100%);
+    radial-gradient(ellipse 75% 50% at 0% -5%, rgba(232, 168, 74, 0.12), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 100% 0%, rgba(61, 81, 104, 0.16), transparent 50%),
+    linear-gradient(180deg, #eef1f4 0%, var(--field-deep) 100%);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -81,10 +82,10 @@ h3,
 h4 {
   font-family: var(--font-display);
   line-height: 1.05;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   margin: 0 0 0.55em;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 p {
@@ -112,9 +113,9 @@ p:last-child {
   justify-content: center;
   text-decoration: none;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.05rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 0.85rem 1.35rem;
   border-radius: var(--radius);
@@ -133,13 +134,13 @@ p:last-child {
 }
 
 .btn--primary:hover {
-  background: #f08a3d;
+  background: #f0b85c;
 }
 
 .btn--ghost {
   background: transparent;
   color: var(--white);
-  border-color: rgba(245, 248, 250, 0.45);
+  border-color: rgba(243, 246, 248, 0.4);
 }
 
 .btn--ghost:hover {
@@ -159,7 +160,7 @@ p:last-child {
 .eyebrow {
   font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--spark);
   margin-bottom: 0.65rem;
@@ -177,8 +178,8 @@ p:last-child {
 .page-hero {
   padding: clamp(3rem, 8vh, 5rem) var(--space-md) var(--space-xl);
   background:
-    linear-gradient(135deg, rgba(26, 36, 44, 0.94), rgba(61, 100, 124, 0.88)),
-    radial-gradient(circle at 80% 20%, rgba(224, 122, 47, 0.25), transparent 40%);
+    linear-gradient(135deg, rgba(12, 18, 25, 0.96), rgba(22, 32, 51, 0.92)),
+    radial-gradient(circle at 85% 15%, rgba(232, 168, 74, 0.28), transparent 42%);
   color: var(--white);
 }
 

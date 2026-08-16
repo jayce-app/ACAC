@@ -55,7 +55,7 @@
   display: block;
   height: 3px;
   margin-top: 0.75rem;
-  background: var(--sky);
+  background: var(--spark);
   animation: draw-rule 800ms ease 200ms both;
 }
 
@@ -100,7 +100,7 @@
 
 .band--services {
   background:
-    linear-gradient(160deg, rgba(91, 135, 163, 0.12), transparent 45%),
+    linear-gradient(160deg, rgba(232, 168, 74, 0.08), transparent 45%),
     var(--field);
 }
 
@@ -194,8 +194,8 @@
 
 .band--cta {
   background:
-    radial-gradient(circle at 10% 20%, rgba(224, 122, 47, 0.2), transparent 40%),
-    linear-gradient(135deg, var(--slate), var(--sky-deep));
+    radial-gradient(circle at 12% 20%, rgba(232, 168, 74, 0.22), transparent 42%),
+    linear-gradient(135deg, #101826, #1c2a3d);
   color: var(--white);
 }
 
