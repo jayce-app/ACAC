@@ -1,16 +1,16 @@
 :root {
-  /* Night arena palette — indigo sky, floodlight amber, brushed steel */
-  --iron: #0c1219;
-  --slate: #162033;
-  --zinc: #7b8796;
-  --mist: #c4ced9;
-  --sky: #6d849c;
-  --sky-deep: #3d5168;
-  --spark: #e8a84a;
-  --spark-deep: #c4892f;
-  --field: #e7ebf0;
-  --field-deep: #cfd5de;
-  --white: #f3f6f8;
+  /* Silver & black */
+  --iron: #0a0a0a;
+  --slate: #1a1c1e;
+  --zinc: #8a9098;
+  --mist: #c5cad1;
+  --sky: #a7adb6;
+  --sky-deep: #6b727c;
+  --spark: #c8ced6;
+  --spark-deep: #9aa1ab;
+  --field: #eceef1;
+  --field-deep: #d4d8de;
+  --white: #f5f6f7;
   --success: #3f6b52;
 
   --font-display: "Oswald", "Arial Narrow", sans-serif;
@@ -46,9 +46,9 @@ body {
   line-height: 1.65;
   color: var(--iron);
   background:
-    radial-gradient(ellipse 75% 50% at 0% -5%, rgba(232, 168, 74, 0.12), transparent 55%),
-    radial-gradient(ellipse 60% 45% at 100% 0%, rgba(61, 81, 104, 0.16), transparent 50%),
-    linear-gradient(180deg, #eef1f4 0%, var(--field-deep) 100%);
+    radial-gradient(ellipse 75% 50% at 0% -5%, rgba(200, 206, 214, 0.35), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 100% 0%, rgba(10, 10, 10, 0.06), transparent 50%),
+    linear-gradient(180deg, #f0f2f4 0%, var(--field-deep) 100%);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -134,7 +134,7 @@ p:last-child {
 }
 
 .btn--primary:hover {
-  background: #f0b85c;
+  background: #dde3ea;
 }
 
 .btn--ghost {
@@ -178,8 +178,8 @@ p:last-child {
 .page-hero {
   padding: clamp(3rem, 8vh, 5rem) var(--space-md) var(--space-xl);
   background:
-    linear-gradient(135deg, rgba(12, 18, 25, 0.96), rgba(22, 32, 51, 0.92)),
-    radial-gradient(circle at 85% 15%, rgba(232, 168, 74, 0.28), transparent 42%);
+    linear-gradient(135deg, rgba(10, 10, 10, 0.97), rgba(26, 28, 30, 0.94)),
+    radial-gradient(circle at 85% 15%, rgba(200, 206, 214, 0.18), transparent 42%);
   color: var(--white);
 }
 

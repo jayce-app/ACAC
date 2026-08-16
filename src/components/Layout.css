@@ -3,9 +3,9 @@
   top: 0;
   z-index: 40;
   height: var(--header-h);
-  background: rgba(12, 18, 25, 0.94);
+  background: rgba(10, 10, 10, 0.94);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(232, 168, 74, 0.28);
+  border-bottom: 1px solid rgba(200, 206, 214, 0.28);
   color: var(--white);
 }
 
@@ -111,7 +111,7 @@
 }
 
 .site-nav__cta:hover {
-  background: #f0b85c;
+  background: #dde3ea;
   transform: translateY(-1px);
 }
 

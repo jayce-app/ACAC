@@ -1,6 +1,6 @@
 .band--about-main {
   background:
-    linear-gradient(160deg, rgba(109, 132, 156, 0.14), transparent 45%),
+    linear-gradient(160deg, rgba(200, 206, 214, 0.35), transparent 45%),
     var(--field);
   padding-top: clamp(3rem, 8vh, 5rem);
 }
