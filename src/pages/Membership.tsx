@@ -40,22 +40,22 @@ export function Membership() {
     [activeBoard],
   );
 
-  function onLogin(e: FormEvent<HTMLFormElement>) {
+  async function onLogin(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setMessage(null);
     setError(null);
     const data = new FormData(e.currentTarget);
-    const result = login(String(data.get("email")), String(data.get("password")));
+    const result = await login(String(data.get("email")), String(data.get("password")));
     if (result.ok) setMessage(result.message);
     else setError(result.message);
   }
 
-  function onApply(e: FormEvent<HTMLFormElement>) {
+  async function onApply(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setMessage(null);
     setError(null);
     const data = new FormData(e.currentTarget);
-    const result = apply({
+    const result = await apply({
       email: String(data.get("email")),
       password: String(data.get("password")),
       name: String(data.get("name")),
@@ -72,10 +72,10 @@ export function Membership() {
     }
   }
 
-  function onBoardPost(e: FormEvent<HTMLFormElement>) {
+  async function onBoardPost(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!member || !newTitle.trim() || !newBody.trim()) return;
-    addBoardPost(activeBoard, {
+    await addBoardPost(activeBoard, {
       author: member.name,
       company: member.company,
       title: newTitle.trim(),
@@ -85,11 +85,11 @@ export function Membership() {
     setNewBody("");
   }
 
-  function onBid(e: FormEvent<HTMLFormElement>) {
+  async function onBid(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!member) return;
     const data = new FormData(e.currentTarget);
-    addBid({
+    await addBid({
       title: String(data.get("title")).trim(),
       tradeNeeded: String(data.get("tradeNeeded")).trim(),
       location: String(data.get("location")).trim(),
@@ -101,11 +101,11 @@ export function Membership() {
     e.currentTarget.reset();
   }
 
-  function onBlacklist(e: FormEvent<HTMLFormElement>) {
+  async function onBlacklist(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!member) return;
     const data = new FormData(e.currentTarget);
-    submitBlacklist({
+    await submitBlacklist({
       partyType: String(data.get("partyType")) as BlacklistPartyType,
       name: String(data.get("name")).trim(),
       company: String(data.get("company")).trim(),

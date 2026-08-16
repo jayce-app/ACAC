@@ -1,24 +1,28 @@
 # Austin County Association of Contractors
 
-## View the website (no coding)
+Live site: **https://jayce-app.github.io/ACAC/**
 
-Open this link in your browser after GitHub Pages is turned on:
+## For the association owner (no coding)
 
-**https://jayce-app.github.io/ACAC/**
+Follow **[GO_LIVE.md](./GO_LIVE.md)** to connect:
+- your registered DBA name
+- a custom domain
+- real shared member accounts (Supabase)
 
-### One-time setup (about 30 seconds)
+## Pages
 
-1. Open https://github.com/jayce-app/ACAC/settings/pages
-2. Under **Build and deployment → Source**, choose **GitHub Actions**
-3. Save, wait a minute, then refresh the site link above
+- **Home** — Vision, About, Goals, public member list
+- **Members** — Public directory of vetted members
+- **Member login** — Apply / sign in; lounge unlocks after approval
+- **Admin** — Approve applications and blacklist submissions
+- **Permits** — County and city permit links
 
-You do not need Command Prompt, `npm`, or Git for day-to-day viewing. Future site updates from Cursor will republish automatically when pushed to `main`.
-
-## For developers only
+## Developers
 
 ```bash
 npm install
+cp .env.example .env   # add Supabase URL + anon key
 npm run dev
 ```
 
-Board lounge login (not shown on the public member list): `board@acac.local` / `integrity`
+Without `.env`, the app uses a local browser demo mode so the UI still works.

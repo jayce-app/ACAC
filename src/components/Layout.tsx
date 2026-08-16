@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { SetupBanner } from "./SetupBanner";
 import "./Layout.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -21,6 +22,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <SetupBanner />
       <header className="site-header">
         <div className="site-header__inner">
           <NavLink to="/" className="brand-mark" aria-label="ACAC home">
@@ -46,7 +48,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </NavLink>
             ))}
             {member ? (
-              <button type="button" className="site-nav__cta site-nav__cta--ghost" onClick={logout}>
+              <button
+                type="button"
+                className="site-nav__cta site-nav__cta--ghost"
+                onClick={() => void logout()}
+              >
                 Sign out
               </button>
             ) : (

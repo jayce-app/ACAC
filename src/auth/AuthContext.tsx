@@ -2,20 +2,26 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+import { isSupabaseConfigured, supabase, type ProfileRow } from "../lib/supabase";
 
 export type Member = {
+  id?: string;
   email: string;
-  password: string;
+  password?: string;
   name: string;
   company: string;
   trade: string;
   phone: string;
-  status: "approved" | "pending";
+  status: "approved" | "pending" | "rejected";
+  role?: "member" | "admin";
 };
+
+type AuthResult = { ok: boolean; message: string };
 
 type AuthContextValue = {
   member: Member | null;
@@ -23,105 +29,202 @@ type AuthContextValue = {
   approvedMembers: Member[];
   pendingMembers: Member[];
   isAdmin: boolean;
-  login: (email: string, password: string) => { ok: boolean; message: string };
-  logout: () => void;
-  apply: (data: Omit<Member, "status">) => { ok: boolean; message: string };
-  approve: (email: string) => void;
-  reject: (email: string) => void;
+  backendReady: boolean;
+  usingCloud: boolean;
+  login: (email: string, password: string) => Promise<AuthResult>;
+  logout: () => Promise<void>;
+  apply: (data: Omit<Member, "status" | "id" | "role">) => Promise<AuthResult>;
+  approve: (email: string) => Promise<void>;
+  reject: (email: string) => Promise<void>;
+  refreshMembers: () => Promise<void>;
 };
 
 const STORAGE_KEY = "acac-members-v3";
 const SESSION_KEY = "acac-session-v3";
-const BOARD_EMAIL = "board@acac.local";
+const LEGACY_ADMIN_EMAIL = "board@acac.local";
 
-export function isAdminEmail(email: string | undefined | null) {
-  return (email ?? "").toLowerCase() === BOARD_EMAIL;
-}
-
-/** Known demo / placeholder accounts that must never appear publicly. */
-const DEMO_EMAILS = new Set([
-  "member@acac.local",
-  "marcus@acac.local",
-  "elena@acac.local",
-  "james@acac.local",
-  "devin@acac.local",
-]);
-
-/** Board-only login for lounge tools until real contractors are approved. */
 const seedMembers: Member[] = [
   {
-    email: BOARD_EMAIL,
+    email: LEGACY_ADMIN_EMAIL,
     password: "integrity",
     name: "ACAC Board",
     company: "Austin County Association of Contractors",
     trade: "Association Board",
     phone: "",
     status: "approved",
+    role: "admin",
   },
 ];
+
+function profileToMember(p: ProfileRow): Member {
+  return {
+    id: p.id,
+    email: p.email,
+    name: p.full_name,
+    company: p.company,
+    trade: p.trade,
+    phone: p.phone,
+    status: p.status === "rejected" ? "rejected" : p.status,
+    role: p.role,
+  };
+}
 
 function isPublicMember(m: Member) {
   return (
     m.status === "approved" &&
-    m.email.toLowerCase() !== BOARD_EMAIL &&
-    !DEMO_EMAILS.has(m.email.toLowerCase())
+    m.role !== "admin" &&
+    m.email.toLowerCase() !== LEGACY_ADMIN_EMAIL
   );
 }
 
-function sanitizeMembers(list: Member[]): Member[] {
-  const cleaned = list.filter((m) => !DEMO_EMAILS.has(m.email.toLowerCase()));
-  const hasBoard = cleaned.some((m) => m.email.toLowerCase() === BOARD_EMAIL);
-  return hasBoard ? cleaned : [...seedMembers, ...cleaned];
-}
-
-function loadMembers(): Member[] {
+function loadLocalMembers(): Member[] {
   try {
-    // Drop legacy demo storage from earlier site versions.
     localStorage.removeItem("acac-members-v1");
     localStorage.removeItem("acac-session-v1");
     localStorage.removeItem("acac-members-v2");
     localStorage.removeItem("acac-session-v2");
-
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(seedMembers));
       return seedMembers;
     }
-    const sanitized = sanitizeMembers(JSON.parse(raw) as Member[]);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
-    return sanitized;
+    const list = JSON.parse(raw) as Member[];
+    const hasAdmin = list.some((m) => m.email.toLowerCase() === LEGACY_ADMIN_EMAIL);
+    return hasAdmin ? list : [...seedMembers, ...list];
   } catch {
     return seedMembers;
-  }
-}
-
-function loadSession(members: Member[]): Member | null {
-  try {
-    const email = localStorage.getItem(SESSION_KEY);
-    if (!email) return null;
-    return members.find((m) => m.email === email && m.status === "approved") ?? null;
-  } catch {
-    return null;
   }
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [members, setMembers] = useState<Member[]>(() => loadMembers());
-  const [member, setMember] = useState<Member | null>(() => loadSession(loadMembers()));
+  const usingCloud = isSupabaseConfigured;
+  const [members, setMembers] = useState<Member[]>(() =>
+    usingCloud ? [] : loadLocalMembers(),
+  );
+  const [member, setMember] = useState<Member | null>(null);
+  const [backendReady, setBackendReady] = useState(!usingCloud);
 
-  const persist = useCallback((next: Member[]) => {
-    const sanitized = sanitizeMembers(next);
-    setMembers(sanitized);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+  const persistLocal = useCallback((next: Member[]) => {
+    setMembers(next);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   }, []);
 
-  const login = useCallback(
-    (email: string, password: string) => {
-      const found = members.find(
-        (m) => m.email.toLowerCase() === email.trim().toLowerCase(),
+  const refreshMembers = useCallback(async () => {
+    if (!usingCloud || !supabase) {
+      setMembers(loadLocalMembers());
+      return;
+    }
+    const { data, error } = await supabase.from("profiles").select("*");
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setMembers((data as ProfileRow[]).map(profileToMember));
+  }, [usingCloud]);
+
+  useEffect(() => {
+    if (!usingCloud || !supabase) {
+      const email = localStorage.getItem(SESSION_KEY);
+      const list = loadLocalMembers();
+      setMembers(list);
+      setMember(
+        email
+          ? (list.find((m) => m.email === email && m.status === "approved") ?? null)
+          : null,
       );
+      setBackendReady(true);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function boot() {
+      const { data: sessionData } = await supabase!.auth.getSession();
+      const session = sessionData.session;
+      if (session?.user) {
+        const { data: profile } = await supabase!
+          .from("profiles")
+          .select("*")
+          .eq("id", session.user.id)
+          .maybeSingle();
+        if (!cancelled && profile) {
+          const m = profileToMember(profile as ProfileRow);
+          if (m.status === "approved") setMember(m);
+          else {
+            await supabase!.auth.signOut();
+            setMember(null);
+          }
+        }
+      }
+      await refreshMembers();
+      if (!cancelled) setBackendReady(true);
+    }
+
+    void boot();
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      void (async () => {
+        if (!session?.user) {
+          setMember(null);
+          return;
+        }
+        const { data: profile } = await supabase!
+          .from("profiles")
+          .select("*")
+          .eq("id", session.user.id)
+          .maybeSingle();
+        if (profile) {
+          const m = profileToMember(profile as ProfileRow);
+          if (m.status === "approved") setMember(m);
+          else setMember(null);
+        }
+        await refreshMembers();
+      })();
+    });
+
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, [usingCloud, refreshMembers]);
+
+  const login = useCallback(
+    async (email: string, password: string): Promise<AuthResult> => {
+      if (usingCloud && supabase) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.trim().toLowerCase(),
+          password,
+        });
+        if (error || !data.user) {
+          return { ok: false, message: error?.message ?? "Invalid email or password." };
+        }
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", data.user.id)
+          .maybeSingle();
+        if (profileError || !profile) {
+          await supabase.auth.signOut();
+          return { ok: false, message: "Profile not found. Contact the association." };
+        }
+        const m = profileToMember(profile as ProfileRow);
+        if (m.status !== "approved") {
+          await supabase.auth.signOut();
+          return {
+            ok: false,
+            message:
+              "Your application is still under review. You will be notified when vetted.",
+          };
+        }
+        setMember(m);
+        await refreshMembers();
+        return { ok: true, message: "Welcome back." };
+      }
+
+      const list = loadLocalMembers();
+      const found = list.find((m) => m.email.toLowerCase() === email.trim().toLowerCase());
       if (!found || found.password !== password) {
         return { ok: false, message: "Invalid email or password." };
       }
@@ -133,61 +236,109 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       localStorage.setItem(SESSION_KEY, found.email);
       setMember(found);
+      setMembers(list);
       return { ok: true, message: "Welcome back." };
     },
-    [members],
+    [usingCloud, refreshMembers],
   );
 
-  const logout = useCallback(() => {
-    localStorage.removeItem(SESSION_KEY);
+  const logout = useCallback(async () => {
+    if (usingCloud && supabase) {
+      await supabase.auth.signOut();
+    } else {
+      localStorage.removeItem(SESSION_KEY);
+    }
     setMember(null);
-  }, []);
+  }, [usingCloud]);
 
   const apply = useCallback(
-    (data: Omit<Member, "status">) => {
+    async (data: Omit<Member, "status" | "id" | "role">): Promise<AuthResult> => {
       const email = data.email.trim().toLowerCase();
-      if (members.some((m) => m.email.toLowerCase() === email)) {
+      if (usingCloud && supabase) {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password: data.password ?? "",
+          options: {
+            data: {
+              full_name: data.name,
+              company: data.company,
+              trade: data.trade,
+              phone: data.phone,
+            },
+          },
+        });
+        if (error) return { ok: false, message: error.message };
+        await refreshMembers();
+        return {
+          ok: true,
+          message:
+            "Application received. Our team will vet your credentials before approving membership access.",
+        };
+      }
+
+      const list = loadLocalMembers();
+      if (list.some((m) => m.email.toLowerCase() === email)) {
         return { ok: false, message: "An account with this email already exists." };
       }
-      const next: Member = { ...data, email, status: "pending" };
-      persist([...members, next]);
+      const next: Member = {
+        ...data,
+        email,
+        status: "pending",
+        role: "member",
+      };
+      persistLocal([...list, next]);
       return {
         ok: true,
         message:
           "Application received. Our team will vet your credentials before approving membership access.",
       };
     },
-    [members, persist],
+    [usingCloud, persistLocal, refreshMembers],
   );
 
   const approve = useCallback(
-    (email: string) => {
-      persist(
-        members.map((m) =>
-          m.email.toLowerCase() === email.toLowerCase()
-            ? { ...m, status: "approved" as const }
-            : m,
-        ),
+    async (email: string) => {
+      if (usingCloud && supabase) {
+        await supabase
+          .from("profiles")
+          .update({ status: "approved" })
+          .eq("email", email.toLowerCase());
+        await refreshMembers();
+        return;
+      }
+      const list = loadLocalMembers().map((m) =>
+        m.email.toLowerCase() === email.toLowerCase()
+          ? { ...m, status: "approved" as const }
+          : m,
       );
+      persistLocal(list);
     },
-    [members, persist],
+    [usingCloud, persistLocal, refreshMembers],
   );
 
   const reject = useCallback(
-    (email: string) => {
-      persist(members.filter((m) => m.email.toLowerCase() !== email.toLowerCase()));
+    async (email: string) => {
+      if (usingCloud && supabase) {
+        await supabase
+          .from("profiles")
+          .update({ status: "rejected" })
+          .eq("email", email.toLowerCase());
+        await refreshMembers();
+        return;
+      }
+      persistLocal(
+        loadLocalMembers().filter((m) => m.email.toLowerCase() !== email.toLowerCase()),
+      );
     },
-    [members, persist],
+    [usingCloud, persistLocal, refreshMembers],
   );
 
   const approvedMembers = useMemo(() => members.filter(isPublicMember), [members]);
-
   const pendingMembers = useMemo(
     () => members.filter((m) => m.status === "pending"),
     [members],
   );
-
-  const isAdmin = isAdminEmail(member?.email);
+  const isAdmin = member?.role === "admin" || member?.email.toLowerCase() === LEGACY_ADMIN_EMAIL;
 
   const value = useMemo(
     () => ({
@@ -196,11 +347,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       approvedMembers,
       pendingMembers,
       isAdmin,
+      backendReady,
+      usingCloud,
       login,
       logout,
       apply,
       approve,
       reject,
+      refreshMembers,
     }),
     [
       member,
@@ -208,11 +362,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       approvedMembers,
       pendingMembers,
       isAdmin,
+      backendReady,
+      usingCloud,
       login,
       logout,
       apply,
       approve,
       reject,
+      refreshMembers,
     ],
   );
 

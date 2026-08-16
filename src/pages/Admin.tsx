@@ -85,14 +85,14 @@ export function Admin() {
                           <button
                             type="button"
                             className="btn btn--primary"
-                            onClick={() => approve(app.email)}
+                            onClick={() => void approve(app.email)}
                           >
                             Approve member
                           </button>
                           <button
                             type="button"
                             className="btn btn--ghost-dark"
-                            onClick={() => reject(app.email)}
+                            onClick={() => void reject(app.email)}
                           >
                             Decline
                           </button>
@@ -137,14 +137,14 @@ export function Admin() {
                           <button
                             type="button"
                             className="btn btn--primary"
-                            onClick={() => approveBlacklist(entry.id, member.name)}
+                            onClick={() => void approveBlacklist(entry.id, member.name)}
                           >
                             Approve for blacklist
                           </button>
                           <button
                             type="button"
                             className="btn btn--ghost-dark"
-                            onClick={() => rejectBlacklist(entry.id, member.name)}
+                            onClick={() => void rejectBlacklist(entry.id, member.name)}
                           >
                             Reject
                           </button>

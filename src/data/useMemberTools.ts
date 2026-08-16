@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAuth } from "../auth/AuthContext";
 import type { BidPost, BlacklistEntry, BoardPost } from "./content";
 import { discussionBoards } from "./content";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 function loadJson<T>(key: string, fallback: T): T {
   try {
@@ -29,44 +31,173 @@ function migrateBlacklist(raw: unknown[]): BlacklistEntry[] {
     if (entry.status === "pending" || entry.status === "approved" || entry.status === "rejected") {
       return entry as BlacklistEntry;
     }
-    // Legacy entries had no status — require fresh admin review.
     return { ...entry, status: "pending" as const };
   });
 }
 
-function loadBlacklist(): BlacklistEntry[] {
-  try {
-    localStorage.removeItem("acac-blacklist-v1");
-    const raw = localStorage.getItem(BLACKLIST_KEY);
-    if (!raw) return [];
-    return migrateBlacklist(JSON.parse(raw) as unknown[]);
-  } catch {
-    return [];
-  }
-}
-
 export function useMemberTools() {
-  const [bids, setBids] = useState<BidPost[]>(() => loadJson(BIDS_KEY, []));
-  const [blacklist, setBlacklist] = useState<BlacklistEntry[]>(() => loadBlacklist());
+  const { member } = useAuth();
+  const usingCloud = isSupabaseConfigured;
+
+  const [bids, setBids] = useState<BidPost[]>(() =>
+    usingCloud ? [] : loadJson(BIDS_KEY, []),
+  );
+  const [blacklist, setBlacklist] = useState<BlacklistEntry[]>(() =>
+    usingCloud
+      ? []
+      : migrateBlacklist(loadJson<unknown[]>(BLACKLIST_KEY, [])),
+  );
   const [postsByBoard, setPostsByBoard] = useState<Record<string, BoardPost[]>>(() =>
-    loadJson(POSTS_KEY, emptyPosts()),
+    usingCloud ? emptyPosts() : loadJson(POSTS_KEY, emptyPosts()),
+  );
+  const [loading, setLoading] = useState(usingCloud);
+
+  const refresh = useCallback(async () => {
+    if (!usingCloud || !supabase || !member) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+
+    const [bidsRes, blRes, postsRes] = await Promise.all([
+      supabase
+        .from("bids")
+        .select("*, profiles:author_id(full_name, company)")
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("blacklist_entries")
+        .select("*, reporter:reporter_id(full_name, company), reviewer:reviewed_by(full_name)")
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("board_posts")
+        .select("*, profiles:author_id(full_name, company)")
+        .order("created_at", { ascending: false }),
+    ]);
+
+    if (bidsRes.data) {
+      setBids(
+        bidsRes.data.map((row) => {
+          const profile = row.profiles as { full_name?: string; company?: string } | null;
+          return {
+            id: row.id as string,
+            title: row.title as string,
+            tradeNeeded: row.trade_needed as string,
+            location: row.location as string,
+            details: row.details as string,
+            contact: row.contact as string,
+            author: profile?.full_name ?? "",
+            company: profile?.company ?? "",
+            date: String(row.created_at).slice(0, 10),
+          };
+        }),
+      );
+    }
+
+    if (blRes.data) {
+      setBlacklist(
+        blRes.data.map((row) => {
+          const reporter = row.reporter as { full_name?: string; company?: string } | null;
+          const reviewer = row.reviewer as { full_name?: string } | null;
+          return {
+            id: row.id as string,
+            partyType: row.party_type as BlacklistEntry["partyType"],
+            name: row.name as string,
+            company: (row.company as string) ?? "",
+            reason: row.reason as string,
+            reportedBy: reporter?.full_name ?? "",
+            reportedCompany: reporter?.company ?? "",
+            date: String(row.created_at).slice(0, 10),
+            status: row.status as BlacklistEntry["status"],
+            reviewedBy: reviewer?.full_name,
+            reviewedDate: row.reviewed_at ? String(row.reviewed_at).slice(0, 10) : undefined,
+          };
+        }),
+      );
+    }
+
+    if (postsRes.data) {
+      const grouped = emptyPosts();
+      for (const row of postsRes.data) {
+        const profile = row.profiles as { full_name?: string; company?: string } | null;
+        const boardId = row.board_id as string;
+        const post: BoardPost = {
+          id: row.id as string,
+          author: profile?.full_name ?? "",
+          company: profile?.company ?? "",
+          title: row.title as string,
+          body: row.body as string,
+          date: String(row.created_at).slice(0, 10),
+        };
+        grouped[boardId] = [post, ...(grouped[boardId] ?? [])];
+      }
+      setPostsByBoard(grouped);
+    }
+
+    setLoading(false);
+  }, [usingCloud, member]);
+
+  useEffect(() => {
+    if (!usingCloud) {
+      saveJson(BIDS_KEY, bids);
+    }
+  }, [bids, usingCloud]);
+
+  useEffect(() => {
+    if (!usingCloud) {
+      saveJson(BLACKLIST_KEY, blacklist);
+    }
+  }, [blacklist, usingCloud]);
+
+  useEffect(() => {
+    if (!usingCloud) {
+      saveJson(POSTS_KEY, postsByBoard);
+    }
+  }, [postsByBoard, usingCloud]);
+
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+
+  const addBid = useCallback(
+    async (bid: Omit<BidPost, "id" | "date">) => {
+      if (usingCloud && supabase && member?.id) {
+        await supabase.from("bids").insert({
+          author_id: member.id,
+          title: bid.title,
+          trade_needed: bid.tradeNeeded,
+          location: bid.location,
+          details: bid.details,
+          contact: bid.contact,
+        });
+        await refresh();
+        return;
+      }
+      const next: BidPost = {
+        ...bid,
+        id: `bid-${Date.now()}`,
+        date: new Date().toISOString().slice(0, 10),
+      };
+      setBids((prev) => [next, ...prev]);
+    },
+    [usingCloud, member, refresh],
   );
 
-  useEffect(() => saveJson(BIDS_KEY, bids), [bids]);
-  useEffect(() => saveJson(BLACKLIST_KEY, blacklist), [blacklist]);
-  useEffect(() => saveJson(POSTS_KEY, postsByBoard), [postsByBoard]);
-
-  const addBid = useCallback((bid: Omit<BidPost, "id" | "date">) => {
-    const next: BidPost = {
-      ...bid,
-      id: `bid-${Date.now()}`,
-      date: new Date().toISOString().slice(0, 10),
-    };
-    setBids((prev) => [next, ...prev]);
-  }, []);
-
   const submitBlacklist = useCallback(
-    (entry: Omit<BlacklistEntry, "id" | "date" | "status" | "reviewedBy" | "reviewedDate">) => {
+    async (
+      entry: Omit<BlacklistEntry, "id" | "date" | "status" | "reviewedBy" | "reviewedDate">,
+    ) => {
+      if (usingCloud && supabase && member?.id) {
+        await supabase.from("blacklist_entries").insert({
+          party_type: entry.partyType,
+          name: entry.name,
+          company: entry.company,
+          reason: entry.reason,
+          reporter_id: member.id,
+          status: "pending",
+        });
+        await refresh();
+        return;
+      }
       const next: BlacklistEntry = {
         ...entry,
         id: `bl-${Date.now()}`,
@@ -75,42 +206,85 @@ export function useMemberTools() {
       };
       setBlacklist((prev) => [next, ...prev]);
     },
-    [],
+    [usingCloud, member, refresh],
   );
 
-  const approveBlacklist = useCallback((id: string, reviewedBy: string) => {
-    const reviewedDate = new Date().toISOString().slice(0, 10);
-    setBlacklist((prev) =>
-      prev.map((entry) =>
-        entry.id === id
-          ? { ...entry, status: "approved" as const, reviewedBy, reviewedDate }
-          : entry,
-      ),
-    );
-  }, []);
+  const approveBlacklist = useCallback(
+    async (id: string, _reviewedBy: string) => {
+      if (usingCloud && supabase && member?.id) {
+        await supabase
+          .from("blacklist_entries")
+          .update({
+            status: "approved",
+            reviewed_by: member.id,
+            reviewed_at: new Date().toISOString(),
+          })
+          .eq("id", id);
+        await refresh();
+        return;
+      }
+      const reviewedDate = new Date().toISOString().slice(0, 10);
+      setBlacklist((prev) =>
+        prev.map((entry) =>
+          entry.id === id
+            ? { ...entry, status: "approved" as const, reviewedBy: _reviewedBy, reviewedDate }
+            : entry,
+        ),
+      );
+    },
+    [usingCloud, member, refresh],
+  );
 
-  const rejectBlacklist = useCallback((id: string, reviewedBy: string) => {
-    const reviewedDate = new Date().toISOString().slice(0, 10);
-    setBlacklist((prev) =>
-      prev.map((entry) =>
-        entry.id === id
-          ? { ...entry, status: "rejected" as const, reviewedBy, reviewedDate }
-          : entry,
-      ),
-    );
-  }, []);
+  const rejectBlacklist = useCallback(
+    async (id: string, _reviewedBy: string) => {
+      if (usingCloud && supabase && member?.id) {
+        await supabase
+          .from("blacklist_entries")
+          .update({
+            status: "rejected",
+            reviewed_by: member.id,
+            reviewed_at: new Date().toISOString(),
+          })
+          .eq("id", id);
+        await refresh();
+        return;
+      }
+      const reviewedDate = new Date().toISOString().slice(0, 10);
+      setBlacklist((prev) =>
+        prev.map((entry) =>
+          entry.id === id
+            ? { ...entry, status: "rejected" as const, reviewedBy: _reviewedBy, reviewedDate }
+            : entry,
+        ),
+      );
+    },
+    [usingCloud, member, refresh],
+  );
 
-  const addBoardPost = useCallback((boardId: string, post: Omit<BoardPost, "id" | "date">) => {
-    const next: BoardPost = {
-      ...post,
-      id: `${boardId}-${Date.now()}`,
-      date: new Date().toISOString().slice(0, 10),
-    };
-    setPostsByBoard((prev) => ({
-      ...prev,
-      [boardId]: [next, ...(prev[boardId] ?? [])],
-    }));
-  }, []);
+  const addBoardPost = useCallback(
+    async (boardId: string, post: Omit<BoardPost, "id" | "date">) => {
+      if (usingCloud && supabase && member?.id) {
+        await supabase.from("board_posts").insert({
+          board_id: boardId,
+          author_id: member.id,
+          title: post.title,
+          body: post.body,
+        });
+        await refresh();
+        return;
+      }
+      const next: BoardPost = {
+        ...post,
+        id: `${boardId}-${Date.now()}`,
+        date: new Date().toISOString().slice(0, 10),
+      };
+      setPostsByBoard((prev) => ({
+        ...prev,
+        [boardId]: [next, ...(prev[boardId] ?? [])],
+      }));
+    },
+    [usingCloud, member, refresh],
+  );
 
   const approvedBlacklist = useMemo(
     () => blacklist.filter((e) => e.status === "approved"),
@@ -128,10 +302,12 @@ export function useMemberTools() {
     approvedBlacklist,
     pendingBlacklist,
     postsByBoard,
+    loading,
     addBid,
     submitBlacklist,
     approveBlacklist,
     rejectBlacklist,
     addBoardPost,
+    refresh,
   };
 }
