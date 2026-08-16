@@ -16,7 +16,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
     : [
         { to: "/", label: "Home", end: true },
         { to: "/members", label: "Members" },
-        { to: "/membership", label: "Member Login" },
         { to: "/permits", label: "Permits" },
       ];
 
@@ -71,11 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="site-footer__links">
             <NavLink to="/members">Members</NavLink>
-            {member ? (
-              <NavLink to="/membership">Lounge</NavLink>
-            ) : (
-              <NavLink to="/membership">Member Login</NavLink>
-            )}
+            {member ? <NavLink to="/membership">Lounge</NavLink> : null}
             {isAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
             <NavLink to="/permits">Permits</NavLink>
           </div>
