@@ -83,6 +83,7 @@
 
 .auth-form input,
 .post-form input,
+.post-form select,
 .post-form textarea {
   border: 1px solid rgba(42, 52, 68, 0.22);
   background: var(--white);
@@ -93,6 +94,7 @@
 
 .auth-form input:focus,
 .post-form input:focus,
+.post-form select:focus,
 .post-form textarea:focus {
   outline: 2px solid rgba(201, 162, 74, 0.55);
   outline-offset: 1px;
@@ -102,6 +104,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0 1rem;
+}
+
+.auth-form__full {
+  grid-column: 1 / -1;
 }
 
 .auth-note,
@@ -216,6 +222,64 @@
 .post h3 {
   font-size: 1.15rem;
   margin-bottom: 0.4rem;
+}
+
+.post__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--brass-deep);
+  margin-bottom: 0.5rem;
+}
+
+.post__contact,
+.post__company {
+  font-weight: 600;
+  color: var(--slate);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(168, 72, 56, 0.12);
+  color: var(--danger);
+  padding: 0.2rem 0.45rem;
+}
+
+.empty-note {
+  color: var(--slate);
+  padding: 0.5rem 0;
+  list-style: none;
+}
+
+.discussion-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.discussion-subnav__btn {
+  background: transparent;
+  border: 1px solid rgba(42, 52, 68, 0.18);
+  padding: 0.45rem 0.75rem;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--slate);
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+.discussion-subnav__btn.is-active,
+.discussion-subnav__btn:hover {
+  color: var(--ink);
+  border-color: var(--brass);
+  background: rgba(201, 162, 74, 0.12);
 }
 
 .membership .btn {

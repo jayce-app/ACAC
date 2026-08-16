@@ -20,22 +20,26 @@ export type Member = {
 type AuthContextValue = {
   member: Member | null;
   members: Member[];
+  approvedMembers: Member[];
+  pendingMembers: Member[];
   login: (email: string, password: string) => { ok: boolean; message: string };
   logout: () => void;
   apply: (data: Omit<Member, "status">) => { ok: boolean; message: string };
+  approve: (email: string) => void;
 };
 
-const STORAGE_KEY = "acac-members-v1";
-const SESSION_KEY = "acac-session-v1";
+const STORAGE_KEY = "acac-members-v2";
+const SESSION_KEY = "acac-session-v2";
 
+/** Board login for testing member tools until real contractors are approved. */
 const seedMembers: Member[] = [
   {
-    email: "member@acac.local",
+    email: "board@acac.local",
     password: "integrity",
-    name: "Marcus Hale",
-    company: "Lone Star Framing Co.",
-    trade: "Residential Framing",
-    phone: "(979) 555-0142",
+    name: "ACAC Board",
+    company: "Austin County Association of Contractors",
+    trade: "Association Board",
+    phone: "",
     status: "approved",
   },
 ];
@@ -117,9 +121,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [members, persist],
   );
 
+  const approve = useCallback(
+    (email: string) => {
+      persist(
+        members.map((m) =>
+          m.email.toLowerCase() === email.toLowerCase()
+            ? { ...m, status: "approved" as const }
+            : m,
+        ),
+      );
+    },
+    [members, persist],
+  );
+
+  const approvedMembers = useMemo(
+    () =>
+      members.filter(
+        (m) => m.status === "approved" && m.email !== "board@acac.local",
+      ),
+    [members],
+  );
+
+  const pendingMembers = useMemo(
+    () => members.filter((m) => m.status === "pending"),
+    [members],
+  );
+
   const value = useMemo(
-    () => ({ member, members, login, logout, apply }),
-    [member, members, login, logout, apply],
+    () => ({
+      member,
+      members,
+      approvedMembers,
+      pendingMembers,
+      login,
+      logout,
+      apply,
+      approve,
+    }),
+    [member, members, approvedMembers, pendingMembers, login, logout, apply, approve],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

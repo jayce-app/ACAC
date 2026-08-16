@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { about, goals, memberAds, vision } from "../data/content";
+import { about, goals, vision } from "../data/content";
 import "./Home.css";
 
 const heroImage =
@@ -27,8 +27,8 @@ export function Home() {
             <Link to="/membership" className="btn btn--primary">
               Apply for membership
             </Link>
-            <Link to="/permits" className="btn btn--ghost">
-              Find permit forms
+            <Link to="/members" className="btn btn--ghost">
+              View members
             </Link>
           </div>
         </div>
@@ -80,31 +80,17 @@ export function Home() {
         <div className="band__inner reveal">
           <div className="ads-head">
             <div>
-              <p className="eyebrow">Member spotlight</p>
-              <h2 id="ads-title">Vetted professionals advertising here</h2>
+              <p className="eyebrow">Find a pro</p>
+              <h2 id="ads-title">Public member directory</h2>
               <p className="ads-lede">
-                Only members who pass our vetting system can advertise. Hire with confidence —
-                these are pros who stand behind their work.
+                Browse vetted ACAC members by trade. Member advertising opportunities will open as
+                our roster grows — we will reach out to contractors interested in joining.
               </p>
             </div>
-            <Link to="/membership" className="btn btn--primary">
-              Advertise as a member
+            <Link to="/members" className="btn btn--primary">
+              View members
             </Link>
           </div>
-
-          <ul className="ad-grid">
-            {memberAds.map((ad) => (
-              <li key={ad.id} className="ad-tile">
-                <p className="ad-tile__trade">{ad.specialty}</p>
-                <h3>{ad.business}</h3>
-                <p className="ad-tile__owner">{ad.owner}</p>
-                <p>{ad.blurb}</p>
-                <a className="ad-tile__phone" href={`tel:${ad.phone.replace(/\D/g, "")}`}>
-                  {ad.phone}
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
     </div>

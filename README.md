@@ -4,8 +4,9 @@ Public website for the Austin County Association of Contractors (ACAC).
 
 ## Pages
 
-- **Home** — Vision, About Us, Goals, and member advertising spotlights
-- **Membership** — Application form, member login, and members-only discussion boards
+- **Home** — Vision, About Us, and Goals
+- **Members** — Public directory of vetted members
+- **Membership** — Application, login, bid board, blacklist, and discussion boards
 - **Permits** — Links to Austin County and municipal permit resources
 
 ## Develop
@@ -15,9 +16,10 @@ npm install
 npm run dev
 ```
 
-## Demo member login
+## Board login (testing)
 
-- Email: `member@acac.local`
+- Email: `board@acac.local`
 - Password: `integrity`
 
-Membership data is stored in the browser (`localStorage`) for this demo.
+Membership, bids, and blacklist data are stored in the browser (`localStorage`) for this demo.
+Approved members (except the board test account) appear on the public Members page.

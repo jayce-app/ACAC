@@ -34,51 +34,6 @@ export const goals = [
   },
 ];
 
-export type MemberAd = {
-  id: string;
-  business: string;
-  specialty: string;
-  owner: string;
-  blurb: string;
-  phone: string;
-  website?: string;
-};
-
-export const memberAds: MemberAd[] = [
-  {
-    id: "1",
-    business: "Lone Star Framing Co.",
-    specialty: "Residential Framing",
-    owner: "Marcus Hale",
-    blurb: "Precision stick-frame and metal framing for custom homes across Austin County.",
-    phone: "(979) 555-0142",
-  },
-  {
-    id: "2",
-    business: "Brazos Bend Electric",
-    specialty: "Electrical",
-    owner: "Elena Ruiz",
-    blurb: "Licensed electrical work for new builds, remodels, and commercial service upgrades.",
-    phone: "(979) 555-0188",
-  },
-  {
-    id: "3",
-    business: "Prairie Oak Cabinetry",
-    specialty: "Finish Carpentry",
-    owner: "James Whitaker",
-    blurb: "Custom millwork and cabinetry built in Bellville for kitchens, baths, and built-ins.",
-    phone: "(979) 555-0117",
-  },
-  {
-    id: "4",
-    business: "Sealy Concrete Works",
-    specialty: "Concrete & Flatwork",
-    owner: "Devin Carter",
-    blurb: "Foundations, driveways, and decorative flatwork with schedule-driven crews.",
-    phone: "(979) 555-0163",
-  },
-];
-
 export type PermitLink = {
   name: string;
   jurisdiction: string;
@@ -155,71 +110,45 @@ export const discussionBoards: DiscussionBoard[] = [
     name: "Networking & Support",
     description: "Connect with fellow members for crew swaps, referrals, and jobsite help.",
     membersOnly: true,
-    posts: [
-      {
-        id: "n1",
-        author: "Marcus Hale",
-        company: "Lone Star Framing Co.",
-        title: "Looking for a reliable concrete crew mid-September",
-        body: "Have a custom home outside Bellville needing a slab pour the week of Sept 15. Prefer ACAC members. Message me if your crew has availability.",
-        date: "2026-08-10",
-      },
-      {
-        id: "n2",
-        author: "Elena Ruiz",
-        company: "Brazos Bend Electric",
-        title: "Apprentice mentorship meetup",
-        body: "Hosting a Saturday morning walkthrough on service upgrades for apprentices. All vetted members welcome to bring one trainee.",
-        date: "2026-08-08",
-      },
-    ],
+    posts: [],
   },
   {
     id: "practices",
     name: "Best Practices by Trade",
     description: "Share discoveries, methods, and standards that raise the bar in each trade.",
     membersOnly: true,
-    posts: [
-      {
-        id: "p1",
-        author: "James Whitaker",
-        company: "Prairie Oak Cabinetry",
-        title: "Moisture control tips for coastal humidity",
-        body: "We have been using a different acclimation window for maple before install. Happy to share the checklist we use on Sealy jobs.",
-        date: "2026-08-12",
-      },
-    ],
-  },
-  {
-    id: "accountability",
-    name: "Accountability & Blacklist",
-    description: "Report notable wrongdoings for membership review. Facts only — no speculation.",
-    membersOnly: true,
-    posts: [
-      {
-        id: "a1",
-        author: "Board Admin",
-        company: "ACAC",
-        title: "How to submit an accountability report",
-        body: "Use this board to document verified issues: missing payments to subs, abandoned jobs, forged insurance, or unsafe practices. Include dates, jurisdictions, and documentation when possible. The board reviews before any public action.",
-        date: "2026-07-01",
-      },
-    ],
+    posts: [],
   },
   {
     id: "showcase",
     name: "Specialty Showcase",
     description: "Highlight your specialty work and educate peers on niche capabilities.",
     membersOnly: true,
-    posts: [
-      {
-        id: "s1",
-        author: "Devin Carter",
-        company: "Sealy Concrete Works",
-        title: "Stamped patio finish portfolio — summer 2026",
-        body: "Posted photos from three recent patio pours using integral color. Happy to walk members through the release technique we settled on.",
-        date: "2026-08-05",
-      },
-    ],
+    posts: [],
   },
 ];
+
+export type BidPost = {
+  id: string;
+  title: string;
+  tradeNeeded: string;
+  location: string;
+  details: string;
+  contact: string;
+  author: string;
+  company: string;
+  date: string;
+};
+
+export type BlacklistPartyType = "customer" | "contractor";
+
+export type BlacklistEntry = {
+  id: string;
+  partyType: BlacklistPartyType;
+  name: string;
+  company: string;
+  reason: string;
+  reportedBy: string;
+  reportedCompany: string;
+  date: string;
+};
