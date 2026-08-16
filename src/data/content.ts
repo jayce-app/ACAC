@@ -41,10 +41,6 @@ export const goals = [
     text: "Be a home base for contractors in our county to network and support each other.",
   },
   {
-    title: "Accountability",
-    text: "Allow the membership to also blacklist notable wrongdoings.",
-  },
-  {
     title: "Best practices",
     text: "Provide a platform for contractors to discover and disclose new practices and best practices in each trade.",
   },
