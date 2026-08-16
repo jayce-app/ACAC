@@ -158,12 +158,12 @@ export function Education() {
         </p>
         <div className="cta-row">
           <a
-            className="btn btn-primary"
+            className="btn btn--primary"
             href="mailto:board@acac.local?subject=Education%20calendar%20suggestion"
           >
             Suggest an opportunity
           </a>
-          <Link className="btn btn-ghost" to="/membership">
+          <Link className="btn btn--ghost" to="/membership">
             Member lounge
           </Link>
         </div>
