@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { hubDisclaimer } from "../data/content";
 import { SetupBanner } from "./SetupBanner";
 import "./Layout.css";
+import "./Disclaimer.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { member, logout, isAdmin } = useAuth();
@@ -84,6 +86,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink to="/privacy">Privacy</NavLink>
           </div>
         </div>
+        <p className="site-footer__disclaimer">
+          {hubDisclaimer.text} <NavLink to="/terms">Terms</NavLink>
+        </p>
       </footer>
     </>
   );

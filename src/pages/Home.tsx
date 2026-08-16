@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { Disclaimer } from "../components/Disclaimer";
 import { about, goals, vision } from "../data/content";
 import "./Home.css";
+import "../components/Disclaimer.css";
 
 const heroImage =
   "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2000&q=80";
@@ -59,6 +61,12 @@ export function Home() {
         </div>
       </section>
 
+      <section className="band band--disclaimer" aria-label="Disclaimer">
+        <div className="band__inner reveal">
+          <Disclaimer />
+        </div>
+      </section>
+
       <section className="band band--goals" aria-labelledby="goals-title">
         <div className="band__inner reveal">
           <p className="eyebrow">What we work toward</p>
@@ -86,8 +94,8 @@ export function Home() {
               <p className="eyebrow">Public directory</p>
               <h2 id="ads-title">Our members</h2>
               <p className="ads-lede">
-                Only vetted ACAC professionals appear on this list. As members are approved, they
-                will show here for the community to find.
+                Browse vetted ACAC members by trade. ACAC is a meeting hub — not a warranty or
+                guarantee of any member’s work. Verify credentials before you hire.
               </p>
             </div>
             <Link to="/members" className="btn btn--primary">

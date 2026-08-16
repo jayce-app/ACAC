@@ -3,6 +3,11 @@ export const vision = {
   text: "We are committed to elevating the integrity of the construction industry in our community. We are here to be a hub for contractors and the community alike; promoting networking, education, and support.",
 };
 
+export const hubDisclaimer = {
+  title: "Important disclaimer",
+  text: "ACAC is a hub for contractors and customers to connect, network, and learn. We do not provide warranties or guarantees of any kind regarding members’ workmanship, insurance, licensing, pricing, timelines, or project outcomes. Always do your own due diligence before hiring or contracting.",
+};
+
 export const about = {
   title: "About Us",
   paragraphs: [

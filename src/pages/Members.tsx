@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { Disclaimer } from "../components/Disclaimer";
 import "./Members.css";
+import "../components/Disclaimer.css";
 
 export function Members() {
   const { approvedMembers } = useAuth();
@@ -12,14 +14,16 @@ export function Members() {
           <p className="eyebrow">Public directory</p>
           <h1>Our members</h1>
           <p>
-            Only professionals vetted through our system appear here. Hire with confidence — these
-            are contractors who stand behind ethical practice in Austin County.
+            Professionals vetted through our system appear here so customers and contractors can
+            connect. Listing does not mean ACAC warranties or guarantees their work.
           </p>
         </div>
       </section>
 
       <section className="members-list">
         <div className="members-list__inner">
+          <Disclaimer compact />
+
           {approvedMembers.length === 0 ? (
             <div className="members-empty">
               <h2>Member list coming soon</h2>

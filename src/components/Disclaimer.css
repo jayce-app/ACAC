@@ -1,0 +1,71 @@
+.disclaimer {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 1.35rem 0 0;
+  border-top: 1px solid rgba(42, 52, 68, 0.14);
+  color: var(--slate);
+}
+
+.disclaimer__eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  margin-bottom: 0.45rem;
+}
+
+.disclaimer h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.45rem;
+  color: var(--ink);
+}
+
+.disclaimer p {
+  max-width: 44rem;
+  margin: 0 0 0.65rem;
+}
+
+.disclaimer__more,
+.disclaimer a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}
+
+.disclaimer--compact {
+  border-top: none;
+  padding: 0;
+  margin: 0.85rem 0 0;
+  font-size: 0.95rem;
+  max-width: 44rem;
+}
+
+.band--disclaimer {
+  background: rgba(18, 22, 28, 0.04);
+  padding: var(--space-xl) var(--space-md);
+}
+
+.band--disclaimer .disclaimer {
+  border-top: none;
+  padding: 0;
+}
+
+.site-footer__disclaimer {
+  max-width: var(--max);
+  margin: 1.25rem auto 0;
+  padding: 1rem var(--space-md) 0;
+  border-top: 1px solid rgba(207, 200, 188, 0.18);
+  color: var(--mist);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.site-footer__disclaimer a {
+  color: var(--brass);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-footer__disclaimer a:hover {
+  text-decoration: underline;
+}
