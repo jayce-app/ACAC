@@ -12,7 +12,7 @@ export function Membership() {
   const { bids, blacklist, postsByBoard, addBid, addBlacklist, addBoardPost } = useMemberTools();
   const [tab, setTab] = useState<Tab>("login");
   const [panel, setPanel] = useState<MemberPanel>("bids");
-  const isBoard = member?.email === "board@acac.local";
+  const isBoard = member?.email.toLowerCase() === "board@acac.local";
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activeBoard, setActiveBoard] = useState(discussionBoards[0].id);

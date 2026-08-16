@@ -211,6 +211,14 @@
   color: var(--slate);
 }
 
+.ads-empty {
+  max-width: 36rem;
+  color: var(--slate);
+  margin: 0;
+  padding-top: 0.25rem;
+  border-top: 2px solid var(--brass);
+}
+
 .ad-grid {
   list-style: none;
   margin: 0;

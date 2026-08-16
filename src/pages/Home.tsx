@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 import { about, goals, vision } from "../data/content";
 import "./Home.css";
 
@@ -6,6 +7,8 @@ const heroImage =
   "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2000&q=80";
 
 export function Home() {
+  const { approvedMembers } = useAuth();
+
   return (
     <div className="home">
       <section className="hero" aria-labelledby="hero-brand">
@@ -80,17 +83,38 @@ export function Home() {
         <div className="band__inner reveal">
           <div className="ads-head">
             <div>
-              <p className="eyebrow">Find a pro</p>
-              <h2 id="ads-title">Public member directory</h2>
+              <p className="eyebrow">Public directory</p>
+              <h2 id="ads-title">Our members</h2>
               <p className="ads-lede">
-                Browse vetted ACAC members by trade. Member advertising opportunities will open as
-                our roster grows — we will reach out to contractors interested in joining.
+                Only vetted ACAC professionals appear on this list. As members are approved, they
+                will show here for the community to find.
               </p>
             </div>
             <Link to="/members" className="btn btn--primary">
-              View members
+              Full member list
             </Link>
           </div>
+
+          {approvedMembers.length === 0 ? (
+            <p className="ads-empty">
+              No members listed yet. Contractors who pass our vetting will appear here.
+            </p>
+          ) : (
+            <ul className="ad-grid home-member-list">
+              {approvedMembers.map((m) => (
+                <li key={m.email} className="ad-tile">
+                  <p className="ad-tile__trade">{m.trade}</p>
+                  <h3>{m.company}</h3>
+                  <p className="ad-tile__owner">{m.name}</p>
+                  {m.phone ? (
+                    <a className="ad-tile__phone" href={`tel:${m.phone.replace(/\D/g, "")}`}>
+                      {m.phone}
+                    </a>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </div>

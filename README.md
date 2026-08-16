@@ -22,4 +22,5 @@ npm run dev
 - Password: `integrity`
 
 Membership, bids, and blacklist data are stored in the browser (`localStorage`) for this demo.
-Approved members (except the board test account) appear on the public Members page.
+There are no demo contractors on the public list. Approved real members appear on Home and the
+Members page; the board test account is never listed publicly.

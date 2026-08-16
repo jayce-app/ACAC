@@ -28,13 +28,23 @@ type AuthContextValue = {
   approve: (email: string) => void;
 };
 
-const STORAGE_KEY = "acac-members-v2";
-const SESSION_KEY = "acac-session-v2";
+const STORAGE_KEY = "acac-members-v3";
+const SESSION_KEY = "acac-session-v3";
+const BOARD_EMAIL = "board@acac.local";
 
-/** Board login for testing member tools until real contractors are approved. */
+/** Known demo / placeholder accounts that must never appear publicly. */
+const DEMO_EMAILS = new Set([
+  "member@acac.local",
+  "marcus@acac.local",
+  "elena@acac.local",
+  "james@acac.local",
+  "devin@acac.local",
+]);
+
+/** Board-only login for lounge tools until real contractors are approved. */
 const seedMembers: Member[] = [
   {
-    email: "board@acac.local",
+    email: BOARD_EMAIL,
     password: "integrity",
     name: "ACAC Board",
     company: "Austin County Association of Contractors",
@@ -44,14 +54,36 @@ const seedMembers: Member[] = [
   },
 ];
 
+function isPublicMember(m: Member) {
+  return (
+    m.status === "approved" &&
+    m.email.toLowerCase() !== BOARD_EMAIL &&
+    !DEMO_EMAILS.has(m.email.toLowerCase())
+  );
+}
+
+function sanitizeMembers(list: Member[]): Member[] {
+  const cleaned = list.filter((m) => !DEMO_EMAILS.has(m.email.toLowerCase()));
+  const hasBoard = cleaned.some((m) => m.email.toLowerCase() === BOARD_EMAIL);
+  return hasBoard ? cleaned : [...seedMembers, ...cleaned];
+}
+
 function loadMembers(): Member[] {
   try {
+    // Drop legacy demo storage from earlier site versions.
+    localStorage.removeItem("acac-members-v1");
+    localStorage.removeItem("acac-session-v1");
+    localStorage.removeItem("acac-members-v2");
+    localStorage.removeItem("acac-session-v2");
+
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(seedMembers));
       return seedMembers;
     }
-    return JSON.parse(raw) as Member[];
+    const sanitized = sanitizeMembers(JSON.parse(raw) as Member[]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+    return sanitized;
   } catch {
     return seedMembers;
   }
@@ -74,8 +106,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [member, setMember] = useState<Member | null>(() => loadSession(loadMembers()));
 
   const persist = useCallback((next: Member[]) => {
-    setMembers(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    const sanitized = sanitizeMembers(next);
+    setMembers(sanitized);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
   }, []);
 
   const login = useCallback(
@@ -134,13 +167,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [members, persist],
   );
 
-  const approvedMembers = useMemo(
-    () =>
-      members.filter(
-        (m) => m.status === "approved" && m.email !== "board@acac.local",
-      ),
-    [members],
-  );
+  const approvedMembers = useMemo(() => members.filter(isPublicMember), [members]);
 
   const pendingMembers = useMemo(
     () => members.filter((m) => m.status === "pending"),
