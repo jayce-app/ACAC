@@ -58,6 +58,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <a href={company.emailHref}>{company.email}</a>
               <br />
               {company.hours}
+              <br />
+              <a href={company.facebook} target="_blank" rel="noreferrer">
+                Facebook
+              </a>
             </p>
           </div>
           <div className="site-footer__links">

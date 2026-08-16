@@ -50,7 +50,11 @@ export function Contact() {
               </div>
               <div>
                 <dt>Hours</dt>
-                <dd>{company.hours}</dd>
+                <dd>
+                  {company.hoursWeekday}
+                  <br />
+                  {company.hoursWeekend}
+                </dd>
               </div>
               <div>
                 <dt>Service area</dt>

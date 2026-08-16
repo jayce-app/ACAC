@@ -1,15 +1,101 @@
-.band--about-story {
-  background: var(--field);
+.band--about-main {
+  background:
+    linear-gradient(160deg, rgba(109, 132, 156, 0.14), transparent 45%),
+    var(--field);
+  padding-top: clamp(3rem, 8vh, 5rem);
 }
 
-.about-story h2 {
-  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
-  max-width: 18ch;
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+  gap: var(--space-xl);
+  align-items: start;
 }
 
-.about-story p {
+.about-copy h1 {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  margin-bottom: 1rem;
+}
+
+.about-copy p {
   color: var(--slate);
-  max-width: 48rem;
+  max-width: 42rem;
+  font-size: 1.05rem;
+}
+
+.about-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--iron);
+}
+
+.about-social:hover {
+  color: var(--spark-deep);
+}
+
+.about-social__icon {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: var(--iron);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.about-aside {
+  background: var(--white);
+  border-top: 3px solid var(--spark);
+  padding: var(--space-lg);
+}
+
+.about-aside h2 {
+  font-size: 1.45rem;
+  margin-bottom: 1rem;
+}
+
+.about-aside__dl {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.about-aside__dl div {
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(22, 32, 51, 0.12);
+}
+
+.about-aside__dl dt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--spark-deep);
+  margin-bottom: 0.3rem;
+}
+
+.about-aside__dl dd {
+  margin: 0;
+  color: var(--iron);
+}
+
+.about-aside__dl a {
+  color: var(--spark-deep);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.about-aside__dl a:hover {
+  text-decoration: underline;
 }
 
 .band--credentials {
@@ -58,35 +144,18 @@
   max-width: 38rem;
   font-size: 1.15rem;
   color: var(--mist);
-  margin-bottom: 1.25rem;
-}
-
-.area-address {
-  font-family: var(--font-display);
-  font-size: 1.45rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--white);
   margin-bottom: 1.5rem;
-  line-height: 1.35;
 }
 
-.area-hours {
-  display: inline-block;
-  margin-top: 0.5rem;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--mist);
-}
-
-.band--about-story .eyebrow,
 .band--credentials .eyebrow {
   color: var(--spark-deep);
 }
 
 @media (max-width: 800px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+  }
+
   .credential-list {
     grid-template-columns: 1fr;
   }

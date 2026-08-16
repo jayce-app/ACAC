@@ -7,8 +7,11 @@ export const company = {
   email: "Jayce@txropersconstruction.com",
   emailHref: "mailto:Jayce@txropersconstruction.com",
   address: "3016 Newsom Rd",
-  city: "Bellville, TX 77418",
-  hours: "Monday–Friday, 8:00 a.m.–5:00 p.m.",
+  city: "Bellville, Texas 77418",
+  hoursWeekday: "Monday through Friday 8:00a – 5:00p",
+  hoursWeekend: "Saturday and Sunday: Closed",
+  hours: "Monday–Friday, 8:00 a.m.–5:00 p.m. · Closed Saturday & Sunday",
+  facebook: "https://www.facebook.com/p/TX-Ropers-Construction-LLC-100089307615057/",
   serviceArea:
     "Southeast Texas — primarily within about 50 miles of Bellville. We also travel for special projects.",
   tagline: "Custom built from the pad up.",
@@ -70,11 +73,11 @@ export const featuredServices = [
 ];
 
 export const about = {
-  title: "Premium builds. Local standard raised.",
+  title: "About us",
   paragraphs: [
-    "TX Ropers Construction, LLC is a general contractor based in Bellville, Texas, owned by Jayce Johnson. We specialize in custom, turnkey construction — residential and commercial — with a large share of the work self-performed by our crew.",
-    company.mission,
-    "Most of what we build is custom. We do not do production home builds. From dirt work and concrete to metal buildings, structural steel, new homes, and barndominiums, we stay on the job until it is ready for real use.",
+    "TX Ropers Construction is a small, locally rooted construction company serving residential and commercial clients. We focus on quality craftsmanship and honest communication on every job.",
+    "Our goal is to deliver a premium product and elevate the standard for construction in our community — whether the project is large or small.",
+    "Relationships matter here, and we are dedicated to our customers' satisfaction. When you work with TX Ropers Construction, you get a crew that stands behind the work.",
   ],
 };
 

@@ -5,31 +5,70 @@ import "./About.css";
 export function About() {
   return (
     <div className="about-page">
-      <header className="page-hero">
-        <div className="page-hero__inner">
-          <p className="eyebrow">Who we are</p>
-          <h1>About</h1>
-          <p>
-            {company.legal} — owned by {company.owner}. General contractor serving Southeast Texas
-            from Bellville.
-          </p>
-        </div>
-      </header>
+      <section className="band band--about-main" aria-labelledby="about-story-title">
+        <div className="band__inner about-layout reveal">
+          <div className="about-copy">
+            <h1 id="about-story-title">{about.title}</h1>
+            {about.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+            ))}
+            <a
+              className="about-social"
+              href={company.facebook}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="TX Ropers Construction on Facebook"
+            >
+              <span className="about-social__icon" aria-hidden="true">
+                f
+              </span>
+              Facebook
+            </a>
+          </div>
 
-      <section className="band band--about-story" aria-labelledby="about-story-title">
-        <div className="band__inner about-story reveal">
-          <p className="eyebrow">Our story</p>
-          <h2 id="about-story-title">{about.title}</h2>
-          {about.paragraphs.map((paragraph) => (
-            <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-          ))}
+          <aside className="about-aside" aria-labelledby="about-contact-title">
+            <h2 id="about-contact-title">Contact us for a quote</h2>
+            <dl className="about-aside__dl">
+              <div>
+                <dt>Office phone</dt>
+                <dd>
+                  <a href={company.phoneHref}>{company.phone}</a>
+                </dd>
+              </div>
+              <div>
+                <dt>Location</dt>
+                <dd>
+                  {company.address}
+                  <br />
+                  {company.city}
+                </dd>
+              </div>
+              <div>
+                <dt>Office hours</dt>
+                <dd>
+                  {company.hoursWeekday}
+                  <br />
+                  {company.hoursWeekend}
+                </dd>
+              </div>
+              <div>
+                <dt>Email</dt>
+                <dd>
+                  <a href={company.emailHref}>{company.email}</a>
+                </dd>
+              </div>
+            </dl>
+            <Link to="/contact" className="btn btn--primary">
+              Request a quote
+            </Link>
+          </aside>
         </div>
       </section>
 
       <section className="band band--credentials" aria-labelledby="credentials-title">
         <div className="band__inner reveal">
           <p className="eyebrow">Why choose us</p>
-          <h2 id="credentials-title">Credentials that matter on the job</h2>
+          <h2 id="credentials-title">What sets the work apart</h2>
           <ul className="credential-list">
             {credentials.map((item) => (
               <li key={item.title} className="credential-item">
@@ -43,16 +82,9 @@ export function About() {
 
       <section className="band band--about-area" aria-labelledby="area-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">Service area &amp; shop</p>
+          <p className="eyebrow">Service area</p>
           <h2 id="area-title">Southeast Texas</h2>
           <p className="area-lead">{company.serviceArea}</p>
-          <p className="area-address">
-            {company.address}
-            <br />
-            {company.city}
-            <br />
-            <span className="area-hours">{company.hours}</span>
-          </p>
           <Link to="/contact" className="btn btn--primary">
             Get in touch
           </Link>
