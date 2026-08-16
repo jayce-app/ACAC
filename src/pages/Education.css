@@ -1,0 +1,252 @@
+.education-page {
+  display: grid;
+  gap: 2rem;
+}
+
+.edu-hero {
+  display: grid;
+  gap: 0.85rem;
+  max-width: 46rem;
+}
+
+.edu-hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.edu-hero .lede {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+
+.edu-disclaimer {
+  padding: 1rem 1.15rem;
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-radius: 0 12px 12px 0;
+}
+
+.edu-disclaimer p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.edu-upcoming,
+.edu-hubs,
+.edu-suggest {
+  display: grid;
+  gap: 1rem;
+}
+
+.edu-upcoming h2,
+.edu-hubs h2,
+.edu-suggest h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.5vw, 1.9rem);
+}
+
+.section-intro {
+  margin: 0;
+  max-width: 40rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.edu-event-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.edu-event {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 1.1rem;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--panel) 70%, transparent);
+}
+
+.edu-event-date {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 0.15rem;
+  padding-top: 0.2rem;
+}
+
+.edu-event-month {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.edu-event-day {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.edu-event-range {
+  margin-top: 0.25rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.edu-event-body {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.edu-event-body h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.edu-event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+}
+
+.edu-tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.edu-tag-safety {
+  background: color-mix(in srgb, #c45c26 18%, transparent);
+  color: #8a3a12;
+}
+
+.edu-tag-plumbing {
+  background: color-mix(in srgb, #2a6f97 18%, transparent);
+  color: #1a4a66;
+}
+
+.edu-tag-hvac {
+  background: color-mix(in srgb, #2d6a4f 18%, transparent);
+  color: #1b4332;
+}
+
+.edu-tag-general {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--ink);
+}
+
+.edu-tag-electrical {
+  background: color-mix(in srgb, #5c4d7a 18%, transparent);
+  color: #3d3354;
+}
+
+.edu-provider {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.edu-when,
+.edu-where {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.edu-event-body > p:not(.edu-when):not(.edu-where) {
+  margin: 0.15rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.edu-event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  align-items: baseline;
+  margin-top: 0.35rem;
+}
+
+.edu-event-actions a {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.edu-notes {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.edu-hub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.edu-hub-list li {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.edu-hub-list a {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.edu-hub-list p {
+  margin: 0.35rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.edu-suggest {
+  padding: 1.5rem 0 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+}
+
+.edu-suggest p {
+  margin: 0;
+  max-width: 36rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .edu-event {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .edu-event-date {
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: baseline;
+    gap: 0.45rem;
+  }
+
+  .edu-event-day {
+    font-size: 1.4rem;
+  }
+}

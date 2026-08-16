@@ -25,26 +25,27 @@ export function Terms() {
 
           <h2>1. Who may use this site</h2>
           <p>
-            The public pages (home, member directory, permits, and these legal pages) are available
-            to visitors. Membership tools — including the Members Lounge, bid board, discussion
-            boards, and accountability/blacklist reports — are limited to approved members and
-            administrators.
+            The public pages (home, member directory, education calendar, permits, and these legal
+            pages) are available to visitors. Membership tools — including the Members Lounge, bid
+            board, discussion boards, and accountability/blacklist reports — are limited to approved
+            members and administrators.
           </p>
 
-          <h2>2. A hub — education without a work warranty</h2>
+          <h2>2. A hub — curated education, no work warranty</h2>
           <p>
-            ACAC is a hub for contractors and customers to meet, network, and learn. We provide
-            education and best-practice resources for our members. Listing a member does not mean
-            ACAC warrants or guarantees their work, insurance, licensing, pricing, timelines, or
-            fitness for any project. Visitors and members must independently verify credentials and
-            contracts before hiring or working together.
+            ACAC is a hub for contractors and customers to meet and network. We may publish a
+            calendar of third-party seminars and classes; we do not teach those courses ourselves
+            and do not warranty or guarantee them. Listing a member does not mean ACAC warrants or
+            guarantees their work, insurance, licensing, pricing, timelines, or fitness for any
+            project. Visitors and members must independently verify credentials and contracts before
+            hiring or working together.
           </p>
 
           <h2>3. Member conduct</h2>
           <p>Members agree to:</p>
           <ul>
             <li>Provide accurate information in applications and posts</li>
-            <li>Use the lounge for legitimate trade networking and education</li>
+            <li>Use the lounge for legitimate trade networking and peer support</li>
             <li>Avoid harassment, threats, illegal content, or spam</li>
             <li>
               Submit accountability reports only with firsthand, factual information they believe

@@ -5,24 +5,24 @@ export const vision = {
 
 export const hubDisclaimer = {
   title: "Important disclaimer",
-  text: "ACAC is a hub for contractors and customers to connect, network, and learn. We provide education and best-practice resources for our members, but we do not warranty or guarantee any member’s workmanship, insurance, licensing, pricing, timelines, or project outcomes. Always do your own due diligence before hiring or contracting.",
+  text: "ACAC is a hub for contractors and customers to connect and network. We curate a calendar of third-party education opportunities and best-practice resources, but we do not teach courses ourselves and we do not warranty or guarantee any member’s workmanship, insurance, licensing, pricing, timelines, or project outcomes. Always do your own due diligence before hiring or contracting.",
 };
 
 export const education = {
-  title: "Education & best practices",
-  lead: "A core part of membership is learning together — raising the standard of work across Austin County.",
+  title: "Education opportunities",
+  lead: "We do not teach courses directly. Instead, we maintain a public calendar of seminars, CE classes, and safety training from trade associations, colleges, and state agencies — so Austin County contractors can find ways to keep skills and licenses current.",
   points: [
     {
-      title: "Trade education",
-      text: "Seminars and learning opportunities for the construction industry in our county, open to members and others willing to attend.",
+      title: "Curated calendar",
+      text: "OSHA/safety, plumbing CE, HVAC CE, and other construction-trade sessions reachable from Austin County.",
     },
     {
-      title: "Best practices by trade",
-      text: "Members share proven methods, new techniques, and standards so each trade can work safer and smarter.",
+      title: "Trusted providers",
+      text: "Links to DWC, PHCC, TACCA, ABC, AGC, ACC, Blinn, and other established education hubs.",
     },
     {
-      title: "Peer support",
-      text: "A members lounge where contractors network, exchange knowledge, and support one another on real jobs.",
+      title: "Peer sharing in the lounge",
+      text: "Members still swap jobsite know-how and trade tips with each other — separate from formal classes.",
     },
   ],
 };
@@ -31,14 +31,14 @@ export const about = {
   title: "About Us",
   paragraphs: [
     "Founded by contractors in an effort to give back to the community. There is no licensing for general contractors in Texas at a state level. We support freedom and personal liberty, but we have been witness to many utilizing freedom without being responsible.",
-    "Our membership is made up of only professionals that have been vetted through our system. Our goal is to give credibility to the pros that deserve it, promote ethics throughout, and provide education and best practices for our members.",
+    "Our membership is made up of only professionals that have been vetted through our system. Our goal is to give credibility to the pros that deserve it, promote ethics throughout, and help members find quality education and best-practice resources.",
   ],
 };
 
 export const goals = [
   {
     title: "Home base for contractors",
-    text: "Be a home base for contractors in our county to network, support, and educate each other.",
+    text: "Be a home base for contractors in our county to network and support each other.",
   },
   {
     title: "Accountability",
@@ -53,8 +53,8 @@ export const goals = [
     text: "Provide a platform for contractors to showcase their specialty within the industry.",
   },
   {
-    title: "Education for all",
-    text: "Provide seminars and educational opportunities for the construction industry here in our county available to all willing to attend.",
+    title: "Education calendar",
+    text: "Share a public calendar of third-party seminars and classes for the construction trades — we curate opportunities; we do not teach the courses ourselves.",
   },
 ];
 

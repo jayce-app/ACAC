@@ -25,8 +25,8 @@ export function Home() {
           </p>
           <h1 className="hero__headline">Integrity built into every job.</h1>
           <p className="hero__lede">
-            A vetted hub for contractors and community — networking, education, best practices, and
-            ethical work across Austin County.
+            A vetted hub for contractors and community — networking, curated education
+            opportunities, and ethical work across Austin County.
           </p>
           <div className="hero__actions">
             <Link to="/apply" className="btn btn--primary">
@@ -63,7 +63,7 @@ export function Home() {
 
       <section className="band band--education" aria-labelledby="education-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">For our members</p>
+          <p className="eyebrow">Learning opportunities</p>
           <h2 id="education-title">{education.title}</h2>
           <p className="education-lead">{education.lead}</p>
           <ul className="education-grid">
@@ -75,8 +75,11 @@ export function Home() {
             ))}
           </ul>
           <div className="education-actions">
-            <Link to="/apply" className="btn btn--primary">
-              Join to learn with us
+            <Link to="/education" className="btn btn--primary">
+              View education calendar
+            </Link>
+            <Link to="/apply" className="btn btn--ghost">
+              Apply for membership
             </Link>
           </div>
         </div>

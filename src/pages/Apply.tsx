@@ -57,9 +57,9 @@ export function Apply() {
           <p className="eyebrow">Membership</p>
           <h1>Member application</h1>
           <p>
-            Apply to join {org.dbaName}. Members get access to education, best-practice sharing, and
-            the members lounge. Applications are vetted before lounge access and before you appear
-            in the public member directory.
+            Apply to join {org.dbaName}. Members get access to the members lounge, peer best-practice
+            sharing, and our curated education calendar. Applications are vetted before lounge
+            access and before you appear in the public member directory.
           </p>
         </div>
       </section>

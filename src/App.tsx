@@ -3,6 +3,7 @@ import { AuthProvider } from "./auth/AuthContext";
 import { Layout } from "./components/Layout";
 import { Apply } from "./pages/Apply";
 import { Admin } from "./pages/Admin";
+import { Education } from "./pages/Education";
 import { Home } from "./pages/Home";
 import { Members } from "./pages/Members";
 import { Membership } from "./pages/Membership";
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="/membership" element={<Membership />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/permits" element={<Permits />} />
+            <Route path="/education" element={<Education />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<Navigate to="/" replace />} />

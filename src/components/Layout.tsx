@@ -12,6 +12,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     ? [
         { to: "/", label: "Home", end: true },
         { to: "/members", label: "Members" },
+        { to: "/education", label: "Education" },
         { to: "/membership", label: "Lounge" },
         ...(isAdmin ? [{ to: "/admin", label: "Admin" }] : []),
         { to: "/permits", label: "Permits" },
@@ -19,6 +20,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     : [
         { to: "/", label: "Home", end: true },
         { to: "/members", label: "Members" },
+        { to: "/education", label: "Education" },
         { to: "/permits", label: "Permits" },
       ];
 
@@ -73,11 +75,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div>
             <p className="site-footer__brand">Austin County Association of Contractors</p>
             <p className="site-footer__tag">
-              A hub for networking, education, best practices, and support across Austin County.
+              A hub for networking, curated education opportunities, and support across Austin
+              County.
             </p>
           </div>
           <div className="site-footer__links">
             <NavLink to="/members">Members</NavLink>
+            <NavLink to="/education">Education</NavLink>
             <NavLink to="/apply">Apply</NavLink>
             {member ? <NavLink to="/membership">Lounge</NavLink> : null}
             {isAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
