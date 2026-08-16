@@ -1,18 +1,26 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { company, featuredServices, process } from "../data/content";
 import "./Home.css";
 
 export function Home() {
+  const [heroReady, setHeroReady] = useState(false);
+
   return (
     <div className="home">
       <section className="hero" aria-labelledby="hero-brand">
         <div className="hero__media" aria-hidden="true">
+          <div className="hero__fallback" />
           <img
             src="/hero.jpg"
             alt=""
-            className="hero__img"
-            width={1536}
-            height={1024}
+            className={heroReady ? "hero__img is-ready" : "hero__img"}
+            width={1600}
+            height={900}
+            onLoad={() => setHeroReady(true)}
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
           />
           <div className="hero__veil" />
         </div>

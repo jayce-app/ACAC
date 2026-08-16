@@ -16,9 +16,11 @@ Public website for TX Ropers Construction, LLC — Bellville, Texas.
 - Address: 3016 Newsom Rd, Bellville, TX 77418
 - Hours: Monday–Friday, 8:00 a.m.–5:00 p.m.
 
-## Develop
+## Brand assets
 
-```bash
-npm install
-npm run dev
-```
+Drop your real files into `public/` (do not use AI stand-ins):
+
+- `public/logo.png` — company logo (header/favicon source)
+- `public/hero.jpg` — home hero photo
+
+Until those files are present, the site uses a text wordmark and a gradient hero.

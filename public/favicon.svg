@@ -1,10 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <rect width="64" height="64" fill="#0c1219"/>
-  <g fill="#e8a84a" transform="translate(4,8) scale(0.23)">
-    <path d="M16 16h96l-24 28H52v72h36l24 28H16V16z"/>
-    <rect x="104" y="44" width="28" height="72"/>
-    <polygon points="148,16 188,92 156,92"/>
-    <polygon points="228,16 188,92 220,92"/>
-    <polygon points="152,104 220,104 204,140 136,140"/>
-  </g>
+  <text
+    x="32"
+    y="40"
+    text-anchor="middle"
+    font-family="Arial Narrow, Helvetica Neue, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="1"
+    fill="#e8a84a"
+  >TX</text>
 </svg>
