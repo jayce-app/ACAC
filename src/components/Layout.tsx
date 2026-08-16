@@ -15,9 +15,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <header className="site-header">
         <div className="site-header__inner">
           <NavLink to="/" className="brand-mark" aria-label={`${company.name} home`}>
-            <span className="brand-mark__abbr">TX</span>
+            <span className="brand-mark__icon" aria-hidden="true">
+              <img src="/logo.svg" alt="" width={48} height={34} />
+            </span>
             <span className="brand-mark__full">
-              Ropers
+              TX Ropers
               <br />
               Construction
             </span>

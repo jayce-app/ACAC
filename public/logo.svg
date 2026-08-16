@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="#0b0b0b" role="img" aria-label="TX Ropers Construction">
+  <path d="M16 16h96l-24 28H52v72h36l24 28H16V16z"/>
+  <rect x="104" y="44" width="28" height="72"/>
+  <polygon points="148,16 188,92 156,92"/>
+  <polygon points="228,16 188,92 220,92"/>
+  <polygon points="152,104 220,104 204,140 136,140"/>
+</svg>
