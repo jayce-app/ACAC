@@ -18,4 +18,10 @@ export type ProfileRow = {
   phone: string;
   status: "pending" | "approved" | "rejected";
   role: "member" | "admin";
+  years_in_business?: string | null;
+  service_area?: string | null;
+  website?: string | null;
+  insurance_notes?: string | null;
+  license_notes?: string | null;
+  about_work?: string | null;
 };

@@ -1,0 +1,50 @@
+.auth-panel__inner--apply {
+  grid-template-columns: minmax(0, 40rem);
+  max-width: 44rem;
+}
+
+.apply-section-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin: 0.5rem 0 0.85rem;
+}
+
+.apply-form textarea {
+  border: 1px solid rgba(42, 52, 68, 0.22);
+  background: var(--white);
+  padding: 0.7rem 0.8rem;
+  border-radius: var(--radius);
+  color: var(--ink);
+  width: 100%;
+  resize: vertical;
+}
+
+.apply-form textarea:focus {
+  outline: 2px solid rgba(201, 162, 74, 0.55);
+  outline-offset: 1px;
+}
+
+.apply-success {
+  background: rgba(247, 244, 238, 0.72);
+  border: 1px solid rgba(42, 52, 68, 0.12);
+  padding: 1.5rem;
+}
+
+.apply-success h2 {
+  margin-bottom: 0.5rem;
+}
+
+.apply-success a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}
+
+.apply-page .auth-note a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}
+
+.apply-page .attest-check a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}

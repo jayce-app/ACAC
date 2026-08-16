@@ -9,6 +9,15 @@ import {
 } from "react";
 import { isSupabaseConfigured, supabase, type ProfileRow } from "../lib/supabase";
 
+export type ApplicationDetails = {
+  yearsInBusiness?: string;
+  serviceArea?: string;
+  website?: string;
+  insuranceNotes?: string;
+  licenseNotes?: string;
+  aboutWork?: string;
+};
+
 export type Member = {
   id?: string;
   email: string;
@@ -19,7 +28,9 @@ export type Member = {
   phone: string;
   status: "approved" | "pending" | "rejected";
   role?: "member" | "admin";
-};
+} & ApplicationDetails;
+
+export type ApplicationInput = Omit<Member, "status" | "id" | "role">;
 
 type AuthResult = { ok: boolean; message: string };
 
@@ -33,7 +44,7 @@ type AuthContextValue = {
   usingCloud: boolean;
   login: (email: string, password: string) => Promise<AuthResult>;
   logout: () => Promise<void>;
-  apply: (data: Omit<Member, "status" | "id" | "role">) => Promise<AuthResult>;
+  apply: (data: ApplicationInput) => Promise<AuthResult>;
   approve: (email: string) => Promise<void>;
   reject: (email: string) => Promise<void>;
   refreshMembers: () => Promise<void>;
@@ -66,6 +77,12 @@ function profileToMember(p: ProfileRow): Member {
     phone: p.phone,
     status: p.status === "rejected" ? "rejected" : p.status,
     role: p.role,
+    yearsInBusiness: p.years_in_business ?? undefined,
+    serviceArea: p.service_area ?? undefined,
+    website: p.website ?? undefined,
+    insuranceNotes: p.insurance_notes ?? undefined,
+    licenseNotes: p.license_notes ?? undefined,
+    aboutWork: p.about_work ?? undefined,
   };
 }
 
@@ -252,10 +269,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [usingCloud]);
 
   const apply = useCallback(
-    async (data: Omit<Member, "status" | "id" | "role">): Promise<AuthResult> => {
+    async (data: ApplicationInput): Promise<AuthResult> => {
       const email = data.email.trim().toLowerCase();
       if (usingCloud && supabase) {
-        const { error } = await supabase.auth.signUp({
+        const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password: data.password ?? "",
           options: {
@@ -264,10 +281,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               company: data.company,
               trade: data.trade,
               phone: data.phone,
+              years_in_business: data.yearsInBusiness ?? "",
+              service_area: data.serviceArea ?? "",
+              website: data.website ?? "",
+              insurance_notes: data.insuranceNotes ?? "",
+              license_notes: data.licenseNotes ?? "",
+              about_work: data.aboutWork ?? "",
             },
           },
         });
         if (error) return { ok: false, message: error.message };
+        if (signUpData.user?.id) {
+          await supabase
+            .from("profiles")
+            .update({
+              years_in_business: data.yearsInBusiness ?? "",
+              service_area: data.serviceArea ?? "",
+              website: data.website ?? "",
+              insurance_notes: data.insuranceNotes ?? "",
+              license_notes: data.licenseNotes ?? "",
+              about_work: data.aboutWork ?? "",
+            })
+            .eq("id", signUpData.user.id);
+        }
         await refreshMembers();
         return {
           ok: true,

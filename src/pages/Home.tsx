@@ -27,7 +27,7 @@ export function Home() {
             practice across Austin County.
           </p>
           <div className="hero__actions">
-            <Link to="/membership" className="btn btn--primary">
+            <Link to="/apply" className="btn btn--primary">
               Apply for membership
             </Link>
             <Link to="/members" className="btn btn--ghost">

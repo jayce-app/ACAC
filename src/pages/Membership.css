@@ -115,11 +115,21 @@
   grid-column: 1 / -1;
 }
 
+.membership .auth-note a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}
+
 .auth-note,
 .auth-hint {
   font-size: 0.92rem;
   color: var(--slate);
   margin: 0.5rem 0 1rem;
+}
+
+.auth-hero a {
+  color: var(--brass);
+  font-weight: 700;
 }
 
 .auth-hint code {

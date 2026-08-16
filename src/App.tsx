@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import { Layout } from "./components/Layout";
+import { Apply } from "./pages/Apply";
 import { Admin } from "./pages/Admin";
 import { Home } from "./pages/Home";
 import { Members } from "./pages/Members";
@@ -17,6 +18,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/members" element={<Members />} />
+            <Route path="/apply" element={<Apply />} />
             <Route path="/membership" element={<Membership />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/permits" element={<Permits />} />

@@ -12,6 +12,12 @@ create table if not exists public.profiles (
   phone text not null default '',
   status text not null check (status in ('pending', 'approved', 'rejected')) default 'pending',
   role text not null check (role in ('member', 'admin')) default 'member',
+  years_in_business text not null default '',
+  service_area text not null default '',
+  website text not null default '',
+  insurance_notes text not null default '',
+  license_notes text not null default '',
+  about_work text not null default '',
   created_at timestamptz not null default now()
 );
 
@@ -84,7 +90,10 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.profiles (id, email, full_name, company, trade, phone, status, role)
+  insert into public.profiles (
+    id, email, full_name, company, trade, phone, status, role,
+    years_in_business, service_area, website, insurance_notes, license_notes, about_work
+  )
   values (
     new.id,
     lower(new.email),
@@ -93,7 +102,13 @@ begin
     coalesce(new.raw_user_meta_data->>'trade', ''),
     coalesce(new.raw_user_meta_data->>'phone', ''),
     'pending',
-    'member'
+    'member',
+    coalesce(new.raw_user_meta_data->>'years_in_business', ''),
+    coalesce(new.raw_user_meta_data->>'service_area', ''),
+    coalesce(new.raw_user_meta_data->>'website', ''),
+    coalesce(new.raw_user_meta_data->>'insurance_notes', ''),
+    coalesce(new.raw_user_meta_data->>'license_notes', ''),
+    coalesce(new.raw_user_meta_data->>'about_work', '')
   );
   return new;
 end;

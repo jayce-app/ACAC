@@ -5,11 +5,10 @@ import { discussionBoards, type BlacklistPartyType } from "../data/content";
 import { useMemberTools } from "../data/useMemberTools";
 import "./Membership.css";
 
-type Tab = "login" | "apply";
 type MemberPanel = "discussions" | "bids" | "blacklist";
 
 export function Membership() {
-  const { member, login, apply } = useAuth();
+  const { member, login } = useAuth();
   const {
     bids,
     approvedBlacklist,
@@ -19,7 +18,6 @@ export function Membership() {
     submitBlacklist,
     addBoardPost,
   } = useMemberTools();
-  const [tab, setTab] = useState<Tab>("login");
   const [panel, setPanel] = useState<MemberPanel>("bids");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -50,28 +48,6 @@ export function Membership() {
     const result = await login(String(data.get("email")), String(data.get("password")));
     if (result.ok) setMessage(result.message);
     else setError(result.message);
-  }
-
-  async function onApply(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setMessage(null);
-    setError(null);
-    const data = new FormData(e.currentTarget);
-    const result = await apply({
-      email: String(data.get("email")),
-      password: String(data.get("password")),
-      name: String(data.get("name")),
-      company: String(data.get("company")),
-      trade: String(data.get("trade")),
-      phone: String(data.get("phone")),
-    });
-    if (result.ok) {
-      setMessage(result.message);
-      setTab("login");
-      e.currentTarget.reset();
-    } else {
-      setError(result.message);
-    }
   }
 
   async function onBoardPost(e: FormEvent<HTMLFormElement>) {
@@ -439,106 +415,36 @@ export function Membership() {
           <p className="eyebrow">Members</p>
           <h1>Member login</h1>
           <p>
-            Sign in if you are an approved member, or submit an application to join the Austin
-            County Association of Contractors.
+            Sign in if you are an approved member. New contractors should submit a{" "}
+            <Link to="/apply">member application</Link> first.
           </p>
         </div>
       </section>
 
       <section className="auth-panel">
         <div className="auth-panel__inner auth-panel__inner--solo">
-          <div className="auth-tabs" role="tablist" aria-label="Membership forms">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={tab === "login"}
-              className={tab === "login" ? "is-active" : undefined}
-              onClick={() => {
-                setTab("login");
-                setError(null);
-                setMessage(null);
-              }}
-            >
-              Member login
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={tab === "apply"}
-              className={tab === "apply" ? "is-active" : undefined}
-              onClick={() => {
-                setTab("apply");
-                setError(null);
-                setMessage(null);
-              }}
-            >
-              Application
-            </button>
-          </div>
-
           {(message || error) && (
             <p className={error ? "form-alert form-alert--error" : "form-alert"} role="status">
               {error ?? message}
             </p>
           )}
 
-          {tab === "login" ? (
-            <form className="auth-form" onSubmit={onLogin}>
-              <label>
-                <span>Email</span>
-                <input name="email" type="email" required autoComplete="username" />
-              </label>
-              <label>
-                <span>Password</span>
-                <input name="password" type="password" required autoComplete="current-password" />
-              </label>
-              <button type="submit" className="btn btn--primary">
-                Sign in
-              </button>
-            </form>
-          ) : (
-            <form className="auth-form" onSubmit={onApply}>
-              <div className="auth-form__grid">
-                <label>
-                  <span>Full name</span>
-                  <input name="name" required />
-                </label>
-                <label>
-                  <span>Company</span>
-                  <input name="company" required />
-                </label>
-                <label>
-                  <span>Primary trade / specialty</span>
-                  <input name="trade" required />
-                </label>
-                <label>
-                  <span>Phone</span>
-                  <input name="phone" type="tel" required />
-                </label>
-                <label>
-                  <span>Email</span>
-                  <input name="email" type="email" required autoComplete="email" />
-                </label>
-                <label>
-                  <span>Create password</span>
-                  <input
-                    name="password"
-                    type="password"
-                    required
-                    minLength={6}
-                    autoComplete="new-password"
-                  />
-                </label>
-              </div>
-              <p className="auth-note">
-                Applications are reviewed through our vetting system. Approved members appear in the
-                public member directory.
-              </p>
-              <button type="submit" className="btn btn--primary">
-                Submit application
-              </button>
-            </form>
-          )}
+          <form className="auth-form" onSubmit={(e) => void onLogin(e)}>
+            <label>
+              <span>Email</span>
+              <input name="email" type="email" required autoComplete="username" />
+            </label>
+            <label>
+              <span>Password</span>
+              <input name="password" type="password" required autoComplete="current-password" />
+            </label>
+            <button type="submit" className="btn btn--primary">
+              Sign in
+            </button>
+            <p className="auth-note">
+              Need to join? <Link to="/apply">Start a member application</Link>.
+            </p>
+          </form>
         </div>
       </section>
     </div>

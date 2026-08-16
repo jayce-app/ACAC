@@ -76,6 +76,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="site-footer__links">
             <NavLink to="/members">Members</NavLink>
+            <NavLink to="/apply">Apply</NavLink>
             {member ? <NavLink to="/membership">Lounge</NavLink> : null}
             {isAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
             <NavLink to="/permits">Permits</NavLink>

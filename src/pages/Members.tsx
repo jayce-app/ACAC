@@ -27,7 +27,7 @@ export function Members() {
                 We are building our roster of vetted contractors. If you are a professional ready to
                 be listed, apply for membership.
               </p>
-              <Link to="/membership" className="btn btn--primary">
+              <Link to="/apply" className="btn btn--primary">
                 Apply for membership
               </Link>
             </div>

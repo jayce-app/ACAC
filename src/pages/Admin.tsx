@@ -81,6 +81,17 @@ export function Admin() {
                           {app.phone ? ` · ${app.phone}` : ""}
                         </p>
                         <p>{app.email}</p>
+                        {app.yearsInBusiness || app.serviceArea ? (
+                          <p>
+                            {app.yearsInBusiness ? `${app.yearsInBusiness} years in business` : ""}
+                            {app.yearsInBusiness && app.serviceArea ? " · " : ""}
+                            {app.serviceArea ? `Service area: ${app.serviceArea}` : ""}
+                          </p>
+                        ) : null}
+                        {app.website ? <p>Website: {app.website}</p> : null}
+                        {app.insuranceNotes ? <p>Insurance: {app.insuranceNotes}</p> : null}
+                        {app.licenseNotes ? <p>Licenses: {app.licenseNotes}</p> : null}
+                        {app.aboutWork ? <p>{app.aboutWork}</p> : null}
                         <div className="admin-actions">
                           <button
                             type="button"
