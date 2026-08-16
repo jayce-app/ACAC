@@ -10,8 +10,8 @@ export function About() {
           <p className="eyebrow">Who we are</p>
           <h1>About</h1>
           <p>
-            {company.legal} — owned by {company.owner}. Licensed general contractor serving
-            Southeast Texas from Bellville.
+            {company.legal} — owned by {company.owner}. General contractor serving Southeast Texas
+            from Bellville.
           </p>
         </div>
       </header>

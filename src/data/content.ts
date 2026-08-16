@@ -72,7 +72,7 @@ export const featuredServices = [
 export const about = {
   title: "Premium builds. Local standard raised.",
   paragraphs: [
-    "TX Ropers Construction, LLC is a licensed general contractor based in Bellville, Texas, owned by Jayce Johnson. We specialize in custom, turnkey construction — residential and commercial — with a large share of the work self-performed by our crew.",
+    "TX Ropers Construction, LLC is a general contractor based in Bellville, Texas, owned by Jayce Johnson. We specialize in custom, turnkey construction — residential and commercial — with a large share of the work self-performed by our crew.",
     company.mission,
     "Most of what we build is custom. We do not do production home builds. From dirt work and concrete to metal buildings, structural steel, new homes, and barndominiums, we stay on the job until it is ready for real use.",
   ],
@@ -80,8 +80,8 @@ export const about = {
 
 export const credentials = [
   {
-    title: "Licensed general contractor",
-    text: "Licensed with several nearby municipalities. Texas does not offer a statewide contractor license.",
+    title: "General contractor",
+    text: "Full-scope residential and commercial construction — from dirt work and concrete to steel, framing, and finish.",
   },
   {
     title: "Certified welders",
