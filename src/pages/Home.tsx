@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import { company, process, services } from "../data/content";
+import { company, featuredServices, process } from "../data/content";
 import "./Home.css";
-
-const featured = services.slice(0, 3);
 
 export function Home() {
   return (
@@ -25,8 +23,8 @@ export function Home() {
           </p>
           <h1 className="hero__headline">{company.tagline}</h1>
           <p className="hero__lede">
-            Turnkey metal buildings, barndominiums, and site work out of Bellville — built for
-            how Texas actually works.
+            Custom residential and commercial construction out of Bellville — metal buildings,
+            barndominiums, structural steel, and turnkey builds across Southeast Texas.
           </p>
           <div className="hero__actions">
             <Link to="/contact" className="btn btn--primary">
@@ -41,12 +39,9 @@ export function Home() {
 
       <section className="band band--promise" aria-labelledby="promise-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">What we stand for</p>
-          <h2 id="promise-title">One crew. One build. Done right.</h2>
-          <p className="lead">
-            From scraped pad to custom stalls and living space, TX Ropers takes turnkey projects
-            across Austin County so you are not coordinating a dozen trades yourself.
-          </p>
+          <p className="eyebrow">Our goal</p>
+          <h2 id="promise-title">Elevate the standard.</h2>
+          <p className="lead">{company.mission}</p>
         </div>
       </section>
 
@@ -54,8 +49,8 @@ export function Home() {
         <div className="band__inner reveal">
           <div className="section-head">
             <div>
-              <p className="eyebrow">Core work</p>
-              <h2 id="home-services-title">Built for shops, ranches, and living space</h2>
+              <p className="eyebrow">What we build</p>
+              <h2 id="home-services-title">Residential and commercial, custom and turnkey</h2>
             </div>
             <Link to="/services" className="btn btn--dark">
               All services
@@ -63,7 +58,7 @@ export function Home() {
           </div>
 
           <ul className="service-rows">
-            {featured.map((service) => (
+            {featuredServices.map((service) => (
               <li key={service.id} className="service-row">
                 <h3>{service.title}</h3>
                 <p>{service.text}</p>
@@ -75,7 +70,7 @@ export function Home() {
 
       <section className="band band--process" aria-labelledby="process-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">How a job runs</p>
+          <p className="eyebrow">How a quote starts</p>
           <h2 id="process-title">Simple process, solid build</h2>
           <ol className="process-list">
             {process.map((item) => (
@@ -99,7 +94,8 @@ export function Home() {
             <p className="eyebrow">Ready to start</p>
             <h2 id="cta-title">Tell us what you need built</h2>
             <p>
-              Serving {company.serviceArea} Reach {company.owner} directly, or send a project note.
+              {company.serviceArea} Call the office or send a quote request —{" "}
+              {company.hours}.
             </p>
           </div>
           <div className="band__cta-actions">
@@ -107,7 +103,7 @@ export function Home() {
               {company.phone}
             </a>
             <Link to="/contact" className="btn btn--ghost">
-              Contact form
+              Quote form
             </Link>
           </div>
         </div>

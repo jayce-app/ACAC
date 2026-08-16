@@ -2,6 +2,18 @@
   background: var(--field);
 }
 
+.band--commercial {
+  background:
+    linear-gradient(160deg, rgba(22, 32, 51, 0.04), transparent 40%),
+    var(--white);
+}
+
+.services-intro {
+  max-width: 46rem;
+  color: var(--slate);
+  margin: 0 0 var(--space-lg);
+}
+
 .services-grid {
   list-style: none;
   margin: 0;
@@ -13,7 +25,7 @@
 
 .services-item {
   padding: 1.75rem 1.5rem 1.75rem 0;
-  border-top: 1px solid rgba(44, 58, 69, 0.16);
+  border-top: 1px solid rgba(22, 32, 51, 0.14);
 }
 
 .services-item:nth-child(odd) {
@@ -22,7 +34,7 @@
 
 .services-item:nth-child(even) {
   padding-left: 2rem;
-  border-left: 1px solid rgba(44, 58, 69, 0.12);
+  border-left: 1px solid rgba(22, 32, 51, 0.1);
 }
 
 .services-item__num {
@@ -59,6 +71,17 @@
   max-width: 34rem;
   color: var(--mist);
   margin-bottom: 1.5rem;
+}
+
+.band--list h2,
+.band--commercial h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 0.65rem;
+}
+
+.band--list .eyebrow,
+.band--commercial .eyebrow {
+  color: var(--spark-deep);
 }
 
 @media (max-width: 800px) {

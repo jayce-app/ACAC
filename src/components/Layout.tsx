@@ -52,12 +52,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div>
             <p className="site-footer__brand">{company.legal}</p>
             <p className="site-footer__tag">
-              Turnkey metal buildings, barndominiums, and site work — Bellville, Texas.
+              Custom residential and commercial construction — Bellville, Southeast Texas.
             </p>
             <p className="site-footer__meta">
               {company.address}, {company.city}
               <br />
               <a href={company.phoneHref}>{company.phone}</a>
+              {" · "}
+              <a href={company.emailHref}>{company.email}</a>
+              <br />
+              {company.hours}
             </p>
           </div>
           <div className="site-footer__links">

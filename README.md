@@ -1,13 +1,20 @@
 # TX Ropers Construction
 
-Public website for TX Ropers Construction, LLC — a Bellville, Texas general contractor specializing in turnkey metal buildings, barndominiums, structural steel, and site work.
+Public website for TX Ropers Construction, LLC — Bellville, Texas.
 
 ## Pages
 
-- **Home** — Brand hero, core services, build process, and quote CTA
-- **Services** — Full service list
-- **About** — Company story, owner, and service area
-- **Contact** — Phone, address, and project inquiry form
+- **Home** — Brand hero, mission, featured services, quote process
+- **Services** — Residential and commercial service lists
+- **About** — Mission, credentials, service area, hours
+- **Contact** — Office phone/email and quote request form
+
+## Contact (as shown on site)
+
+- Office: 979-353-1292
+- Email: Jayce@txropersconstruction.com
+- Address: 3016 Newsom Rd, Bellville, TX 77418
+- Hours: Monday–Friday, 8:00 a.m.–5:00 p.m.
 
 ## Develop
 
@@ -15,9 +22,3 @@ Public website for TX Ropers Construction, LLC — a Bellville, Texas general co
 npm install
 npm run dev
 ```
-
-## Contact (site content)
-
-- Phone: 979-353-1292
-- Address: 3016 Newsom Rd, Bellville, TX
-- Owner: Jayce Johnson

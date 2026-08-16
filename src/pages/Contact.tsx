@@ -14,11 +14,11 @@ export function Contact() {
     <div className="contact-page">
       <header className="page-hero">
         <div className="page-hero__inner">
-          <p className="eyebrow">Talk to the crew</p>
+          <p className="eyebrow">Request a quote</p>
           <h1>Contact</h1>
           <p>
-            Call {company.owner} or send a note about your build. We respond to projects across
-            Austin County and nearby towns.
+            Call the office or fill out the form with your name, address, phone, email, and a quick
+            description of what you are inquiring about.
           </p>
         </div>
       </header>
@@ -26,7 +26,7 @@ export function Contact() {
       <section className="band band--contact" aria-labelledby="contact-details-title">
         <div className="band__inner contact-layout reveal">
           <div className="contact-details">
-            <h2 id="contact-details-title">Direct lines</h2>
+            <h2 id="contact-details-title">Office</h2>
             <dl className="contact-dl">
               <div>
                 <dt>Phone</dt>
@@ -35,16 +35,22 @@ export function Contact() {
                 </dd>
               </div>
               <div>
-                <dt>Owner</dt>
-                <dd>{company.owner}</dd>
+                <dt>Email</dt>
+                <dd>
+                  <a href={company.emailHref}>{company.email}</a>
+                </dd>
               </div>
               <div>
-                <dt>Shop</dt>
+                <dt>Address</dt>
                 <dd>
                   {company.address}
                   <br />
                   {company.city}
                 </dd>
+              </div>
+              <div>
+                <dt>Hours</dt>
+                <dd>{company.hours}</dd>
               </div>
               <div>
                 <dt>Service area</dt>
@@ -54,17 +60,22 @@ export function Contact() {
           </div>
 
           <div className="contact-form-wrap">
-            <h2>Project inquiry</h2>
+            <h2>Quote request</h2>
             {sent ? (
               <p className="contact-success" role="status">
-                Thanks — your message is ready to send. For the fastest reply, call{" "}
-                <a href={company.phoneHref}>{company.phone}</a>.
+                Thanks — your quote request is ready. For the fastest reply, call the office at{" "}
+                <a href={company.phoneHref}>{company.phone}</a> or email{" "}
+                <a href={company.emailHref}>{company.email}</a>.
               </p>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
                 <label>
                   Name
                   <input name="name" type="text" autoComplete="name" required />
+                </label>
+                <label>
+                  Address
+                  <input name="address" type="text" autoComplete="street-address" required />
                 </label>
                 <label>
                   Phone
@@ -75,16 +86,16 @@ export function Contact() {
                   <input name="email" type="email" autoComplete="email" required />
                 </label>
                 <label>
-                  Project details
+                  What are you inquiring about?
                   <textarea
                     name="details"
                     rows={5}
                     required
-                    placeholder="Metal building, barndo, site work, timeline..."
+                    placeholder="Quick description of the project..."
                   />
                 </label>
                 <button type="submit" className="btn btn--primary">
-                  Send inquiry
+                  Submit quote request
                 </button>
               </form>
             )}

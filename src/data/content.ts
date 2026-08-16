@@ -4,69 +4,109 @@ export const company = {
   owner: "Jayce Johnson",
   phone: "979-353-1292",
   phoneHref: "tel:9793531292",
+  email: "Jayce@txropersconstruction.com",
+  emailHref: "mailto:Jayce@txropersconstruction.com",
   address: "3016 Newsom Rd",
-  city: "Bellville, TX",
+  city: "Bellville, TX 77418",
+  hours: "Monday–Friday, 8:00 a.m.–5:00 p.m.",
   serviceArea:
-    "Austin County and surrounding communities — Bellville, Brenham, Sealy, Columbus, and beyond.",
+    "Southeast Texas — primarily within about 50 miles of Bellville. We also travel for special projects.",
   tagline: "Custom built from the pad up.",
+  mission:
+    "By providing a premium product and service, our goal is to help elevate the standard for our industry in our community. We are dedicated to our customers' satisfaction.",
 };
 
-export const services = [
+export const residentialServices = [
   {
-    id: "metal",
+    id: "res-general",
+    title: "General & new construction",
+    text: "Custom residential builds from the ground up — not production homes. We self-perform a large share of the work so the job stays coordinated and accountable.",
+  },
+  {
+    id: "res-homes",
+    title: "New homes & barndominiums",
+    text: "Custom homes and barndominiums built turnkey, tailored to how you live and work on the property.",
+  },
+  {
+    id: "res-metal",
     title: "Metal buildings",
-    text: "Turnkey metal structures engineered for Texas weather — shops, barns, covered arenas, and commercial shells finished the way you need them.",
+    text: "Shops, barns, covered arenas, and residential metal structures finished for real Texas use.",
   },
   {
-    id: "barndo",
-    title: "Barndominiums",
-    text: "Custom living spaces inside steel frames. Open plans, durable shells, and finishes that feel like home — not a warehouse.",
-  },
-  {
-    id: "steel",
-    title: "Structural steel",
-    text: "Framing, erecting, and custom steel work that holds up under load and looks intentional when the job is done.",
-  },
-  {
-    id: "site",
-    title: "Site & dirt work",
-    text: "Pads, drainage, and site prep so the building sits right the first time — from scraped ground to finished grade.",
-  },
-  {
-    id: "turnkey",
-    title: "Turnkey builds",
-    text: "One crew, one point of contact. We take projects from dirt to keys so you are not juggling trades across Austin County.",
-  },
-  {
-    id: "custom",
-    title: "Custom interiors",
-    text: "Stalls, shop layouts, living quarters, and fit-outs tailored to how you work and live — because custom is what we do.",
+    id: "res-site",
+    title: "Dirt work & concrete",
+    text: "Site prep, pads, and concrete so the structure sits right before framing ever starts.",
   },
 ];
 
+export const commercialServices = [
+  {
+    id: "com-general",
+    title: "General & new construction",
+    text: "Commercial builds handled turnkey when you need one crew and one point of contact from start to finish.",
+  },
+  {
+    id: "com-steel",
+    title: "Structural steel & metal framing",
+    text: "Structural steel, metal buildings, and metal framing — with certified welders on the team.",
+  },
+  {
+    id: "com-remodel",
+    title: "Remodeling & additions",
+    text: "Commercial remodeling and additions that expand or update what you already have without losing quality.",
+  },
+  {
+    id: "com-turnkey",
+    title: "Turnkey & self-performed work",
+    text: "A lot of what we do is self-performed. That means fewer handoffs and a build that stays under one standard.",
+  },
+];
+
+/** Featured row on the home page */
+export const featuredServices = [
+  residentialServices[1],
+  residentialServices[2],
+  commercialServices[1],
+];
+
 export const about = {
-  title: "Built in Bellville, for Texas jobs that need to last.",
+  title: "Premium builds. Local standard raised.",
   paragraphs: [
-    "TX Ropers Construction, LLC is a general contracting company based in Bellville, Texas. Owner Jayce Johnson leads a hands-on crew focused on turnkey metal buildings, barndominiums, structural steel, and site work.",
-    "We build from the pad up — arenas, shops, custom stalls, living space, and commercial shells — with clear communication and craftsmanship that stands up to Texas use.",
-    "Whether you need a full turnkey structure or a custom interior inside a covered arena, we treat every detail like it has to work on a real ranch day, not just look right in a photo.",
+    "TX Ropers Construction, LLC is a licensed general contractor based in Bellville, Texas, owned by Jayce Johnson. We specialize in custom, turnkey construction — residential and commercial — with a large share of the work self-performed by our crew.",
+    company.mission,
+    "Most of what we build is custom. We do not do production home builds. From dirt work and concrete to metal buildings, structural steel, new homes, and barndominiums, we stay on the job until it is ready for real use.",
   ],
 };
+
+export const credentials = [
+  {
+    title: "Licensed general contractor",
+    text: "Licensed with several nearby municipalities. Texas does not offer a statewide contractor license.",
+  },
+  {
+    title: "Certified welders",
+    text: "Jayce and team members are certified welders — critical for structural steel and metal building work.",
+  },
+  {
+    title: "Custom, not production",
+    text: "Every project is tailored. We build turnkey and self-perform much of the scope so quality stays consistent.",
+  },
+];
 
 export const process = [
   {
     step: "01",
-    title: "Walk the site",
-    text: "We meet on the ground, talk through use, access, drainage, and budget before a single cut is made.",
+    title: "Tell us what you need",
+    text: "Send your name, address, phone, email, and a quick description of the project through our quote form.",
   },
   {
     step: "02",
-    title: "Plan the build",
-    text: "Scope, materials, and schedule get locked so you know what is being built and when it lands.",
+    title: "Walk the scope",
+    text: "We talk through the site, use, and budget so the plan matches how you will actually use the building.",
   },
   {
     step: "03",
-    title: "Build it right",
-    text: "From pad to shell to custom fit-out, we stay on the job until it is ready for how you actually use it.",
+    title: "Build it turnkey",
+    text: "From dirt and concrete to steel, framing, and finish, we keep the work under one standard.",
   },
 ];
