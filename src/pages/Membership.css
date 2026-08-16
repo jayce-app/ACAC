@@ -256,6 +256,17 @@
   padding: 0.2rem 0.45rem;
 }
 
+.badge--pending {
+  background: rgba(201, 162, 74, 0.18);
+  color: var(--brass-deep);
+}
+
+.admin-subhead {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
 .empty-note {
   color: var(--slate);
   padding: 0.5rem 0;

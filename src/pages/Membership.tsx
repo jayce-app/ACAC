@@ -5,19 +5,35 @@ import { useMemberTools } from "../data/useMemberTools";
 import "./Membership.css";
 
 type Tab = "login" | "apply";
-type MemberPanel = "discussions" | "bids" | "blacklist" | "approvals";
+type MemberPanel = "discussions" | "bids" | "blacklist";
 
 export function Membership() {
-  const { member, login, apply, pendingMembers, approve } = useAuth();
-  const { bids, blacklist, postsByBoard, addBid, addBlacklist, addBoardPost } = useMemberTools();
+  const { member, login, apply } = useAuth();
+  const {
+    bids,
+    approvedBlacklist,
+    blacklist,
+    postsByBoard,
+    addBid,
+    submitBlacklist,
+    addBoardPost,
+  } = useMemberTools();
   const [tab, setTab] = useState<Tab>("login");
   const [panel, setPanel] = useState<MemberPanel>("bids");
-  const isBoard = member?.email.toLowerCase() === "board@acac.local";
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activeBoard, setActiveBoard] = useState(discussionBoards[0].id);
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
+  const [blacklistNotice, setBlacklistNotice] = useState<string | null>(null);
+
+  const myPendingBlacklist = blacklist.filter(
+    (e) =>
+      e.status === "pending" &&
+      member &&
+      e.reportedBy === member.name &&
+      e.reportedCompany === member.company,
+  );
 
   const board = useMemo(
     () => discussionBoards.find((b) => b.id === activeBoard) ?? discussionBoards[0],
@@ -89,7 +105,7 @@ export function Membership() {
     e.preventDefault();
     if (!member) return;
     const data = new FormData(e.currentTarget);
-    addBlacklist({
+    submitBlacklist({
       partyType: String(data.get("partyType")) as BlacklistPartyType,
       name: String(data.get("name")).trim(),
       company: String(data.get("company")).trim(),
@@ -98,6 +114,9 @@ export function Membership() {
       reportedCompany: member.company,
     });
     e.currentTarget.reset();
+    setBlacklistNotice(
+      "Submission received. An admin must approve it before it appears on the shared blacklist.",
+    );
   }
 
   if (member) {
@@ -109,8 +128,8 @@ export function Membership() {
             <h1>Welcome, {member.name}</h1>
             <p>
               {member.company}
-              {member.trade ? ` · ${member.trade}` : ""}. Post jobs on the bid board, add
-              blacklist entries, and use the discussion boards below.
+              {member.trade ? ` · ${member.trade}` : ""}. Post jobs on the bid board, submit
+              blacklist reports for admin review, and use the discussion boards below.
             </p>
           </div>
         </section>
@@ -143,18 +162,6 @@ export function Membership() {
               >
                 Discussion boards
               </button>
-              {isBoard ? (
-                <button
-                  type="button"
-                  className={
-                    panel === "approvals" ? "boards__nav-btn is-active" : "boards__nav-btn"
-                  }
-                  onClick={() => setPanel("approvals")}
-                >
-                  Approve applications
-                  {pendingMembers.length > 0 ? ` (${pendingMembers.length})` : ""}
-                </button>
-              ) : null}
             </aside>
 
             <div className="boards__panel">
@@ -226,10 +233,16 @@ export function Membership() {
                   <header className="boards__header">
                     <h2>Blacklist</h2>
                     <p>
-                      Add customers or contractors with a clear reason. Facts only — this list is
-                      for member awareness and accountability.
+                      Submit a customer or contractor for review. Entries appear on the shared
+                      blacklist only after an admin approves them. Facts only.
                     </p>
                   </header>
+
+                  {blacklistNotice ? (
+                    <p className="form-alert" role="status">
+                      {blacklistNotice}
+                    </p>
+                  ) : null}
 
                   <form className="post-form" onSubmit={onBlacklist}>
                     <div className="auth-form__grid">
@@ -250,19 +263,42 @@ export function Membership() {
                       </label>
                     </div>
                     <label>
-                      <span>Why they are on the blacklist</span>
+                      <span>Why they should be on the blacklist</span>
                       <textarea name="reason" required rows={4} maxLength={2000} />
                     </label>
                     <button type="submit" className="btn btn--primary">
-                      Add to blacklist
+                      Submit for admin review
                     </button>
                   </form>
 
+                  {myPendingBlacklist.length > 0 ? (
+                    <>
+                      <h3 className="admin-subhead">Your pending submissions</h3>
+                      <ul className="post-list">
+                        {myPendingBlacklist.map((entry) => (
+                          <li key={entry.id} className="post post--blacklist">
+                            <div className="post__meta">
+                              <span className="badge">{entry.partyType}</span>
+                              <span className="badge badge--pending">awaiting admin</span>
+                              <time dateTime={entry.date}>{entry.date}</time>
+                            </div>
+                            <h3>{entry.name}</h3>
+                            {entry.company ? (
+                              <p className="post__company">{entry.company}</p>
+                            ) : null}
+                            <p>{entry.reason}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+
+                  <h3 className="admin-subhead">Approved blacklist</h3>
                   <ul className="post-list">
-                    {blacklist.length === 0 ? (
-                      <li className="empty-note">No blacklist entries yet.</li>
+                    {approvedBlacklist.length === 0 ? (
+                      <li className="empty-note">No approved blacklist entries yet.</li>
                     ) : (
-                      blacklist.map((entry) => (
+                      approvedBlacklist.map((entry) => (
                         <li key={entry.id} className="post post--blacklist">
                           <div className="post__meta">
                             <span className="badge">{entry.partyType}</span>
@@ -275,41 +311,6 @@ export function Membership() {
                           <h3>{entry.name}</h3>
                           {entry.company ? <p className="post__company">{entry.company}</p> : null}
                           <p>{entry.reason}</p>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </>
-              )}
-
-              {panel === "approvals" && isBoard && (
-                <>
-                  <header className="boards__header">
-                    <h2>Approve applications</h2>
-                    <p>
-                      Vet applicants, then approve them. Approved members can log in and appear on
-                      the public Members page.
-                    </p>
-                  </header>
-                  <ul className="post-list">
-                    {pendingMembers.length === 0 ? (
-                      <li className="empty-note">No pending applications.</li>
-                    ) : (
-                      pendingMembers.map((app) => (
-                        <li key={app.email} className="post">
-                          <h3>{app.company}</h3>
-                          <p>
-                            {app.name} · {app.trade}
-                            {app.phone ? ` · ${app.phone}` : ""}
-                          </p>
-                          <p>{app.email}</p>
-                          <button
-                            type="button"
-                            className="btn btn--primary"
-                            onClick={() => approve(app.email)}
-                          >
-                            Approve member
-                          </button>
                         </li>
                       ))
                     )}

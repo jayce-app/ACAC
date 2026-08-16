@@ -22,15 +22,21 @@ type AuthContextValue = {
   members: Member[];
   approvedMembers: Member[];
   pendingMembers: Member[];
+  isAdmin: boolean;
   login: (email: string, password: string) => { ok: boolean; message: string };
   logout: () => void;
   apply: (data: Omit<Member, "status">) => { ok: boolean; message: string };
   approve: (email: string) => void;
+  reject: (email: string) => void;
 };
 
 const STORAGE_KEY = "acac-members-v3";
 const SESSION_KEY = "acac-session-v3";
 const BOARD_EMAIL = "board@acac.local";
+
+export function isAdminEmail(email: string | undefined | null) {
+  return (email ?? "").toLowerCase() === BOARD_EMAIL;
+}
 
 /** Known demo / placeholder accounts that must never appear publicly. */
 const DEMO_EMAILS = new Set([
@@ -167,6 +173,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [members, persist],
   );
 
+  const reject = useCallback(
+    (email: string) => {
+      persist(members.filter((m) => m.email.toLowerCase() !== email.toLowerCase()));
+    },
+    [members, persist],
+  );
+
   const approvedMembers = useMemo(() => members.filter(isPublicMember), [members]);
 
   const pendingMembers = useMemo(
@@ -174,18 +187,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [members],
   );
 
+  const isAdmin = isAdminEmail(member?.email);
+
   const value = useMemo(
     () => ({
       member,
       members,
       approvedMembers,
       pendingMembers,
+      isAdmin,
       login,
       logout,
       apply,
       approve,
+      reject,
     }),
-    [member, members, approvedMembers, pendingMembers, login, logout, apply, approve],
+    [
+      member,
+      members,
+      approvedMembers,
+      pendingMembers,
+      isAdmin,
+      login,
+      logout,
+      apply,
+      approve,
+      reject,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

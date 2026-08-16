@@ -3,13 +3,14 @@ import { useAuth } from "../auth/AuthContext";
 import "./Layout.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { member, logout } = useAuth();
+  const { member, logout, isAdmin } = useAuth();
 
   const links = member
     ? [
         { to: "/", label: "Home", end: true },
         { to: "/members", label: "Members" },
         { to: "/membership", label: "Lounge" },
+        ...(isAdmin ? [{ to: "/admin", label: "Admin" }] : []),
         { to: "/permits", label: "Permits" },
       ]
     : [
@@ -75,6 +76,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             ) : (
               <NavLink to="/membership">Member Login</NavLink>
             )}
+            {isAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
             <NavLink to="/permits">Permits</NavLink>
           </div>
         </div>

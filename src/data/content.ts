@@ -142,6 +142,8 @@ export type BidPost = {
 
 export type BlacklistPartyType = "customer" | "contractor";
 
+export type BlacklistStatus = "pending" | "approved" | "rejected";
+
 export type BlacklistEntry = {
   id: string;
   partyType: BlacklistPartyType;
@@ -151,4 +153,7 @@ export type BlacklistEntry = {
   reportedBy: string;
   reportedCompany: string;
   date: string;
+  status: BlacklistStatus;
+  reviewedBy?: string;
+  reviewedDate?: string;
 };
