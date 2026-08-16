@@ -1,26 +1,24 @@
 # Austin County Association of Contractors
 
-Public website for the Austin County Association of Contractors (ACAC).
+## View the website (no coding)
 
-## Pages
+Open this link in your browser after GitHub Pages is turned on:
 
-- **Home** — Vision, About Us, and Goals
-- **Members** — Public directory of vetted members (empty until contractors are approved)
-- **Lounge** — Application, login, Members Lounge with bid board, blacklist, and discussions
-- **Permits** — Links to Austin County and municipal permit resources
+**https://jayce-app.github.io/ACAC/**
 
-## Develop
+### One-time setup (about 30 seconds)
+
+1. Open https://github.com/jayce-app/ACAC/settings/pages
+2. Under **Build and deployment → Source**, choose **GitHub Actions**
+3. Save, wait a minute, then refresh the site link above
+
+You do not need Command Prompt, `npm`, or Git for day-to-day viewing. Future site updates from Cursor will republish automatically when pushed to `main`.
+
+## For developers only
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Board login (Members Lounge testing)
-
-- Email: `board@acac.local`
-- Password: `integrity`
-
-Membership, bids, and blacklist data are stored in the browser (`localStorage`) for this demo.
-There are no demo contractors on the public list. Approved real members appear on Home and the
-Members page; the board test account is never listed publicly.
+Board lounge login (not shown on the public member list): `board@acac.local` / `integrity`

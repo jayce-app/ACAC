@@ -9,7 +9,7 @@ import { Permits } from "./pages/Permits";
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/ACAC">
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
