@@ -2,9 +2,6 @@ import { Link } from "react-router-dom";
 import { company, process, services } from "../data/content";
 import "./Home.css";
 
-const heroImage =
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2000&q=80";
-
 const featured = services.slice(0, 3);
 
 export function Home() {
@@ -12,7 +9,13 @@ export function Home() {
     <div className="home">
       <section className="hero" aria-labelledby="hero-brand">
         <div className="hero__media" aria-hidden="true">
-          <img src={heroImage} alt="" className="hero__img" />
+          <img
+            src="/hero.jpg"
+            alt=""
+            className="hero__img"
+            width={1536}
+            height={1024}
+          />
           <div className="hero__veil" />
         </div>
 
