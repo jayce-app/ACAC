@@ -2,15 +2,22 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import "./Layout.css";
 
-const links = [
-  { to: "/", label: "Home", end: true },
-  { to: "/members", label: "Members" },
-  { to: "/membership", label: "Lounge" },
-  { to: "/permits", label: "Permits" },
-];
-
 export function Layout({ children }: { children: React.ReactNode }) {
   const { member, logout } = useAuth();
+
+  const links = member
+    ? [
+        { to: "/", label: "Home", end: true },
+        { to: "/members", label: "Members" },
+        { to: "/membership", label: "Lounge" },
+        { to: "/permits", label: "Permits" },
+      ]
+    : [
+        { to: "/", label: "Home", end: true },
+        { to: "/members", label: "Members" },
+        { to: "/membership", label: "Member Login" },
+        { to: "/permits", label: "Permits" },
+      ];
 
   return (
     <>
@@ -44,7 +51,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </button>
             ) : (
               <NavLink to="/membership" className="site-nav__cta">
-                Lounge login
+                Member login
               </NavLink>
             )}
           </nav>
@@ -63,7 +70,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="site-footer__links">
             <NavLink to="/members">Members</NavLink>
-            <NavLink to="/membership">Lounge</NavLink>
+            {member ? (
+              <NavLink to="/membership">Lounge</NavLink>
+            ) : (
+              <NavLink to="/membership">Member Login</NavLink>
+            )}
             <NavLink to="/permits">Permits</NavLink>
           </div>
         </div>

@@ -39,6 +39,11 @@
   align-items: start;
 }
 
+.auth-panel__inner--solo {
+  grid-template-columns: minmax(0, 32rem);
+  max-width: 36rem;
+}
+
 .auth-tabs {
   display: flex;
   gap: 0.5rem;

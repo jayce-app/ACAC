@@ -396,17 +396,17 @@ export function Membership() {
     <div className="membership">
       <section className="auth-hero">
         <div className="auth-hero__inner">
-          <p className="eyebrow">Membership</p>
-          <h1>Enter the Members Lounge</h1>
+          <p className="eyebrow">Members</p>
+          <h1>Member login</h1>
           <p>
-            Apply to become a member, or sign in to the lounge for the bid board, blacklist, and
-            discussion boards reserved for approved professionals.
+            Sign in if you are an approved member, or submit an application to join the Austin
+            County Association of Contractors.
           </p>
         </div>
       </section>
 
       <section className="auth-panel">
-        <div className="auth-panel__inner">
+        <div className="auth-panel__inner auth-panel__inner--solo">
           <div className="auth-tabs" role="tablist" aria-label="Membership forms">
             <button
               type="button"
@@ -455,9 +455,6 @@ export function Membership() {
               <button type="submit" className="btn btn--primary">
                 Sign in
               </button>
-              <p className="auth-hint">
-                Board login: <code>board@acac.local</code> / <code>integrity</code>
-              </p>
             </form>
           ) : (
             <form className="auth-form" onSubmit={onApply}>
@@ -502,24 +499,6 @@ export function Membership() {
               </button>
             </form>
           )}
-
-          <aside className="locked-preview" aria-label="Members Lounge preview">
-            <h2>Inside the Members Lounge</h2>
-            <ul>
-              <li>
-                <strong>Bid board</strong>
-                <span>Post jobs and invite fellow members to bid.</span>
-              </li>
-              <li>
-                <strong>Blacklist</strong>
-                <span>Add customers or contractors and document why.</span>
-              </li>
-              <li>
-                <strong>Discussion boards</strong>
-                <span>Networking, best practices, and specialty showcase.</span>
-              </li>
-            </ul>
-          </aside>
         </div>
       </section>
     </div>
