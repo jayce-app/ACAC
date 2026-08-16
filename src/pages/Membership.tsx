@@ -1,4 +1,5 @@
 import { useMemo, useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { discussionBoards, type BlacklistPartyType } from "../data/content";
 import { useMemberTools } from "../data/useMemberTools";
@@ -26,6 +27,7 @@ export function Membership() {
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
   const [blacklistNotice, setBlacklistNotice] = useState<string | null>(null);
+  const [blacklistAttest, setBlacklistAttest] = useState(false);
 
   const myPendingBlacklist = blacklist.filter(
     (e) =>
@@ -104,6 +106,10 @@ export function Membership() {
   async function onBlacklist(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!member) return;
+    if (!blacklistAttest) {
+      setBlacklistNotice("Confirm the attestation before submitting a report.");
+      return;
+    }
     const data = new FormData(e.currentTarget);
     await submitBlacklist({
       partyType: String(data.get("partyType")) as BlacklistPartyType,
@@ -114,6 +120,7 @@ export function Membership() {
       reportedCompany: member.company,
     });
     e.currentTarget.reset();
+    setBlacklistAttest(false);
     setBlacklistNotice(
       "Submission received. An admin must approve it before it appears on the shared blacklist.",
     );
@@ -233,10 +240,19 @@ export function Membership() {
                   <header className="boards__header">
                     <h2>Blacklist</h2>
                     <p>
-                      Submit a customer or contractor for review. Entries appear on the shared
-                      blacklist only after an admin approves them. Facts only.
+                      Members-only accountability reports. Submissions stay private to admins until
+                      approved. This is not a public complaint board and is not a court finding.
                     </p>
                   </header>
+
+                  <div className="legal-callout">
+                    <p>
+                      <strong>Defamation &amp; privacy risk:</strong> submit only firsthand facts you
+                      believe are true. Do not include SSNs, bank numbers, medical details, or rumor.
+                      False or malicious reports can create legal risk for you and for ACAC. See{" "}
+                      <Link to="/terms">Terms</Link>.
+                    </p>
+                  </div>
 
                   {blacklistNotice ? (
                     <p className="form-alert" role="status">
@@ -244,7 +260,7 @@ export function Membership() {
                     </p>
                   ) : null}
 
-                  <form className="post-form" onSubmit={onBlacklist}>
+                  <form className="post-form" onSubmit={(e) => void onBlacklist(e)}>
                     <div className="auth-form__grid">
                       <label>
                         <span>Type</span>
@@ -263,8 +279,27 @@ export function Membership() {
                       </label>
                     </div>
                     <label>
-                      <span>Why they should be on the blacklist</span>
-                      <textarea name="reason" required rows={4} maxLength={2000} />
+                      <span>Factual reason (dates, what happened, documentation if any)</span>
+                      <textarea
+                        name="reason"
+                        required
+                        rows={4}
+                        maxLength={2000}
+                        placeholder="Example: Invoice #1042 unpaid since March 12, 2026 after final walkthrough on job at [city]."
+                      />
+                    </label>
+                    <label className="attest-check">
+                      <input
+                        type="checkbox"
+                        checked={blacklistAttest}
+                        onChange={(e) => setBlacklistAttest(e.target.checked)}
+                        required
+                      />
+                      <span>
+                        I attest this report is based on firsthand facts I believe are true, does not
+                        include sensitive personal data, and is submitted in good faith for member
+                        awareness — not to harass or defame.
+                      </span>
                     </label>
                     <button type="submit" className="btn btn--primary">
                       Submit for admin review
@@ -294,6 +329,10 @@ export function Membership() {
                   ) : null}
 
                   <h3 className="admin-subhead">Approved blacklist</h3>
+                  <p className="boards__header" style={{ marginBottom: "0.75rem" }}>
+                    Visible to approved members only. Treat as internal awareness — verify before
+                    acting.
+                  </p>
                   <ul className="post-list">
                     {approvedBlacklist.length === 0 ? (
                       <li className="empty-note">No approved blacklist entries yet.</li>

@@ -64,8 +64,9 @@ where email = 'you@yourdomain.com';
 ## E. Business basics (you / your attorney)
 
 - Put a real contact email on the site
-- Review blacklist wording with an attorney
-- Add Terms of Use + Privacy Policy when ready
+- Review **Terms** (`/terms`) and **Privacy** (`/privacy`) with a Texas attorney — drafts are live
+- Especially review blacklist / accountability rules for defamation and privacy risk
+- Customize those pages with your exact DBA name and support email
 
 ---
 

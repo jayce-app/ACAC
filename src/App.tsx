@@ -6,6 +6,8 @@ import { Home } from "./pages/Home";
 import { Members } from "./pages/Members";
 import { Membership } from "./pages/Membership";
 import { Permits } from "./pages/Permits";
+import { Privacy } from "./pages/Privacy";
+import { Terms } from "./pages/Terms";
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
             <Route path="/membership" element={<Membership />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/permits" element={<Permits />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>

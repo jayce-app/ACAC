@@ -267,6 +267,32 @@
   margin: 1.5rem 0 0.75rem;
 }
 
+.legal-callout {
+  background: rgba(168, 72, 56, 0.08);
+  border-left: 3px solid var(--danger);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  color: var(--slate);
+}
+
+.legal-callout a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}
+
+.attest-check {
+  display: grid !important;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  font-weight: 500 !important;
+  margin: 0.5rem 0 1rem;
+}
+
+.attest-check input {
+  margin-top: 0.25rem;
+}
+
 .empty-note {
   color: var(--slate);
   padding: 0.5rem 0;

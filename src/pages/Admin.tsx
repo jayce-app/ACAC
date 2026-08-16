@@ -109,8 +109,9 @@ export function Admin() {
                 <header className="boards__header">
                   <h2>Blacklist submissions</h2>
                   <p>
-                    Member reports stay pending until you approve. Only approved entries appear in
-                    the lounge blacklist.
+                    Approve only factual, good-faith reports. Reject rumor, insults, sensitive
+                    personal data (SSNs, bank/medical info), or anything that looks retaliatory.
+                    Approval means members may see it internally — it is not a legal judgment.
                   </p>
                 </header>
 

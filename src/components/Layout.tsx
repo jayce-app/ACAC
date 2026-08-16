@@ -79,6 +79,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {member ? <NavLink to="/membership">Lounge</NavLink> : null}
             {isAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
             <NavLink to="/permits">Permits</NavLink>
+            <NavLink to="/terms">Terms</NavLink>
+            <NavLink to="/privacy">Privacy</NavLink>
           </div>
         </div>
       </footer>
