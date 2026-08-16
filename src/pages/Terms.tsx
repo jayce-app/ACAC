@@ -31,12 +31,13 @@ export function Terms() {
             administrators.
           </p>
 
-          <h2>2. A hub — not a warranty or guarantee</h2>
+          <h2>2. A hub — education without a work warranty</h2>
           <p>
-            ACAC is a hub for contractors and customers to meet, network, and learn. Listing a
-            member does not mean ACAC warrants or guarantees their work, insurance, licensing,
-            pricing, timelines, or fitness for any project. Visitors and members must independently
-            verify credentials and contracts before hiring or working together.
+            ACAC is a hub for contractors and customers to meet, network, and learn. We provide
+            education and best-practice resources for our members. Listing a member does not mean
+            ACAC warrants or guarantees their work, insurance, licensing, pricing, timelines, or
+            fitness for any project. Visitors and members must independently verify credentials and
+            contracts before hiring or working together.
           </p>
 
           <h2>3. Member conduct</h2>

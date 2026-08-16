@@ -42,7 +42,54 @@
 
 .band--disclaimer {
   background: rgba(18, 22, 28, 0.04);
-  padding: var(--space-xl) var(--space-md);
+}
+
+.band--education {
+  background:
+    linear-gradient(160deg, rgba(28, 36, 48, 0.96), rgba(18, 22, 28, 0.92)),
+    var(--ink);
+  color: var(--white);
+}
+
+.band--education .eyebrow {
+  color: var(--brass);
+}
+
+.education-lead {
+  max-width: 40rem;
+  color: var(--concrete);
+  font-size: 1.08rem;
+  margin-bottom: 1.75rem;
+}
+
+.education-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem 2rem;
+}
+
+.education-grid h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
+  color: var(--white);
+}
+
+.education-grid p {
+  margin: 0;
+  color: var(--concrete);
+}
+
+.education-actions {
+  margin-top: 1.75rem;
+}
+
+@media (max-width: 800px) {
+  .education-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .band--disclaimer .disclaimer {

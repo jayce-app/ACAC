@@ -111,8 +111,8 @@ export function Membership() {
             <h1>Welcome, {member.name}</h1>
             <p>
               {member.company}
-              {member.trade ? ` · ${member.trade}` : ""}. Post jobs on the bid board, submit
-              blacklist reports for admin review, and use the discussion boards below.
+              {member.trade ? ` · ${member.trade}` : ""}. Use the bid board, share best practices,
+              submit blacklist reports for admin review, and join the discussion boards below.
             </p>
           </div>
         </section>

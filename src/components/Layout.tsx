@@ -73,7 +73,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div>
             <p className="site-footer__brand">Austin County Association of Contractors</p>
             <p className="site-footer__tag">
-              Elevating integrity through networking, education, and support.
+              A hub for networking, education, best practices, and support across Austin County.
             </p>
           </div>
           <div className="site-footer__links">

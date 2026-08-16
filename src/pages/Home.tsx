@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { Disclaimer } from "../components/Disclaimer";
-import { about, goals, vision } from "../data/content";
+import { about, education, goals, vision } from "../data/content";
 import "./Home.css";
 import "../components/Disclaimer.css";
 
@@ -25,8 +25,8 @@ export function Home() {
           </p>
           <h1 className="hero__headline">Integrity built into every job.</h1>
           <p className="hero__lede">
-            A vetted hub for contractors and community — networking, education, and ethical
-            practice across Austin County.
+            A vetted hub for contractors and community — networking, education, best practices, and
+            ethical work across Austin County.
           </p>
           <div className="hero__actions">
             <Link to="/apply" className="btn btn--primary">
@@ -57,6 +57,27 @@ export function Home() {
             {about.paragraphs.map((p) => (
               <p key={p.slice(0, 24)}>{p}</p>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="band band--education" aria-labelledby="education-title">
+        <div className="band__inner reveal">
+          <p className="eyebrow">For our members</p>
+          <h2 id="education-title">{education.title}</h2>
+          <p className="education-lead">{education.lead}</p>
+          <ul className="education-grid">
+            {education.points.map((point) => (
+              <li key={point.title}>
+                <h3>{point.title}</h3>
+                <p>{point.text}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="education-actions">
+            <Link to="/apply" className="btn btn--primary">
+              Join to learn with us
+            </Link>
           </div>
         </div>
       </section>

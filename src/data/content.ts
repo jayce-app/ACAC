@@ -5,14 +5,33 @@ export const vision = {
 
 export const hubDisclaimer = {
   title: "Important disclaimer",
-  text: "ACAC is a hub for contractors and customers to connect, network, and learn. We do not provide warranties or guarantees of any kind regarding members’ workmanship, insurance, licensing, pricing, timelines, or project outcomes. Always do your own due diligence before hiring or contracting.",
+  text: "ACAC is a hub for contractors and customers to connect, network, and learn. We provide education and best-practice resources for our members, but we do not warranty or guarantee any member’s workmanship, insurance, licensing, pricing, timelines, or project outcomes. Always do your own due diligence before hiring or contracting.",
+};
+
+export const education = {
+  title: "Education & best practices",
+  lead: "A core part of membership is learning together — raising the standard of work across Austin County.",
+  points: [
+    {
+      title: "Trade education",
+      text: "Seminars and learning opportunities for the construction industry in our county, open to members and others willing to attend.",
+    },
+    {
+      title: "Best practices by trade",
+      text: "Members share proven methods, new techniques, and standards so each trade can work safer and smarter.",
+    },
+    {
+      title: "Peer support",
+      text: "A members lounge where contractors network, exchange knowledge, and support one another on real jobs.",
+    },
+  ],
 };
 
 export const about = {
   title: "About Us",
   paragraphs: [
     "Founded by contractors in an effort to give back to the community. There is no licensing for general contractors in Texas at a state level. We support freedom and personal liberty, but we have been witness to many utilizing freedom without being responsible.",
-    "Our membership is made up of only professionals that have been vetted through our system. Our goal is to give credibility to the pros that deserve it and promote ethics throughout.",
+    "Our membership is made up of only professionals that have been vetted through our system. Our goal is to give credibility to the pros that deserve it, promote ethics throughout, and provide education and best practices for our members.",
   ],
 };
 
