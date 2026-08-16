@@ -105,19 +105,19 @@ export function Membership() {
       <div className="membership membership--member">
         <section className="member-hero">
           <div className="member-hero__inner">
-            <p className="eyebrow">Members only</p>
+            <p className="eyebrow">Members Lounge</p>
             <h1>Welcome, {member.name}</h1>
             <p>
               {member.company}
-              {member.trade ? ` · ${member.trade}` : ""}. Use the bid board, blacklist, and
-              discussion boards below.
+              {member.trade ? ` · ${member.trade}` : ""}. Post jobs on the bid board, add
+              blacklist entries, and use the discussion boards below.
             </p>
           </div>
         </section>
 
         <section className="boards">
           <div className="boards__inner boards__inner--tools">
-            <aside className="boards__nav" aria-label="Member tools">
+            <aside className="boards__nav" aria-label="Members Lounge">
               <button
                 type="button"
                 className={panel === "bids" ? "boards__nav-btn is-active" : "boards__nav-btn"}
@@ -397,10 +397,10 @@ export function Membership() {
       <section className="auth-hero">
         <div className="auth-hero__inner">
           <p className="eyebrow">Membership</p>
-          <h1>Join the vetted network</h1>
+          <h1>Enter the Members Lounge</h1>
           <p>
-            Apply to become a member, or sign in to access the bid board, blacklist, and discussion
-            boards reserved for approved professionals.
+            Apply to become a member, or sign in to the lounge for the bid board, blacklist, and
+            discussion boards reserved for approved professionals.
           </p>
         </div>
       </section>
@@ -503,8 +503,8 @@ export function Membership() {
             </form>
           )}
 
-          <aside className="locked-preview" aria-label="Members-only preview">
-            <h2>Behind the login</h2>
+          <aside className="locked-preview" aria-label="Members Lounge preview">
+            <h2>Inside the Members Lounge</h2>
             <ul>
               <li>
                 <strong>Bid board</strong>

@@ -5,7 +5,7 @@ import "./Layout.css";
 const links = [
   { to: "/", label: "Home", end: true },
   { to: "/members", label: "Members" },
-  { to: "/membership", label: "Membership" },
+  { to: "/membership", label: "Lounge" },
   { to: "/permits", label: "Permits" },
 ];
 
@@ -44,7 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </button>
             ) : (
               <NavLink to="/membership" className="site-nav__cta">
-                Join / Login
+                Lounge login
               </NavLink>
             )}
           </nav>
@@ -63,7 +63,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="site-footer__links">
             <NavLink to="/members">Members</NavLink>
-            <NavLink to="/membership">Membership</NavLink>
+            <NavLink to="/membership">Lounge</NavLink>
             <NavLink to="/permits">Permits</NavLink>
           </div>
         </div>
