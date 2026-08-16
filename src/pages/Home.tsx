@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
-import { about, goals, memberAds, vision } from "../data/content";
+import { company, process, services } from "../data/content";
 import "./Home.css";
 
 const heroImage =
   "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2000&q=80";
+
+const featured = services.slice(0, 3);
 
 export function Home() {
   return (
@@ -16,59 +18,71 @@ export function Home() {
 
         <div className="hero__content">
           <p id="hero-brand" className="hero__brand">
-            Austin County Association of Contractors
+            TX Ropers Construction
           </p>
-          <h1 className="hero__headline">Integrity built into every job.</h1>
+          <h1 className="hero__headline">{company.tagline}</h1>
           <p className="hero__lede">
-            A vetted hub for contractors and community — networking, education, and ethical
-            practice across Austin County.
+            Turnkey metal buildings, barndominiums, and site work out of Bellville — built for
+            how Texas actually works.
           </p>
           <div className="hero__actions">
-            <Link to="/membership" className="btn btn--primary">
-              Apply for membership
+            <Link to="/contact" className="btn btn--primary">
+              Request a quote
             </Link>
-            <Link to="/permits" className="btn btn--ghost">
-              Find permit forms
+            <Link to="/services" className="btn btn--ghost">
+              View services
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="band band--vision" aria-labelledby="vision-title">
+      <section className="band band--promise" aria-labelledby="promise-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">Our commitment</p>
-          <h2 id="vision-title">{vision.title}</h2>
-          <p className="lead">{vision.text}</p>
+          <p className="eyebrow">What we stand for</p>
+          <h2 id="promise-title">One crew. One build. Done right.</h2>
+          <p className="lead">
+            From scraped pad to custom stalls and living space, TX Ropers takes turnkey projects
+            across Austin County so you are not coordinating a dozen trades yourself.
+          </p>
         </div>
       </section>
 
-      <section className="band band--about" aria-labelledby="about-title">
-        <div className="band__inner band__split reveal">
-          <div>
-            <p className="eyebrow">Who we are</p>
-            <h2 id="about-title">{about.title}</h2>
+      <section className="band band--services" aria-labelledby="home-services-title">
+        <div className="band__inner reveal">
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">Core work</p>
+              <h2 id="home-services-title">Built for shops, ranches, and living space</h2>
+            </div>
+            <Link to="/services" className="btn btn--dark">
+              All services
+            </Link>
           </div>
-          <div className="about-copy">
-            {about.paragraphs.map((p) => (
-              <p key={p.slice(0, 24)}>{p}</p>
+
+          <ul className="service-rows">
+            {featured.map((service) => (
+              <li key={service.id} className="service-row">
+                <h3>{service.title}</h3>
+                <p>{service.text}</p>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      <section className="band band--goals" aria-labelledby="goals-title">
+      <section className="band band--process" aria-labelledby="process-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">What we work toward</p>
-          <h2 id="goals-title">Goals</h2>
-          <ol className="goal-list">
-            {goals.map((goal, i) => (
-              <li key={goal.title} className="goal-item">
-                <span className="goal-item__num" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
+          <p className="eyebrow">How a job runs</p>
+          <h2 id="process-title">Simple process, solid build</h2>
+          <ol className="process-list">
+            {process.map((item) => (
+              <li key={item.step} className="process-item">
+                <span className="process-item__step" aria-hidden="true">
+                  {item.step}
                 </span>
                 <div>
-                  <h3>{goal.title}</h3>
-                  <p>{goal.text}</p>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
                 </div>
               </li>
             ))}
@@ -76,35 +90,23 @@ export function Home() {
         </div>
       </section>
 
-      <section className="band band--ads" aria-labelledby="ads-title">
-        <div className="band__inner reveal">
-          <div className="ads-head">
-            <div>
-              <p className="eyebrow">Member spotlight</p>
-              <h2 id="ads-title">Vetted professionals advertising here</h2>
-              <p className="ads-lede">
-                Only members who pass our vetting system can advertise. Hire with confidence —
-                these are pros who stand behind their work.
-              </p>
-            </div>
-            <Link to="/membership" className="btn btn--primary">
-              Advertise as a member
+      <section className="band band--cta" aria-labelledby="cta-title">
+        <div className="band__inner band__cta reveal">
+          <div>
+            <p className="eyebrow">Ready to start</p>
+            <h2 id="cta-title">Tell us what you need built</h2>
+            <p>
+              Serving {company.serviceArea} Reach {company.owner} directly, or send a project note.
+            </p>
+          </div>
+          <div className="band__cta-actions">
+            <a href={company.phoneHref} className="btn btn--primary">
+              {company.phone}
+            </a>
+            <Link to="/contact" className="btn btn--ghost">
+              Contact form
             </Link>
           </div>
-
-          <ul className="ad-grid">
-            {memberAds.map((ad) => (
-              <li key={ad.id} className="ad-tile">
-                <p className="ad-tile__trade">{ad.specialty}</p>
-                <h3>{ad.business}</h3>
-                <p className="ad-tile__owner">{ad.owner}</p>
-                <p>{ad.blurb}</p>
-                <a className="ad-tile__phone" href={`tel:${ad.phone.replace(/\D/g, "")}`}>
-                  {ad.phone}
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
     </div>

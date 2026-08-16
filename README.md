@@ -1,12 +1,13 @@
-# Austin County Association of Contractors
+# TX Ropers Construction
 
-Public website for the Austin County Association of Contractors (ACAC).
+Public website for TX Ropers Construction, LLC — a Bellville, Texas general contractor specializing in turnkey metal buildings, barndominiums, structural steel, and site work.
 
 ## Pages
 
-- **Home** — Vision, About Us, Goals, and member advertising spotlights
-- **Membership** — Application form, member login, and members-only discussion boards
-- **Permits** — Links to Austin County and municipal permit resources
+- **Home** — Brand hero, core services, build process, and quote CTA
+- **Services** — Full service list
+- **About** — Company story, owner, and service area
+- **Contact** — Phone, address, and project inquiry form
 
 ## Develop
 
@@ -15,9 +16,8 @@ npm install
 npm run dev
 ```
 
-## Demo member login
+## Contact (site content)
 
-- Email: `member@acac.local`
-- Password: `integrity`
-
-Membership data is stored in the browser (`localStorage`) for this demo.
+- Phone: 979-353-1292
+- Address: 3016 Newsom Rd, Bellville, TX
+- Owner: Jayce Johnson

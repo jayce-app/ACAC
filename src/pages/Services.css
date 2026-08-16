@@ -1,0 +1,75 @@
+.band--list {
+  background: var(--field);
+}
+
+.services-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+
+.services-item {
+  padding: 1.75rem 1.5rem 1.75rem 0;
+  border-top: 1px solid rgba(44, 58, 69, 0.16);
+}
+
+.services-item:nth-child(odd) {
+  padding-right: 2rem;
+}
+
+.services-item:nth-child(even) {
+  padding-left: 2rem;
+  border-left: 1px solid rgba(44, 58, 69, 0.12);
+}
+
+.services-item__num {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--sky);
+  margin-bottom: 0.55rem;
+}
+
+.services-item h3 {
+  font-size: 1.85rem;
+  margin-bottom: 0.45rem;
+}
+
+.services-item p {
+  color: var(--slate);
+  margin: 0;
+  max-width: 34rem;
+}
+
+.band--services-cta {
+  background: var(--iron);
+  color: var(--white);
+}
+
+.band--services-cta h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  max-width: 16ch;
+}
+
+.band--services-cta p {
+  max-width: 34rem;
+  color: var(--mist);
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 800px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-item:nth-child(odd),
+  .services-item:nth-child(even) {
+    padding-left: 0;
+    padding-right: 0;
+    border-left: none;
+  }
+}

@@ -1,26 +1,25 @@
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { company } from "../data/content";
 import "./Layout.css";
 
 const links = [
   { to: "/", label: "Home", end: true },
-  { to: "/membership", label: "Membership" },
-  { to: "/permits", label: "Permits" },
+  { to: "/services", label: "Services" },
+  { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { member, logout } = useAuth();
-
   return (
     <>
       <header className="site-header">
         <div className="site-header__inner">
-          <NavLink to="/" className="brand-mark" aria-label="ACAC home">
-            <span className="brand-mark__abbr">ACAC</span>
+          <NavLink to="/" className="brand-mark" aria-label={`${company.name} home`}>
+            <span className="brand-mark__abbr">TX</span>
             <span className="brand-mark__full">
-              Austin County
+              Ropers
               <br />
-              Association of Contractors
+              Construction
             </span>
           </NavLink>
 
@@ -37,15 +36,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {link.label}
               </NavLink>
             ))}
-            {member ? (
-              <button type="button" className="site-nav__cta site-nav__cta--ghost" onClick={logout}>
-                Sign out
-              </button>
-            ) : (
-              <NavLink to="/membership" className="site-nav__cta">
-                Join / Login
-              </NavLink>
-            )}
+            <a href={company.phoneHref} className="site-nav__cta">
+              Call now
+            </a>
           </nav>
         </div>
       </header>
@@ -55,14 +48,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <footer className="site-footer">
         <div className="site-footer__inner">
           <div>
-            <p className="site-footer__brand">Austin County Association of Contractors</p>
+            <p className="site-footer__brand">{company.legal}</p>
             <p className="site-footer__tag">
-              Elevating integrity through networking, education, and support.
+              Turnkey metal buildings, barndominiums, and site work — Bellville, Texas.
+            </p>
+            <p className="site-footer__meta">
+              {company.address}, {company.city}
+              <br />
+              <a href={company.phoneHref}>{company.phone}</a>
             </p>
           </div>
           <div className="site-footer__links">
-            <NavLink to="/membership">Membership</NavLink>
-            <NavLink to="/permits">Permits</NavLink>
+            <NavLink to="/services">Services</NavLink>
+            <NavLink to="/about">About</NavLink>
+            <NavLink to="/contact">Contact</NavLink>
           </div>
         </div>
       </footer>
