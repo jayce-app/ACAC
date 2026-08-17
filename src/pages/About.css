@@ -98,6 +98,24 @@
   text-decoration: underline;
 }
 
+.band--proof {
+  background: var(--slate);
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+
+.about-proof {
+  margin: 0;
+  overflow: hidden;
+}
+
+.about-proof img {
+  width: 100%;
+  max-height: 28rem;
+  object-fit: cover;
+  object-position: center;
+}
+
 .band--credentials {
   background: var(--white);
 }
@@ -132,7 +150,7 @@
 }
 
 .band--about-area {
-  background: var(--slate);
+  background: var(--navy);
   color: var(--white);
 }
 

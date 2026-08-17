@@ -3,9 +3,9 @@
   top: 0;
   z-index: 40;
   height: var(--header-h);
-  background: rgba(10, 10, 10, 0.94);
+  background: rgba(5, 5, 5, 0.94);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(200, 206, 214, 0.28);
+  border-bottom: 1px solid rgba(192, 197, 204, 0.28);
   color: var(--white);
 }
 
@@ -28,6 +28,24 @@
   color: inherit;
 }
 
+.brand-mark__icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(192, 197, 204, 0.45);
+  background: linear-gradient(145deg, #e8eaed, #b8bec6);
+  flex-shrink: 0;
+}
+
+.brand-mark__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .brand-mark__word {
   display: flex;
   flex-direction: column;
@@ -41,7 +59,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--spark);
+  color: var(--chrome);
 }
 
 .brand-mark__trade {
@@ -111,7 +129,7 @@
 }
 
 .site-nav__cta:hover {
-  background: #dde3ea;
+  background: var(--chrome);
   transform: translateY(-1px);
 }
 
