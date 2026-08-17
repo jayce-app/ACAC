@@ -11,20 +11,23 @@
   list-style: none;
   margin: 0;
   padding: 0.35rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: flex-start;
 }
 
 .project-tile {
   position: relative;
-  display: block;
-  width: 100%;
-  padding: 0;
+  display: grid;
+  place-items: center;
+  width: 5.25rem;
+  height: 5.25rem;
+  padding: 0.2rem;
   border: none;
-  background: var(--slate);
+  background: #1a1c1e;
   cursor: pointer;
-  overflow: hidden;
+  overflow: visible;
   z-index: 1;
   transform: scale(1);
   transform-origin: center center;
@@ -32,12 +35,15 @@
     transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 240ms ease,
     z-index 0s;
+  flex: 0 0 auto;
 }
 
 .project-tile img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   display: block;
   transition: filter 240ms ease;
 }
@@ -45,13 +51,14 @@
 .project-tile:hover,
 .project-tile:focus-visible {
   z-index: 20;
-  transform: scale(1.55);
-  box-shadow: 0 18px 48px rgba(5, 5, 5, 0.45);
+  transform: scale(2.4);
+  box-shadow: 0 18px 48px rgba(5, 5, 5, 0.5);
+  background: #0c0e12;
 }
 
 .project-tile:hover img,
 .project-tile:focus-visible img {
-  filter: brightness(1.05);
+  filter: brightness(1.04);
 }
 
 .project-tile--video .project-tile__play {
@@ -60,14 +67,14 @@
   top: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--chrome);
-  background: rgba(5, 5, 5, 0.62);
+  background: rgba(5, 5, 5, 0.7);
   border: 1px solid rgba(230, 231, 232, 0.55);
-  padding: 0.4rem 0.65rem;
+  padding: 0.28rem 0.45rem;
   pointer-events: none;
   transition: opacity 200ms ease;
 }
@@ -127,33 +134,31 @@
   background: #000;
 }
 
-@media (max-width: 1100px) {
-  .projects-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 800px) {
-  .projects-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 2px;
+  .project-tile {
+    width: 4.5rem;
+    height: 4.5rem;
   }
 
   .project-tile:hover,
   .project-tile:focus-visible {
-    transform: scale(1.35);
+    transform: scale(2);
   }
 }
 
 @media (max-width: 560px) {
   .projects-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2px;
+    gap: 3px;
+  }
+
+  .project-tile {
+    width: 4rem;
+    height: 4rem;
   }
 
   .project-tile:hover,
   .project-tile:focus-visible {
-    transform: scale(1.25);
+    transform: scale(1.85);
   }
 }
 
