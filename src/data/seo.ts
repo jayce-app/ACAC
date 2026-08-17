@@ -13,7 +13,7 @@ export const seoTopics = [
   },
   {
     title: "Turnkey general contractor",
-    text: "As a turnkey general contractor, we self-perform much of the build — general construction, new construction, remodeling, additions, and custom ranch and shop projects — so you have one point of contact from dirt to done.",
+    text: "As a turnkey general contractor, we lead most of the build with our own crew and draw on a deep subcontractor network for the rest — general construction, new construction, remodeling, additions, and custom ranch and shop projects under one point of contact.",
   },
   {
     title: "Barndominiums and ranch construction",

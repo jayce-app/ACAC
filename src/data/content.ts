@@ -23,7 +23,7 @@ export const residentialServices = [
   {
     id: "res-general",
     title: "General & new construction",
-    text: "Custom residential builds from the ground up — not production homes. We self-perform a large share of the work so the job stays coordinated and accountable.",
+    text: "Custom residential builds from the ground up — not production homes. Most of the work stays with our own crew so the job stays coordinated and accountable.",
   },
   {
     id: "res-metal",
@@ -41,7 +41,7 @@ export const commercialServices = [
   {
     id: "com-general",
     title: "General & new construction",
-    text: "Commercial builds handled turnkey when you need one crew and one point of contact from start to finish.",
+    text: "Commercial builds handled turnkey — one point of contact from start to finish, with our crew leading the work.",
   },
   {
     id: "com-steel",
@@ -59,6 +59,12 @@ export const commercialServices = [
     text: "Commercial remodeling and additions that expand or update what you already have without losing quality.",
   },
 ];
+
+/** How TX Ropers staffs full-scope jobs — shown on Services. */
+export const crewApproach = {
+  title: "In-house crew. Full-scope coverage.",
+  text: "Most of our work is done by our own people — that is how we keep quality, schedule, and communication tight. When a trade sits outside what we self-perform, we pull from a deep network of trusted subcontractors so every piece of a general construction project is covered under one roof.",
+};
 
 /** Featured row on the home page */
 export const featuredServices = [
@@ -99,7 +105,7 @@ export const credentials = [
   },
   {
     title: "Custom, not production",
-    text: "Every project is tailored. We build turnkey and self-perform much of the scope so quality stays consistent.",
+    text: "Every project is tailored. We lead the build in-house and bring in trusted trades when the scope calls for it.",
   },
 ];
 

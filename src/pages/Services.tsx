@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { commercialServices, residentialServices } from "../data/content";
+import { commercialServices, crewApproach, residentialServices } from "../data/content";
 import "./Services.css";
 
 export function Services() {
@@ -10,11 +10,19 @@ export function Services() {
           <p className="eyebrow">What we build</p>
           <h1>Services</h1>
           <p>
-            Custom residential and commercial construction — turnkey when you need it, with a lot
-            of the work self-performed by our crew.
+            Custom residential and commercial construction across Southeast Texas — led by our
+            in-house crew, with the trades network to cover full-scope general construction.
           </p>
         </div>
       </header>
+
+      <section className="band band--crew" aria-labelledby="crew-title">
+        <div className="band__inner reveal">
+          <p className="eyebrow">How we work</p>
+          <h2 id="crew-title">{crewApproach.title}</h2>
+          <p className="crew-lead">{crewApproach.text}</p>
+        </div>
+      </section>
 
       <section className="band band--list" aria-labelledby="residential-title">
         <div className="band__inner reveal">
@@ -44,8 +52,8 @@ export function Services() {
           <h2 id="commercial-title">Commercial</h2>
           <p className="services-intro">
             General construction, new construction, structural steel, metal buildings, metal
-            framing, dirt and site work, remodeling, and additions — built turnkey with
-            self-performed craft.
+            framing, dirt and site work, remodeling, and additions — delivered turnkey with our
+            crew at the center of the job.
           </p>
           <ul className="services-grid">
             {commercialServices.map((service, index) => (
