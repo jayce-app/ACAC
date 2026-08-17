@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { about, company, credentials } from "../data/content";
+import { about, company, credentials, owner } from "../data/content";
 import "./About.css";
 
 export function About() {
+  const [ownerPhotoReady, setOwnerPhotoReady] = useState(false);
+
   return (
     <div className="about-page">
       <section className="band band--about-main" aria-labelledby="about-story-title">
@@ -62,6 +65,40 @@ export function About() {
               Request a quote
             </Link>
           </aside>
+        </div>
+      </section>
+
+      <section className="band band--owner" aria-labelledby="owner-title">
+        <div className="band__inner owner-layout reveal">
+          <div className="owner-photo">
+            {ownerPhotoReady ? null : (
+              <div className="owner-photo__placeholder" aria-hidden="true">
+                <span>Owner photo</span>
+                <span className="owner-photo__hint">Add jayce-johnson.jpg</span>
+              </div>
+            )}
+            <img
+              src={owner.image}
+              alt={ownerPhotoReady ? `${owner.name}, ${owner.role}` : ""}
+              width={480}
+              height={600}
+              className={ownerPhotoReady ? "is-ready" : undefined}
+              onLoad={() => setOwnerPhotoReady(true)}
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+              }}
+            />
+          </div>
+
+          <div className="owner-copy">
+            <p className="eyebrow">Meet the owner</p>
+            <h2 id="owner-title">{owner.name}</h2>
+            <p className="owner-role">{owner.role}</p>
+            <p className="owner-headline">{owner.headline}</p>
+            {owner.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+            ))}
+          </div>
         </div>
       </section>
 

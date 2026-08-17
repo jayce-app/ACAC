@@ -76,6 +76,18 @@ export const about = {
   ],
 };
 
+export const owner = {
+  name: "Jayce Johnson",
+  role: "Owner",
+  /** Drop a solo headshot at /public/jayce-johnson.jpg to show it here */
+  image: "/jayce-johnson.jpg",
+  headline: "Fourth-generation construction. Fifth-generation agriculture.",
+  paragraphs: [
+    "That combination shaped a particular skill set — one that knows how a shop, arena, barn, or ranch structure has to work on a real day, not just look right on paper.",
+    "Growing up around land, livestock, and building work taught Jayce to read a site, respect the dirt, and finish steel and structures that hold up under Texas use. It is why so much of what TX Ropers builds is custom, turnkey, and self-performed from the pad up.",
+  ],
+};
+
 export const credentials = [
   {
     title: "General contractor",
