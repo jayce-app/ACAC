@@ -193,7 +193,7 @@ export function useMemberTools() {
           company: entry.company,
           reason: entry.reason,
           reporter_id: member.id,
-          status: "pending",
+          status: "approved",
         });
         await refresh();
         return;
@@ -202,7 +202,10 @@ export function useMemberTools() {
         ...entry,
         id: `bl-${Date.now()}`,
         date: new Date().toISOString().slice(0, 10),
-        status: "pending",
+        status: "approved",
+        // Keep reporter for local admin moderation only — never shown on the member board.
+        reportedBy: entry.reportedBy,
+        reportedCompany: entry.reportedCompany,
       };
       setBlacklist((prev) => [next, ...prev]);
     },

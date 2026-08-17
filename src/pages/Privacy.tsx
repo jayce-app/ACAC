@@ -31,8 +31,8 @@ export function Privacy() {
               upload for vetting
             </li>
             <li>
-              <strong>Lounge activity:</strong> bid posts, discussion posts, and accountability /
-              blacklist submissions you choose to send
+              <strong>Lounge activity:</strong> bid posts, discussion posts, and anonymous blacklist
+              board posts you choose to send
             </li>
             <li>
               <strong>Admin actions:</strong> approval/rejection decisions and related timestamps
@@ -47,7 +47,10 @@ export function Privacy() {
           <ul>
             <li>Operate membership, login, and admin review</li>
             <li>Publish approved members in the public directory (name, company, trade, phone)</li>
-            <li>Share approved accountability reports with other approved members only</li>
+            <li>
+              Host anonymous blacklist board posts for approved members only (poster identity is not
+              shown on the board)
+            </li>
             <li>Improve site reliability and prevent abuse</li>
           </ul>
 
@@ -58,20 +61,21 @@ export function Privacy() {
               member directory fields listed above
             </li>
             <li>
-              <strong>Members only:</strong> bid board, discussions, pending/approved blacklist
-              reports, and admin tools
+              <strong>Members only:</strong> bid board, discussions, anonymous blacklist board, and
+              admin tools
             </li>
           </ul>
           <p>
-            Blacklist reports are not intended for public search engines or non-member visitors.
+            Blacklist board posts are not intended for public search engines or non-member visitors.
+            Poster identity is not shown on the member-facing board.
           </p>
 
-          <h2>4. Accountability reports and privacy</h2>
+          <h2>4. Blacklist board and privacy</h2>
           <p>
-            When a member submits a report about a customer or contractor, that submission may
-            include names and business details. Do not submit sensitive identifiers (SSNs, financial
-            account numbers, medical data, or children’s information). Admins should reject reports
-            that include unnecessary personal data.
+            When a member posts about a customer or contractor, that post may include names and
+            business details. Do not submit sensitive identifiers (SSNs, financial account numbers,
+            medical data, or children’s information). Admins may remove posts that include
+            unnecessary personal data or misuse the board.
           </p>
 
           <h2>5. Where data is stored</h2>

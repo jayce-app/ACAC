@@ -27,7 +27,7 @@ export function Terms() {
           <p>
             The public pages (home, member directory, education calendar, permits, and these legal
             pages) are available to visitors. Membership tools — including the Members Lounge, bid
-            board, discussion boards, and accountability/blacklist reports — are limited to approved
+            board, discussion boards, and the anonymous blacklist board — are limited to approved
             members and administrators.
           </p>
 
@@ -48,42 +48,42 @@ export function Terms() {
             <li>Use the lounge for legitimate trade networking and peer support</li>
             <li>Avoid harassment, threats, illegal content, or spam</li>
             <li>
-              Submit accountability reports only with firsthand, factual information they believe
-              to be true
+              Post on the blacklist board only with firsthand, factual information they believe to be
+              true
             </li>
           </ul>
 
-          <h2>4. Accountability / blacklist reports (important)</h2>
+          <h2>4. Anonymous blacklist board (important)</h2>
           <p>
-            The blacklist feature is an <strong>internal, members-only</strong> reporting tool. It
-            is not a public consumer complaint board and must not be treated as a court finding.
+            The blacklist board is an <strong>internal, members-only, anonymous, post-only</strong>{" "}
+            forum. There are no replies or comments. It is not a public consumer complaint board and
+            is not a court finding.
           </p>
           <ul>
             <li>
-              Reports are submissions by individual members. Until an admin approves a report, it is
-              not shown on the shared list.
+              <strong>ACAC does not bear any responsibility</strong> for what members post on this
+              board. Posts are the sole responsibility of the individual who submits them.
             </li>
             <li>
-              Admin approval means only that ACAC decided the report may be shared with members for
-              awareness — not that ACAC independently verified every fact in court.
+              ACAC does not verify, endorse, warrant, or guarantee the accuracy of any post. Members
+              must independently verify information before acting on it.
             </li>
             <li>
-              False, exaggerated, speculative, or malicious reports can create defamation and other
-              legal risk for the submitting member and for ACAC. Members are responsible for what
-              they submit.
+              Posts appear without the poster’s name. False, exaggerated, speculative, or malicious
+              posts can create defamation and other legal risk for the submitting member.
             </li>
             <li>
               Do not include Social Security numbers, driver’s license numbers, bank details, medical
               information, or other sensitive personal data.
             </li>
             <li>
-              Prefer documented business facts (dates, unpaid invoices, abandoned jobs, forged
-              insurance claims) over opinions, insults, or rumors.
+              Prefer documented business facts (dates, unpaid invoices, abandoned jobs) over
+              opinions, insults, or rumors.
             </li>
           </ul>
           <p>
-            ACAC may edit, reject, remove, or archive reports at any time, and may suspend members
-            who misuse the tool.
+            ACAC may remove or archive posts at any time, and may suspend members who misuse the
+            board.
           </p>
 
           <h2>5. User content license</h2>
@@ -110,14 +110,15 @@ export function Terms() {
           <p>
             To the fullest extent allowed by law, ACAC and its organizers are not liable for
             indirect, incidental, special, consequential, or punitive damages, or for decisions made
-            by members or the public based on directory listings, bids, discussions, or
-            accountability reports.
+            by members or the public based on directory listings, bids, discussions, or anonymous
+            blacklist board posts. ACAC does not bear responsibility for content posted by members on
+            the blacklist board.
           </p>
 
           <h2>9. Indemnity</h2>
           <p>
-            If you submit false or unlawful content — including defamatory blacklist reports — you
-            agree to defend and indemnify ACAC against related claims, damages, and expenses.
+            If you submit false or unlawful content — including defamatory blacklist board posts —
+            you agree to defend and indemnify ACAC against related claims, damages, and expenses.
           </p>
 
           <h2>10. Changes</h2>

@@ -285,9 +285,24 @@
   color: var(--slate);
 }
 
+.legal-callout--strong {
+  background: rgba(168, 72, 56, 0.12);
+  border-left-width: 4px;
+}
+
+.legal-callout--strong strong {
+  color: var(--ink);
+}
+
 .legal-callout a {
   color: var(--brass-deep);
   font-weight: 700;
+}
+
+.blacklist-board-note {
+  margin: -0.25rem 0 0.85rem;
+  color: var(--slate);
+  font-size: 0.92rem;
 }
 
 .attest-check {

@@ -32,8 +32,7 @@ export function Admin() {
           <p className="eyebrow">Admin console</p>
           <h1>Association admin</h1>
           <p>
-            Approve membership applications and review blacklist submissions before they appear in
-            the Members Lounge.
+            Approve membership applications and moderate the anonymous blacklist board.
           </p>
         </div>
       </section>
@@ -54,7 +53,7 @@ export function Admin() {
               className={panel === "blacklist" ? "boards__nav-btn is-active" : "boards__nav-btn"}
               onClick={() => setPanel("blacklist")}
             >
-              Blacklist submissions
+              Blacklist board
               {pendingBlacklist.length > 0 ? ` (${pendingBlacklist.length})` : ""}
             </button>
           </aside>
@@ -148,27 +147,68 @@ export function Admin() {
             {panel === "blacklist" && (
               <>
                 <header className="boards__header">
-                  <h2>Blacklist submissions</h2>
+                  <h2>Anonymous blacklist board</h2>
                   <p>
-                    Approve only factual, good-faith reports. Reject rumor, insults, sensitive
-                    personal data (SSNs, bank/medical info), or anything that looks retaliatory.
-                    Approval means members may see it internally — it is not a legal judgment.
+                    Members post anonymously with no replies or comments. ACAC does not bear
+                    responsibility for post content. Use remove for abuse, sensitive data, or clear
+                    misuse. Submitter identity is for moderation only — it is never shown on the
+                    member board.
                   </p>
                 </header>
 
-                <h3 className="admin-subhead">Pending review</h3>
+                {pendingBlacklist.length > 0 ? (
+                  <>
+                    <h3 className="admin-subhead">Legacy pending items</h3>
+                    <ul className="post-list">
+                      {pendingBlacklist.map((entry) => (
+                        <li key={entry.id} className="post post--blacklist">
+                          <div className="post__meta">
+                            <span className="badge">{entry.partyType}</span>
+                            <span className="badge badge--pending">pending</span>
+                            <time dateTime={entry.date}>{entry.date}</time>
+                            <span>
+                              Submitted by {entry.reportedBy}
+                              {entry.reportedCompany ? ` · ${entry.reportedCompany}` : ""}
+                            </span>
+                          </div>
+                          <h3>{entry.name}</h3>
+                          {entry.company ? <p className="post__company">{entry.company}</p> : null}
+                          <p>{entry.reason}</p>
+                          <div className="admin-actions">
+                            <button
+                              type="button"
+                              className="btn btn--primary"
+                              onClick={() => void approveBlacklist(entry.id, member.name)}
+                            >
+                              Publish to board
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn--ghost-dark"
+                              onClick={() => void rejectBlacklist(entry.id, member.name)}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+
+                <h3 className="admin-subhead">Live board posts</h3>
                 <ul className="post-list">
-                  {pendingBlacklist.length === 0 ? (
-                    <li className="empty-note">No pending blacklist submissions.</li>
+                  {approvedBlacklist.length === 0 ? (
+                    <li className="empty-note">No live blacklist posts yet.</li>
                   ) : (
-                    pendingBlacklist.map((entry) => (
+                    approvedBlacklist.map((entry) => (
                       <li key={entry.id} className="post post--blacklist">
                         <div className="post__meta">
                           <span className="badge">{entry.partyType}</span>
-                          <span className="badge badge--pending">pending</span>
+                          <span className="badge">anonymous on board</span>
                           <time dateTime={entry.date}>{entry.date}</time>
                           <span>
-                            Submitted by {entry.reportedBy}
+                            Moderator view — {entry.reportedBy}
                             {entry.reportedCompany ? ` · ${entry.reportedCompany}` : ""}
                           </span>
                         </div>
@@ -178,42 +218,12 @@ export function Admin() {
                         <div className="admin-actions">
                           <button
                             type="button"
-                            className="btn btn--primary"
-                            onClick={() => void approveBlacklist(entry.id, member.name)}
-                          >
-                            Approve for blacklist
-                          </button>
-                          <button
-                            type="button"
                             className="btn btn--ghost-dark"
                             onClick={() => void rejectBlacklist(entry.id, member.name)}
                           >
-                            Reject
+                            Remove from board
                           </button>
                         </div>
-                      </li>
-                    ))
-                  )}
-                </ul>
-
-                <h3 className="admin-subhead">Approved blacklist</h3>
-                <ul className="post-list">
-                  {approvedBlacklist.length === 0 ? (
-                    <li className="empty-note">No approved blacklist entries yet.</li>
-                  ) : (
-                    approvedBlacklist.map((entry) => (
-                      <li key={entry.id} className="post post--blacklist">
-                        <div className="post__meta">
-                          <span className="badge">{entry.partyType}</span>
-                          <time dateTime={entry.date}>{entry.date}</time>
-                          <span>
-                            Submitted by {entry.reportedBy}
-                            {entry.reviewedBy ? ` · Approved by ${entry.reviewedBy}` : ""}
-                          </span>
-                        </div>
-                        <h3>{entry.name}</h3>
-                        {entry.company ? <p className="post__company">{entry.company}</p> : null}
-                        <p>{entry.reason}</p>
                       </li>
                     ))
                   )}

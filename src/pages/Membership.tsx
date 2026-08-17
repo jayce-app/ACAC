@@ -12,7 +12,6 @@ export function Membership() {
   const {
     bids,
     approvedBlacklist,
-    blacklist,
     postsByBoard,
     addBid,
     submitBlacklist,
@@ -26,14 +25,6 @@ export function Membership() {
   const [newBody, setNewBody] = useState("");
   const [blacklistNotice, setBlacklistNotice] = useState<string | null>(null);
   const [blacklistAttest, setBlacklistAttest] = useState(false);
-
-  const myPendingBlacklist = blacklist.filter(
-    (e) =>
-      e.status === "pending" &&
-      member &&
-      e.reportedBy === member.name &&
-      e.reportedCompany === member.company,
-  );
 
   const board = useMemo(
     () => discussionBoards.find((b) => b.id === activeBoard) ?? discussionBoards[0],
@@ -97,9 +88,7 @@ export function Membership() {
     });
     e.currentTarget.reset();
     setBlacklistAttest(false);
-    setBlacklistNotice(
-      "Submission received. An admin must approve it before it appears on the shared blacklist.",
-    );
+    setBlacklistNotice("Posted anonymously. There are no replies or comments on this board.");
   }
 
   if (member) {
@@ -111,8 +100,8 @@ export function Membership() {
             <h1>Welcome, {member.name}</h1>
             <p>
               {member.company}
-              {member.trade ? ` · ${member.trade}` : ""}. Use the bid board, share best practices,
-              submit blacklist reports for admin review, and join the discussion boards below.
+              {member.trade ? ` · ${member.trade}` : ""}. Use the bid board, the anonymous blacklist
+              board (post-only), and discussion boards below.
             </p>
           </div>
         </section>
@@ -134,7 +123,7 @@ export function Membership() {
                 }
                 onClick={() => setPanel("blacklist")}
               >
-                Blacklist
+                Blacklist board
               </button>
               <button
                 type="button"
@@ -214,18 +203,28 @@ export function Membership() {
               {panel === "blacklist" && (
                 <>
                   <header className="boards__header">
-                    <h2>Blacklist</h2>
+                    <h2>Anonymous blacklist board</h2>
                     <p>
-                      Members-only accountability reports. Submissions stay private to admins until
-                      approved. This is not a public complaint board and is not a court finding.
+                      Members-only, post-only board. There are no replies or comments — you can post
+                      a notice, and that is it. Posts appear anonymously.
                     </p>
                   </header>
 
+                  <div className="legal-callout legal-callout--strong" role="note">
+                    <p>
+                      <strong>Disclaimer:</strong> ACAC does not bear any responsibility for what is
+                      posted on this board. Posts are the sole responsibility of the individual who
+                      submits them. ACAC does not verify, endorse, warrant, or guarantee the accuracy
+                      of any post. Use your own judgment and verify information independently before
+                      acting.
+                    </p>
+                  </div>
+
                   <div className="legal-callout">
                     <p>
-                      <strong>Defamation &amp; privacy risk:</strong> submit only firsthand facts you
-                      believe are true. Do not include SSNs, bank numbers, medical details, or rumor.
-                      False or malicious reports can create legal risk for you and for ACAC. See{" "}
+                      <strong>Posting rules:</strong> share only firsthand facts you believe are
+                      true. Do not include SSNs, bank numbers, medical details, or rumor. False or
+                      malicious posts can create legal risk for you. See{" "}
                       <Link to="/terms">Terms</Link>.
                     </p>
                   </div>
@@ -255,7 +254,7 @@ export function Membership() {
                       </label>
                     </div>
                     <label>
-                      <span>Factual reason (dates, what happened, documentation if any)</span>
+                      <span>Post (dates, what happened, documentation if any)</span>
                       <textarea
                         name="reason"
                         required
@@ -272,56 +271,31 @@ export function Membership() {
                         required
                       />
                       <span>
-                        I attest this report is based on firsthand facts I believe are true, does not
-                        include sensitive personal data, and is submitted in good faith for member
-                        awareness — not to harass or defame.
+                        I attest this post is based on firsthand facts I believe are true, does not
+                        include sensitive personal data, and is submitted in good faith. I understand
+                        my name will not appear on the board, and ACAC is not responsible for this
+                        post.
                       </span>
                     </label>
                     <button type="submit" className="btn btn--primary">
-                      Submit for admin review
+                      Post anonymously
                     </button>
                   </form>
 
-                  {myPendingBlacklist.length > 0 ? (
-                    <>
-                      <h3 className="admin-subhead">Your pending submissions</h3>
-                      <ul className="post-list">
-                        {myPendingBlacklist.map((entry) => (
-                          <li key={entry.id} className="post post--blacklist">
-                            <div className="post__meta">
-                              <span className="badge">{entry.partyType}</span>
-                              <span className="badge badge--pending">awaiting admin</span>
-                              <time dateTime={entry.date}>{entry.date}</time>
-                            </div>
-                            <h3>{entry.name}</h3>
-                            {entry.company ? (
-                              <p className="post__company">{entry.company}</p>
-                            ) : null}
-                            <p>{entry.reason}</p>
-                          </li>
-                        ))}
-                      </ul>
-                    </>
-                  ) : null}
-
-                  <h3 className="admin-subhead">Approved blacklist</h3>
-                  <p className="boards__header" style={{ marginBottom: "0.75rem" }}>
-                    Visible to approved members only. Treat as internal awareness — verify before
-                    acting.
+                  <h3 className="admin-subhead">Board posts</h3>
+                  <p className="blacklist-board-note">
+                    Anonymous notices only — no replies, no comments, no attribution.
                   </p>
                   <ul className="post-list">
                     {approvedBlacklist.length === 0 ? (
-                      <li className="empty-note">No approved blacklist entries yet.</li>
+                      <li className="empty-note">No posts yet. Be the first to post.</li>
                     ) : (
                       approvedBlacklist.map((entry) => (
                         <li key={entry.id} className="post post--blacklist">
                           <div className="post__meta">
                             <span className="badge">{entry.partyType}</span>
+                            <span className="badge">anonymous</span>
                             <time dateTime={entry.date}>{entry.date}</time>
-                            <span>
-                              Reported by {entry.reportedBy}
-                              {entry.reportedCompany ? ` · ${entry.reportedCompany}` : ""}
-                            </span>
                           </div>
                           <h3>{entry.name}</h3>
                           {entry.company ? <p className="post__company">{entry.company}</p> : null}
