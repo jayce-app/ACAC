@@ -25,8 +25,7 @@ Public website for TX Ropers Construction, LLC — Bellville, Texas.
 
 ## Brand assets
 
-Put your real logo at **`public/logo.png`** (drag it into the repo/PR). Header and footer use that file only — no generated wordmark.
+Put your real logo at **`public/logo.jpg`**. Header and footer use that file only.
 
-- `public/logo.png` — your official logo (PNG; works on the dark header)
-- `public/favicon.png` — browser tab icon
+- `public/logo.jpg` — your official logo (JPG is fine)
 - `public/hero.jpg` — home hero photo
