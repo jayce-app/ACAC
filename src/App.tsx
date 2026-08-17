@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout";
 import { About } from "./pages/About";
 import { Contact } from "./pages/Contact";
 import { Home } from "./pages/Home";
+import { Projects } from "./pages/Projects";
 import { SeoKeywords } from "./pages/SeoKeywords";
 import { Services } from "./pages/Services";
 
@@ -13,6 +14,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/projects" element={<Projects />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/southeast-texas-construction" element={<SeoKeywords />} />
