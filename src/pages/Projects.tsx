@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { projectMedia, type ProjectMedia } from "../data/projects";
+import { mergeProjectMedia, projectMedia, type ProjectMedia } from "../data/projects";
 import "./Projects.css";
 
 type ManifestPhoto = { type: "photo"; src: string };
@@ -40,17 +40,10 @@ export function Projects() {
     };
   }, []);
 
-  const gallery = useMemo(() => {
-    const seen = new Set<string>();
-    const merged: ProjectMedia[] = [];
-    for (const item of [...dumped, ...projectMedia]) {
-      const key = item.type === "photo" ? item.src : `${item.src}|${item.poster}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      merged.push(item);
-    }
-    return merged;
-  }, [dumped]);
+  const gallery = useMemo(
+    () => mergeProjectMedia([dumped, projectMedia]),
+    [dumped],
+  );
 
   return (
     <div className="projects-page">

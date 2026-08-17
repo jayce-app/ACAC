@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import type { IncomingMessage, ServerResponse } from "node:http";
@@ -11,6 +12,18 @@ type ManifestItem = { type: "photo"; src: string };
 
 const PROJECTS_DIR = path.resolve("public/projects");
 const MANIFEST_PATH = path.join(PROJECTS_DIR, "manifest.json");
+
+const BLOCKED_STEMS = new Set([
+  "work-collage",
+  "work-collage-home",
+  "job-clip-poster",
+  "readme",
+  "manifest",
+  "logo",
+  "logo-plate",
+  "logo-mark",
+  "favicon",
+]);
 
 function readManifest(): ManifestItem[] {
   try {
@@ -24,7 +37,17 @@ function readManifest(): ManifestItem[] {
 
 function writeManifest(items: ManifestItem[]) {
   fs.mkdirSync(PROJECTS_DIR, { recursive: true });
-  fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(items, null, 2)}\n`, "utf8");
+  const seen = new Set<string>();
+  const deduped: ManifestItem[] = [];
+  for (const item of items) {
+    const key = item.src.toLowerCase();
+    const stem = path.basename(item.src).replace(/\.[^.]+$/, "").toLowerCase();
+    if (seen.has(key) || seen.has(`stem:${stem}`) || BLOCKED_STEMS.has(stem)) continue;
+    seen.add(key);
+    seen.add(`stem:${stem}`);
+    deduped.push(item);
+  }
+  fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(deduped, null, 2)}\n`, "utf8");
 }
 
 function safeBaseName(name: string): string {
@@ -47,6 +70,22 @@ function uniqueJpgName(original: string): string {
     i += 1;
   }
   return candidate;
+}
+
+function findExistingByHash(body: Buffer): string | null {
+  const incoming = crypto.createHash("sha256").update(body).digest("hex");
+  if (!fs.existsSync(PROJECTS_DIR)) return null;
+  for (const name of fs.readdirSync(PROJECTS_DIR)) {
+    if (!/\.(jpe?g|png|webp)$/i.test(name)) continue;
+    const full = path.join(PROJECTS_DIR, name);
+    try {
+      const existing = crypto.createHash("sha256").update(fs.readFileSync(full)).digest("hex");
+      if (existing === incoming) return name;
+    } catch {
+      // skip unreadable
+    }
+  }
+  return null;
 }
 
 function readRequestBody(req: IncomingMessage): Promise<Buffer> {
@@ -95,15 +134,27 @@ function attachUploadApi(): Connect.NextHandleFunction {
         }
 
         fs.mkdirSync(PROJECTS_DIR, { recursive: true });
-        const filename = uniqueJpgName(suggested);
-        fs.writeFileSync(path.join(PROJECTS_DIR, filename), body);
+
+        const duplicateName = findExistingByHash(body);
+        const filename = duplicateName || uniqueJpgName(suggested);
+        if (!duplicateName) {
+          fs.writeFileSync(path.join(PROJECTS_DIR, filename), body);
+        }
 
         const src = `/projects/${filename}`;
-        const manifest = readManifest().filter((item) => item.src !== src);
+        const manifest = readManifest().filter(
+          (item) => item.src.toLowerCase() !== src.toLowerCase(),
+        );
         manifest.unshift({ type: "photo", src });
         writeManifest(manifest);
 
-        sendJson(res, 200, { ok: true, src, filename, count: manifest.length });
+        sendJson(res, 200, {
+          ok: true,
+          src,
+          filename,
+          duplicate: Boolean(duplicateName),
+          count: manifest.length,
+        });
       } catch (err) {
         sendJson(res, 500, {
           ok: false,
