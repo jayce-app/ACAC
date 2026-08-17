@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 300" role="img" aria-label="TX Ropers Construction">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#f7f8fa"/>
+      <stop offset="40%" stop-color="#c5cad1"/>
+      <stop offset="100%" stop-color="#6b7380"/>
+    </linearGradient>
+    <linearGradient id="steel-bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e6e7e8"/>
+      <stop offset="55%" stop-color="#9aa3ad"/>
+      <stop offset="100%" stop-color="#5c6570"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dual steel pillars (back, then front) -->
+  <rect x="86" y="42" width="30" height="176" fill="url(#steel)"/>
+  <rect x="42" y="22" width="36" height="196" fill="url(#steel)"/>
+
+  <!-- House / roof outline over pillars -->
+  <path
+    d="M24 132 L112 22 L200 132"
+    fill="none"
+    stroke="#0a0a0a"
+    stroke-width="13"
+    stroke-linejoin="miter"
+    stroke-linecap="square"
+  />
+  <line x1="200" y1="132" x2="200" y2="188" stroke="#0a0a0a" stroke-width="13" stroke-linecap="square"/>
+
+  <!-- Wordmark -->
+  <text
+    x="236"
+    y="122"
+    fill="#2a2e34"
+    font-family="Georgia, 'Times New Roman', Times, serif"
+    font-size="82"
+    font-weight="700"
+    letter-spacing="0.04em"
+  >ROPERS</text>
+  <text
+    x="240"
+    y="164"
+    fill="#0a0a0a"
+    font-family="Arial Narrow, Arial, Helvetica, sans-serif"
+    font-size="23"
+    font-weight="700"
+    letter-spacing="0.32em"
+  >CONSTRUCTION</text>
+
+  <rect x="240" y="178" width="460" height="4" fill="url(#steel-bar)"/>
+
+  <text
+    x="240"
+    y="214"
+    fill="#6b7380"
+    font-family="Georgia, 'Times New Roman', Times, serif"
+    font-size="15"
+    font-weight="600"
+    letter-spacing="0.2em"
+  >TURNING VISIONS INTO REALITY</text>
+</svg>

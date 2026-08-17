@@ -20,8 +20,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
               className="brand-mark__logo"
               src={company.logo}
               alt={company.name}
-              width={220}
-              height={64}
+              width={420}
+              height={120}
             />
           </NavLink>
 
@@ -54,8 +54,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
               className="site-footer__logo"
               src={company.logo}
               alt={company.legal}
-              width={200}
-              height={58}
+              width={420}
+              height={120}
             />
             <p className="site-footer__tag">
               Custom residential and commercial construction — Bellville, Southeast Texas.
