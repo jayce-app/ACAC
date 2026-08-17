@@ -31,7 +31,7 @@ export const projects: Project[] = [
     title: "Custom horse stalls",
     category: "Interiors",
     location: "Southeast Texas",
-    blurb: "Wood-and-steel stalls built inside a covered metal structure — from the pad up.",
+    blurb: "Wood-and-steel stalls built inside a covered metal structure — from the dirt up.",
     image: "/projects/custom-horse-stalls.jpg",
   },
 ];

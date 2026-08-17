@@ -14,7 +14,7 @@ export const company = {
   facebook: "https://www.facebook.com/p/TX-Ropers-Construction-LLC-100089307615057/",
   serviceArea:
     "Southeast Texas — primarily within about 50 miles of Bellville. We also travel for special projects.",
-  tagline: "Custom built from the pad up.",
+  tagline: "Custom built from the dirt up.",
   mission:
     "By providing a premium product and service, our goal is to help elevate the standard for our industry in our community. We are dedicated to our customers' satisfaction.",
 };
@@ -84,7 +84,7 @@ export const owner = {
   headline: "Fourth-generation construction. Fifth-generation agriculture.",
   paragraphs: [
     "That combination shaped a particular skill set — one that knows how a shop, arena, barn, or ranch structure has to work on a real day, not just look right on paper.",
-    "Growing up around land, livestock, and building work taught Jayce to read a site, respect the dirt, and finish steel and structures that hold up under Texas use. It is why so much of what TX Ropers builds is custom, turnkey, and self-performed from the pad up.",
+    "Growing up around land, livestock, and building work taught Jayce to read a site, respect the dirt, and finish steel and structures that hold up under Texas use. It is why so much of what TX Ropers builds is custom, turnkey, and self-performed from the dirt up.",
   ],
 };
 
