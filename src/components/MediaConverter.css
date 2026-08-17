@@ -12,15 +12,39 @@
 
 .media-converter > p {
   margin: 0 0 1.1rem;
-  max-width: 40rem;
+  max-width: 42rem;
   color: var(--gunmetal);
 }
 
-.media-converter__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  align-items: center;
+.media-converter__bucket {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  padding: 1.75rem 1rem;
+  border: 2px dashed rgba(21, 34, 56, 0.35);
+  background: var(--white);
+  text-align: center;
+}
+
+.media-converter__bucket.is-dragover {
+  border-color: var(--navy);
+  background: #e8eef6;
+}
+
+.media-converter__bucket-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.media-converter__bucket-sub {
+  margin: 0;
+  color: var(--sky-deep);
+  font-size: 0.9rem;
 }
 
 .media-converter__pick {
@@ -52,30 +76,17 @@
   cursor: wait;
 }
 
-.media-converter__zip {
-  border: 1px solid var(--navy);
-  background: var(--white);
-  color: var(--navy);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 0.65rem 1rem;
-  cursor: pointer;
-  border-radius: var(--radius);
-}
-
-.media-converter__zip:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.media-converter__progress,
+.media-converter__banner,
 .media-converter__hint {
   margin: 1rem 0 0;
-  color: var(--sky-deep);
+  color: var(--gunmetal);
   font-size: 0.95rem;
+}
+
+.media-converter__banner a,
+.media-converter__hint a {
+  color: var(--navy);
+  font-weight: 700;
 }
 
 .media-converter__list {
@@ -103,6 +114,10 @@
   background: var(--field-deep);
 }
 
+.media-converter__thumb--empty {
+  display: block;
+}
+
 .media-converter__meta {
   display: grid;
   gap: 0.35rem;
@@ -115,13 +130,9 @@
   word-break: break-all;
 }
 
-.media-converter__dl {
-  color: var(--navy);
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-  width: fit-content;
+.media-converter__status {
+  font-size: 0.88rem;
+  color: var(--sky-deep);
 }
 
 .media-converter__error {
@@ -132,9 +143,5 @@
 @media (max-width: 560px) {
   .media-converter {
     padding: var(--space-md);
-  }
-
-  .media-converter__item {
-    align-items: flex-start;
   }
 }

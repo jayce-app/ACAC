@@ -87,7 +87,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {" · "}
           <a href="/southeast-texas-construction">Southeast Texas construction resources</a>
           {" · "}
-          <a href="/southeast-texas-construction#media-converter-title">Photo converter</a>
+          <a href="/southeast-texas-construction#media-converter-title">Photo dump</a>
         </p>
       </footer>
     </>

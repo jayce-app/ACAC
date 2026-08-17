@@ -1,10 +1,56 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { projectMedia, type ProjectMedia } from "../data/projects";
 import "./Projects.css";
 
+type ManifestPhoto = { type: "photo"; src: string };
+
+function isManifestPhoto(value: unknown): value is ManifestPhoto {
+  if (!value || typeof value !== "object") return false;
+  const item = value as ManifestPhoto;
+  return item.type === "photo" && typeof item.src === "string" && item.src.startsWith("/projects/");
+}
+
 export function Projects() {
   const [active, setActive] = useState<ProjectMedia | null>(null);
+  const [dumped, setDumped] = useState<ManifestPhoto[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadManifest() {
+      try {
+        const res = await fetch(`/projects/manifest.json?ts=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) return;
+        const data: unknown = await res.json();
+        if (!cancelled && Array.isArray(data)) {
+          setDumped(data.filter(isManifestPhoto));
+        }
+      } catch {
+        // Static hosting without a manifest is fine — curated list still shows.
+      }
+    }
+
+    void loadManifest();
+    const onFocus = () => void loadManifest();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("focus", onFocus);
+    };
+  }, []);
+
+  const gallery = useMemo(() => {
+    const seen = new Set<string>();
+    const merged: ProjectMedia[] = [];
+    for (const item of [...dumped, ...projectMedia]) {
+      const key = item.type === "photo" ? item.src : `${item.src}|${item.poster}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      merged.push(item);
+    }
+    return merged;
+  }, [dumped]);
 
   return (
     <div className="projects-page">
@@ -23,8 +69,8 @@ export function Projects() {
           </h2>
 
           <ul className="projects-grid">
-            {projectMedia.map((item) => (
-              <li key={item.type === "photo" ? item.src : item.src}>
+            {gallery.map((item) => (
+              <li key={item.type === "photo" ? item.src : `${item.src}-video`}>
                 <button
                   type="button"
                   className={item.type === "video" ? "project-tile project-tile--video" : "project-tile"}

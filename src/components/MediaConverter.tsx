@@ -1,14 +1,13 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import heic2any from "heic2any";
-import JSZip from "jszip";
 import "./MediaConverter.css";
 
-type ConvertedItem = {
+type QueueItem = {
   id: string;
   name: string;
-  blob: Blob;
-  url: string;
-  status: "ready" | "error";
+  status: "queued" | "converting" | "uploading" | "done" | "error";
+  src?: string;
   error?: string;
 };
 
@@ -35,11 +34,9 @@ async function fileToJpegBlob(file: File): Promise<Blob> {
       toType: "image/jpeg",
       quality: 0.88,
     });
-    const blob = Array.isArray(result) ? result[0] : result;
-    return blob;
+    return Array.isArray(result) ? result[0] : result;
   }
 
-  // Re-encode common phone formats to JPEG for a consistent download
   if (/^image\/(jpeg|png|webp)$/i.test(file.type) || /\.(jpe?g|png|webp)$/i.test(file.name)) {
     const bitmap = await createImageBitmap(file);
     const canvas = document.createElement("canvas");
@@ -59,90 +56,132 @@ async function fileToJpegBlob(file: File): Promise<Blob> {
     return blob;
   }
 
-  throw new Error("Unsupported file type — use HEIC, JPG, PNG, or WebP");
+  throw new Error("Use HEIC, JPG, PNG, or WebP");
+}
+
+async function uploadJpeg(name: string, blob: Blob): Promise<string> {
+  const res = await fetch(`/api/project-photos?name=${encodeURIComponent(name)}`, {
+    method: "POST",
+    headers: { "Content-Type": "image/jpeg" },
+    body: blob,
+  });
+  const data = (await res.json()) as { ok: boolean; src?: string; error?: string };
+  if (!res.ok || !data.ok || !data.src) {
+    throw new Error(data.error || "Upload failed — is the preview server running?");
+  }
+  return data.src;
+}
+
+async function publishToRepo(): Promise<string> {
+  const res = await fetch("/api/project-photos/publish", { method: "POST" });
+  const data = (await res.json()) as {
+    ok: boolean;
+    committed?: boolean;
+    pushed?: boolean;
+    error?: string;
+  };
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || "Publish failed");
+  }
+  if (data.committed && data.pushed) return "Saved to Projects and pushed to the repo.";
+  if (data.committed) return "Committed locally — push may need a retry.";
+  return "Already on Projects (nothing new to commit).";
 }
 
 export function MediaConverter() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
-  const [progress, setProgress] = useState("");
-  const [items, setItems] = useState<ConvertedItem[]>([]);
+  const [dragOver, setDragOver] = useState(false);
+  const [items, setItems] = useState<QueueItem[]>([]);
+  const [banner, setBanner] = useState("");
 
-  async function handleFiles(fileList: FileList | null) {
-    if (!fileList?.length) return;
-    const files = Array.from(fileList);
-    setBusy(true);
-    setProgress(`Converting 0 of ${files.length}…`);
+  const patchItem = useCallback((id: string, patch: Partial<QueueItem>) => {
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, ...patch } : item)));
+  }, []);
 
-    const next: ConvertedItem[] = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      setProgress(`Converting ${i + 1} of ${files.length}: ${file.name}`);
-      const id = `${file.name}-${file.size}-${file.lastModified}-${i}`;
-      try {
-        const blob = await fileToJpegBlob(file);
-        next.push({
-          id,
-          name: jpgName(file.name),
-          blob,
-          url: URL.createObjectURL(blob),
-          status: "ready",
-        });
-      } catch (err) {
-        next.push({
-          id,
-          name: file.name,
-          blob: new Blob(),
-          url: "",
-          status: "error",
-          error: err instanceof Error ? err.message : "Conversion failed",
-        });
+  const processFiles = useCallback(
+    async (fileList: FileList | File[]) => {
+      const files = Array.from(fileList);
+      if (!files.length) return;
+
+      setBusy(true);
+      setBanner("");
+      const seeded: QueueItem[] = files.map((file, i) => ({
+        id: `${file.name}-${file.size}-${file.lastModified}-${i}`,
+        name: jpgName(file.name),
+        status: "queued",
+      }));
+      setItems(seeded);
+
+      let uploaded = 0;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const id = seeded[i].id;
+        try {
+          patchItem(id, { status: "converting" });
+          const blob = await fileToJpegBlob(file);
+          patchItem(id, { status: "uploading" });
+          const src = await uploadJpeg(jpgName(file.name), blob);
+          patchItem(id, { status: "done", src });
+          uploaded += 1;
+        } catch (err) {
+          patchItem(id, {
+            status: "error",
+            error: err instanceof Error ? err.message : "Failed",
+          });
+        }
       }
-    }
 
-    setItems((prev) => {
-      prev.forEach((item) => {
-        if (item.url) URL.revokeObjectURL(item.url);
-      });
-      return next;
-    });
-    setBusy(false);
-    setProgress("");
-    if (inputRef.current) inputRef.current.value = "";
-  }
+      if (uploaded > 0) {
+        try {
+          const msg = await publishToRepo();
+          setBanner(`${uploaded} photo${uploaded === 1 ? "" : "s"} added. ${msg}`);
+        } catch (err) {
+          setBanner(
+            `${uploaded} photo${uploaded === 1 ? "" : "s"} saved to Projects on this preview. Publish note: ${
+              err instanceof Error ? err.message : "could not push"
+            }`,
+          );
+        }
+      } else {
+        setBanner("No photos were uploaded.");
+      }
 
-  async function downloadZip() {
-    const ready = items.filter((item) => item.status === "ready");
-    if (!ready.length) return;
-    setBusy(true);
-    setProgress("Building ZIP…");
-    const zip = new JSZip();
-    for (const item of ready) {
-      zip.file(item.name, item.blob);
-    }
-    const zipBlob = await zip.generateAsync({ type: "blob" });
-    const url = URL.createObjectURL(zipBlob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "tx-ropers-project-photos.jpg.zip".replace(".jpg.zip", ".zip");
-    a.click();
-    URL.revokeObjectURL(url);
-    setBusy(false);
-    setProgress("");
-  }
-
-  const readyCount = items.filter((item) => item.status === "ready").length;
+      setBusy(false);
+      if (inputRef.current) inputRef.current.value = "";
+    },
+    [patchItem],
+  );
 
   return (
     <div className="media-converter">
-      <h2 id="media-converter-title">Photo converter</h2>
+      <h2 id="media-converter-title">Project photo dump</h2>
       <p>
-        Convert phone photos (HEIC/HEIF) to JPG in your browser. Files stay on your device — nothing
-        is uploaded to a server. After converting, download the JPGs and add them to the site (or
-        send them in chat one at a time).
+        Drop job photos here (HEIC from iPhone is fine). They convert in your browser, land in the
+        Projects gallery, and publish to the site branch when the preview server can push.
       </p>
 
-      <div className="media-converter__actions">
+      <div
+        className={dragOver ? "media-converter__bucket is-dragover" : "media-converter__bucket"}
+        onDragEnter={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragOver(false);
+          if (!busy) void processFiles(e.dataTransfer.files);
+        }}
+      >
+        <p className="media-converter__bucket-title">
+          {busy ? "Uploading…" : "Drop photos here"}
+        </p>
+        <p className="media-converter__bucket-sub">or</p>
         <label className="media-converter__pick">
           <input
             ref={inputRef}
@@ -150,23 +189,18 @@ export function MediaConverter() {
             accept="image/heic,image/heif,image/jpeg,image/png,image/webp,.heic,.heif,.jpg,.jpeg,.png,.webp"
             multiple
             disabled={busy}
-            onChange={(e) => void handleFiles(e.target.files)}
+            onChange={(e) => {
+              if (e.target.files) void processFiles(e.target.files);
+            }}
           />
-          {busy ? "Working…" : "Choose photos"}
+          Choose from phone
         </label>
-        <button
-          type="button"
-          className="media-converter__zip"
-          disabled={busy || readyCount === 0}
-          onClick={() => void downloadZip()}
-        >
-          Download all as ZIP
-        </button>
       </div>
 
-      {progress ? (
-        <p className="media-converter__progress" role="status">
-          {progress}
+      {banner ? (
+        <p className="media-converter__banner" role="status">
+          {banner}{" "}
+          <Link to="/projects">Open Projects</Link>
         </p>
       ) : null}
 
@@ -174,29 +208,34 @@ export function MediaConverter() {
         <ul className="media-converter__list">
           {items.map((item) => (
             <li key={item.id} className="media-converter__item">
-              {item.status === "ready" ? (
-                <>
-                  <img src={item.url} alt="" className="media-converter__thumb" />
-                  <div className="media-converter__meta">
-                    <span className="media-converter__name">{item.name}</span>
-                    <a className="media-converter__dl" href={item.url} download={item.name}>
-                      Download JPG
-                    </a>
-                  </div>
-                </>
+              {item.src ? (
+                <img src={item.src} alt="" className="media-converter__thumb" />
               ) : (
-                <div className="media-converter__meta">
-                  <span className="media-converter__name">{item.name}</span>
-                  <span className="media-converter__error">{item.error}</span>
-                </div>
+                <span className="media-converter__thumb media-converter__thumb--empty" />
               )}
+              <div className="media-converter__meta">
+                <span className="media-converter__name">{item.name}</span>
+                <span
+                  className={
+                    item.status === "error"
+                      ? "media-converter__error"
+                      : "media-converter__status"
+                  }
+                >
+                  {item.status === "queued" && "Queued"}
+                  {item.status === "converting" && "Converting…"}
+                  {item.status === "uploading" && "Sending to Projects…"}
+                  {item.status === "done" && "On Projects"}
+                  {item.status === "error" && (item.error || "Error")}
+                </span>
+              </div>
             </li>
           ))}
         </ul>
       ) : (
         <p className="media-converter__hint">
-          Tip on iPhone: Photos → select → Share → Save to Files, then pick them here. Or use “Choose
-          photos” and select from your library if the browser allows.
+          Works while this site preview is running. Dump a batch, then check{" "}
+          <Link to="/projects">Projects</Link>.
         </p>
       )}
     </div>
