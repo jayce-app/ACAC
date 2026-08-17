@@ -15,7 +15,8 @@ Follow **[GO_LIVE.md](./GO_LIVE.md)** to connect:
 - **Members** — Public directory of vetted members
 - **Member login** — Apply / sign in; lounge unlocks after approval
 - **Admin** — Approve applications and blacklist submissions
-- **Permits** — County and city permit links
+- **Permits** — County and city permit links, Texas 811
+- **Education** — Curated calendar of third-party trade seminars (auto-refreshed)
 
 ## Developers
 
@@ -23,6 +24,9 @@ Follow **[GO_LIVE.md](./GO_LIVE.md)** to connect:
 npm install
 cp .env.example .env   # add Supabase URL + anon key
 npm run dev
+npm run update:education   # refresh DWC + TACCA calendar listings
 ```
 
 Without `.env`, the app uses a local browser demo mode so the UI still works.
+
+A weekly GitHub Action (`.github/workflows/update-education-calendar.yml`) runs the same updater and opens a PR when listings change.

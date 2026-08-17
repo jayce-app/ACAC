@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import {
+  educationCalendarLastUpdated,
   educationEvents,
   educationResourceLinks,
   type EducationEvent,
@@ -101,6 +102,17 @@ export function Education() {
           organizations, colleges, and state agencies so Austin County
           contractors can keep skills and licenses current.
         </p>
+        {educationCalendarLastUpdated ? (
+          <p className="edu-updated">
+            Calendar auto-updated{" "}
+            {new Date(educationCalendarLastUpdated).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}{" "}
+            from Texas DWC and TACCA public listings.
+          </p>
+        ) : null}
       </header>
 
       <section className="edu-disclaimer" aria-label="About this calendar">
@@ -115,8 +127,9 @@ export function Education() {
         <h2 id="upcoming-heading">Upcoming sessions</h2>
         <p className="section-intro">
           Focused on Texas construction trades — OSHA/safety, plumbing CE,
-          HVAC CE, and association scheduling. Check back as we add more
-          local and regional options.
+          HVAC CE, and association scheduling. Listings refresh automatically
+          from public provider calendars; always confirm details before you
+          register.
         </p>
         {sorted.length === 0 ? (
           <p className="section-intro">

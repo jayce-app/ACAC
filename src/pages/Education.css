@@ -43,6 +43,13 @@
   line-height: 1.65;
 }
 
+.edu-updated {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--mist);
+  font-size: 0.9rem;
+}
+
 .edu-disclaimer,
 .edu-upcoming,
 .edu-hubs,
