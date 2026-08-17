@@ -1,9 +1,25 @@
 import { useState, type FormEvent } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { useAuth, type ApplicationInput } from "../auth/AuthContext";
+import {
+  useAuth,
+  type ApplicationInput,
+  type ApplicationReference,
+} from "../auth/AuthContext";
 import { org } from "../data/org";
+import { fileToCompressedDataUrl, photosAreUnique } from "../lib/workPhotos";
 import "./Membership.css";
 import "./Apply.css";
+
+const REFERENCE_COUNT = 5;
+const MIN_PHOTOS = 2;
+const MAX_PHOTOS = 6;
+
+const emptyReference = (): ApplicationReference => ({
+  name: "",
+  company: "",
+  phone: "",
+  email: "",
+});
 
 export function Apply() {
   const { member, apply } = useAuth();
@@ -11,9 +27,53 @@ export function Apply() {
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [references, setReferences] = useState<ApplicationReference[]>(() =>
+    Array.from({ length: REFERENCE_COUNT }, emptyReference),
+  );
+  const [workPhotos, setWorkPhotos] = useState<string[]>([]);
+  const [photoBusy, setPhotoBusy] = useState(false);
 
   if (member) {
     return <Navigate to="/membership" replace />;
+  }
+
+  function updateReference(
+    index: number,
+    field: keyof ApplicationReference,
+    value: string,
+  ) {
+    setReferences((prev) =>
+      prev.map((ref, i) => (i === index ? { ...ref, [field]: value } : ref)),
+    );
+  }
+
+  async function onPhotosSelected(files: FileList | null) {
+    if (!files?.length) return;
+    setError(null);
+    setPhotoBusy(true);
+    try {
+      const incoming = Array.from(files).slice(0, MAX_PHOTOS);
+      const compressed = await Promise.all(incoming.map((f) => fileToCompressedDataUrl(f)));
+      const next = [...workPhotos, ...compressed].slice(0, MAX_PHOTOS);
+      if (next.length < MIN_PHOTOS) {
+        setWorkPhotos(next);
+        setError(`Please upload at least ${MIN_PHOTOS} unique photos of your work.`);
+        return;
+      }
+      if (!photosAreUnique(next)) {
+        setError("Please upload unique photos — the same image cannot be used twice.");
+        return;
+      }
+      setWorkPhotos(next);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not read those photos.");
+    } finally {
+      setPhotoBusy(false);
+    }
+  }
+
+  function removePhoto(index: number) {
+    setWorkPhotos((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -24,6 +84,29 @@ export function Apply() {
       setError("Please confirm you agree to the Terms and Privacy Policy.");
       return;
     }
+
+    const cleanedRefs = references.map((ref) => ({
+      name: ref.name.trim(),
+      company: ref.company.trim(),
+      phone: ref.phone.trim(),
+      email: ref.email.trim().toLowerCase(),
+    }));
+    if (
+      cleanedRefs.length !== REFERENCE_COUNT ||
+      cleanedRefs.some((ref) => !ref.name || !ref.company || !ref.phone || !ref.email)
+    ) {
+      setError("Please complete all 5 references with name, company, phone, and email.");
+      return;
+    }
+    if (workPhotos.length < MIN_PHOTOS) {
+      setError(`Please upload at least ${MIN_PHOTOS} unique photos of your work.`);
+      return;
+    }
+    if (!photosAreUnique(workPhotos)) {
+      setError("Please upload unique photos — the same image cannot be used twice.");
+      return;
+    }
+
     const data = new FormData(e.currentTarget);
     const payload: ApplicationInput = {
       name: String(data.get("name")).trim(),
@@ -38,6 +121,8 @@ export function Apply() {
       insuranceNotes: String(data.get("insuranceNotes")).trim(),
       licenseNotes: String(data.get("licenseNotes")).trim(),
       aboutWork: String(data.get("aboutWork")).trim(),
+      references: cleanedRefs,
+      workPhotos,
     };
     const result = await apply(payload);
     if (result.ok) {
@@ -45,6 +130,8 @@ export function Apply() {
       setSubmitted(true);
       e.currentTarget.reset();
       setAgreeTerms(false);
+      setReferences(Array.from({ length: REFERENCE_COUNT }, emptyReference));
+      setWorkPhotos([]);
     } else {
       setError(result.message);
     }
@@ -174,6 +261,101 @@ export function Apply() {
                   />
                 </label>
 
+                <h2 className="apply-section-title">Professional references</h2>
+                <p className="apply-section-note">
+                  List 5 references with contact information — customers, suppliers, or trade peers
+                  who can speak to your work.
+                </p>
+                <div className="apply-references">
+                  {references.map((ref, index) => (
+                    <fieldset key={index} className="apply-reference">
+                      <legend>Reference {index + 1}</legend>
+                      <div className="auth-form__grid">
+                        <label>
+                          <span>Full name</span>
+                          <input
+                            required
+                            maxLength={120}
+                            value={ref.name}
+                            onChange={(e) => updateReference(index, "name", e.target.value)}
+                            autoComplete="off"
+                          />
+                        </label>
+                        <label>
+                          <span>Company / relationship</span>
+                          <input
+                            required
+                            maxLength={160}
+                            value={ref.company}
+                            onChange={(e) => updateReference(index, "company", e.target.value)}
+                            placeholder="Company or how you know them"
+                            autoComplete="off"
+                          />
+                        </label>
+                        <label>
+                          <span>Phone</span>
+                          <input
+                            type="tel"
+                            required
+                            maxLength={40}
+                            value={ref.phone}
+                            onChange={(e) => updateReference(index, "phone", e.target.value)}
+                            autoComplete="off"
+                          />
+                        </label>
+                        <label>
+                          <span>Email</span>
+                          <input
+                            type="email"
+                            required
+                            maxLength={160}
+                            value={ref.email}
+                            onChange={(e) => updateReference(index, "email", e.target.value)}
+                            autoComplete="off"
+                          />
+                        </label>
+                      </div>
+                    </fieldset>
+                  ))}
+                </div>
+
+                <h2 className="apply-section-title">Photos of your work</h2>
+                <p className="apply-section-note">
+                  Upload at least 2 unique photos of completed work (up to {MAX_PHOTOS}). Photos are
+                  reviewed with your application and are not shown on the public directory.
+                </p>
+                <div className="apply-photos">
+                  <label className="apply-photos__picker">
+                    <span>{photoBusy ? "Processing photos…" : "Choose photos"}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      disabled={photoBusy || workPhotos.length >= MAX_PHOTOS}
+                      onChange={(e) => {
+                        void onPhotosSelected(e.target.files);
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
+                  <p className="apply-photos__count">
+                    {workPhotos.length} of {MIN_PHOTOS}+ selected
+                    {workPhotos.length < MIN_PHOTOS ? " (minimum not met yet)" : ""}
+                  </p>
+                  {workPhotos.length > 0 ? (
+                    <ul className="apply-photos__grid">
+                      {workPhotos.map((src, index) => (
+                        <li key={`${index}-${src.slice(-24)}`}>
+                          <img src={src} alt={`Work sample ${index + 1}`} />
+                          <button type="button" onClick={() => removePhoto(index)}>
+                            Remove
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+
                 <label className="attest-check">
                   <input
                     type="checkbox"
@@ -188,7 +370,11 @@ export function Apply() {
                   </span>
                 </label>
 
-                <button type="submit" className="btn btn--primary">
+                <button
+                  type="submit"
+                  className="btn btn--primary"
+                  disabled={photoBusy}
+                >
                   Submit member application
                 </button>
                 <p className="auth-note">

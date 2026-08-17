@@ -92,6 +92,36 @@ export function Admin() {
                         {app.insuranceNotes ? <p>Insurance: {app.insuranceNotes}</p> : null}
                         {app.licenseNotes ? <p>Licenses: {app.licenseNotes}</p> : null}
                         {app.aboutWork ? <p>{app.aboutWork}</p> : null}
+                        {app.references && app.references.length > 0 ? (
+                          <div className="admin-refs">
+                            <h4>References</h4>
+                            <ol>
+                              {app.references.map((ref, i) => (
+                                <li key={`${ref.email}-${i}`}>
+                                  <strong>{ref.name}</strong>
+                                  {ref.company ? ` · ${ref.company}` : ""}
+                                  <br />
+                                  {ref.phone}
+                                  {ref.email ? ` · ${ref.email}` : ""}
+                                </li>
+                              ))}
+                            </ol>
+                          </div>
+                        ) : null}
+                        {app.workPhotos && app.workPhotos.length > 0 ? (
+                          <div className="admin-photos">
+                            <h4>Work photos ({app.workPhotos.length})</h4>
+                            <ul className="admin-photos__grid">
+                              {app.workPhotos.map((src, i) => (
+                                <li key={`${i}-${src.slice(-20)}`}>
+                                  <a href={src} target="_blank" rel="noreferrer">
+                                    <img src={src} alt={`Applicant work sample ${i + 1}`} />
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : null}
                         <div className="admin-actions">
                           <button
                             type="button"

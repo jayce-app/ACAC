@@ -18,6 +18,8 @@ create table if not exists public.profiles (
   insurance_notes text not null default '',
   license_notes text not null default '',
   about_work text not null default '',
+  "references" jsonb not null default '[]'::jsonb,
+  work_photos jsonb not null default '[]'::jsonb,
   created_at timestamptz not null default now()
 );
 
@@ -92,7 +94,8 @@ as $$
 begin
   insert into public.profiles (
     id, email, full_name, company, trade, phone, status, role,
-    years_in_business, service_area, website, insurance_notes, license_notes, about_work
+    years_in_business, service_area, website, insurance_notes, license_notes, about_work,
+    "references", work_photos
   )
   values (
     new.id,
@@ -108,7 +111,9 @@ begin
     coalesce(new.raw_user_meta_data->>'website', ''),
     coalesce(new.raw_user_meta_data->>'insurance_notes', ''),
     coalesce(new.raw_user_meta_data->>'license_notes', ''),
-    coalesce(new.raw_user_meta_data->>'about_work', '')
+    coalesce(new.raw_user_meta_data->>'about_work', ''),
+    '[]'::jsonb,
+    '[]'::jsonb
   );
   return new;
 end;

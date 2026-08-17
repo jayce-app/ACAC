@@ -24,4 +24,8 @@ export type ProfileRow = {
   insurance_notes?: string | null;
   license_notes?: string | null;
   about_work?: string | null;
+  references?:
+    | { name: string; company: string; phone: string; email: string }[]
+    | null;
+  work_photos?: string[] | null;
 };

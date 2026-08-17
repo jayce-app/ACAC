@@ -27,7 +27,8 @@ export function Privacy() {
           <ul>
             <li>
               <strong>Membership application data:</strong> name, company, trade/specialty, phone,
-              email, and password
+              email, password, business details, professional references, and work-sample photos you
+              upload for vetting
             </li>
             <li>
               <strong>Lounge activity:</strong> bid posts, discussion posts, and accountability /

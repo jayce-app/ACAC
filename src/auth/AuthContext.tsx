@@ -9,6 +9,13 @@ import {
 } from "react";
 import { isSupabaseConfigured, supabase, type ProfileRow } from "../lib/supabase";
 
+export type ApplicationReference = {
+  name: string;
+  company: string;
+  phone: string;
+  email: string;
+};
+
 export type ApplicationDetails = {
   yearsInBusiness?: string;
   serviceArea?: string;
@@ -16,6 +23,8 @@ export type ApplicationDetails = {
   insuranceNotes?: string;
   licenseNotes?: string;
   aboutWork?: string;
+  references?: ApplicationReference[];
+  workPhotos?: string[];
 };
 
 export type Member = {
@@ -83,6 +92,8 @@ function profileToMember(p: ProfileRow): Member {
     insuranceNotes: p.insurance_notes ?? undefined,
     licenseNotes: p.license_notes ?? undefined,
     aboutWork: p.about_work ?? undefined,
+    references: Array.isArray(p.references) ? p.references : undefined,
+    workPhotos: Array.isArray(p.work_photos) ? p.work_photos : undefined,
   };
 }
 
@@ -301,6 +312,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               insurance_notes: data.insuranceNotes ?? "",
               license_notes: data.licenseNotes ?? "",
               about_work: data.aboutWork ?? "",
+              references: data.references ?? [],
+              work_photos: data.workPhotos ?? [],
             })
             .eq("id", signUpData.user.id);
         }

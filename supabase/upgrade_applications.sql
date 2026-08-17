@@ -6,3 +6,5 @@ alter table public.profiles add column if not exists website text not null defau
 alter table public.profiles add column if not exists insurance_notes text not null default '';
 alter table public.profiles add column if not exists license_notes text not null default '';
 alter table public.profiles add column if not exists about_work text not null default '';
+alter table public.profiles add column if not exists "references" jsonb not null default '[]'::jsonb;
+alter table public.profiles add column if not exists work_photos jsonb not null default '[]'::jsonb;
