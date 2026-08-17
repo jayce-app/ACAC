@@ -1,11 +1,11 @@
 # Project photos
 
-Drop image files here (`jpg`, `png`, or `webp`), then register each one in
-`src/data/projects.ts`.
+Drop image files here (`jpg`, `png`, or `webp`), then add the path to
+`src/data/projects.ts` → `projectPhotos`.
 
-Collages:
+No titles or categories needed — it's a photo dump until projects are grouped later.
 
-- `work-collage.jpg` — full Projects page mosaic
-- `work-collage-home.jpg` — Home page teaser mosaic
+Collage assets (optional, used on Home):
 
-Rebuild collages after adding many new photos if you want them included in the mosaic.
+- `work-collage-home.jpg`
+- `work-collage.jpg`

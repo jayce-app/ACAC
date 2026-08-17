@@ -1,16 +1,10 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { projectCategories, projects, type Project } from "../data/projects";
+import { projectPhotos } from "../data/projects";
 import "./Projects.css";
 
 export function Projects() {
-  const [filter, setFilter] = useState<(typeof projectCategories)[number]>("All");
-  const [active, setActive] = useState<Project | null>(null);
-
-  const visible = useMemo(
-    () => (filter === "All" ? projects : projects.filter((p) => p.category === filter)),
-    [filter],
-  );
+  const [active, setActive] = useState<string | null>(null);
 
   return (
     <div className="projects-page">
@@ -18,83 +12,30 @@ export function Projects() {
         <div className="page-hero__inner">
           <p className="eyebrow">Our work</p>
           <h1>Projects</h1>
-          <p>
-            Custom metal buildings, timber structures, interiors, and site work across Southeast
-            Texas. Click a photo to view it larger.
-          </p>
+          <p>A look at jobs across Southeast Texas. Click any photo to enlarge.</p>
         </div>
       </header>
 
       <section className="band band--projects" aria-labelledby="projects-gallery-title">
         <div className="band__inner reveal">
-          <figure className="projects-collage">
-            <img
-              src="/projects/work-collage.jpg"
-              alt="Project collage — metal buildings, custom timber work, interiors, and dirt work by TX Ropers Construction"
-              width={2400}
-              height={1500}
-              loading="eager"
-            />
-          </figure>
+          <h2 id="projects-gallery-title" className="sr-only">
+            Project photos
+          </h2>
 
-          <div className="projects-toolbar">
-            <h2 id="projects-gallery-title" className="sr-only">
-              Project gallery
-            </h2>
-            <div className="projects-filters" role="group" aria-label="Filter by category">
-              {projectCategories.map((category) => (
+          <ul className="projects-grid">
+            {projectPhotos.map((src) => (
+              <li key={src}>
                 <button
-                  key={category}
                   type="button"
-                  className={
-                    filter === category ? "projects-filter is-active" : "projects-filter"
-                  }
-                  onClick={() => setFilter(category)}
+                  className="project-tile"
+                  onClick={() => setActive(src)}
+                  aria-label="View photo larger"
                 >
-                  {category}
+                  <img src={src} alt="" loading="lazy" width={800} height={560} />
                 </button>
-              ))}
-            </div>
-          </div>
-
-          {visible.length === 0 ? (
-            <p className="projects-empty">
-              No projects in this category yet. Add photos under{" "}
-              <code>public/projects/</code> and list them in <code>src/data/projects.ts</code>.
-            </p>
-          ) : (
-            <ul className="projects-grid">
-              {visible.map((project) => (
-                <li key={project.id}>
-                  <button
-                    type="button"
-                    className="project-tile"
-                    onClick={() => setActive(project)}
-                  >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      loading="lazy"
-                      width={800}
-                      height={560}
-                    />
-                    <span className="project-tile__meta">
-                      <span className="project-tile__category">{project.category}</span>
-                      <span className="project-tile__title">{project.title}</span>
-                      {project.location ? (
-                        <span className="project-tile__location">{project.location}</span>
-                      ) : null}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <p className="projects-upload-note">
-            To add more photos, place files in <code>public/projects/</code> and add an entry in{" "}
-            <code>src/data/projects.ts</code>. See that folder’s README for steps.
-          </p>
+              </li>
+            ))}
+          </ul>
 
           <div className="projects-cta">
             <Link to="/contact" className="btn btn--primary">
@@ -109,7 +50,7 @@ export function Projects() {
           className="project-lightbox"
           role="dialog"
           aria-modal="true"
-          aria-label={active.title}
+          aria-label="Project photo"
           onClick={() => setActive(null)}
           onKeyDown={(event) => {
             if (event.key === "Escape") setActive(null);
@@ -127,12 +68,7 @@ export function Projects() {
             className="project-lightbox__figure"
             onClick={(event) => event.stopPropagation()}
           >
-            <img src={active.image} alt={active.title} />
-            <figcaption>
-              <strong>{active.title}</strong>
-              {active.location ? ` — ${active.location}` : ""}
-              {active.blurb ? <span>{active.blurb}</span> : null}
-            </figcaption>
+            <img src={active} alt="" />
           </figure>
         </div>
       ) : null}
