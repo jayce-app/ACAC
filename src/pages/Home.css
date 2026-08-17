@@ -153,6 +153,49 @@
   color: var(--slate);
 }
 
+.band--work {
+  background: var(--slate);
+  color: var(--white);
+  padding-bottom: 0;
+}
+
+.band--work .section-head {
+  margin-bottom: var(--space-md);
+}
+
+.band--work .section-head h2 {
+  color: var(--white);
+}
+
+.band--work .btn--dark {
+  background: transparent;
+  color: var(--chrome);
+  border: 1px solid rgba(230, 231, 232, 0.45);
+}
+
+.band--work .btn--dark:hover {
+  background: rgba(230, 231, 232, 0.1);
+}
+
+.work-collage {
+  max-width: none;
+  margin: 0;
+}
+
+.work-collage__link {
+  display: block;
+  line-height: 0;
+}
+
+.work-collage img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: min(70vh, 36rem);
+  object-fit: cover;
+  object-position: center;
+}
+
 .band--process {
   background: var(--navy);
   color: var(--white);
@@ -235,6 +278,10 @@
   .service-row {
     grid-template-columns: 1fr;
     gap: 0.5rem;
+  }
+
+  .work-collage img {
+    max-height: 22rem;
   }
 
   .process-list {

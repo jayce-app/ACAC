@@ -2,6 +2,21 @@
   background: var(--field);
 }
 
+.projects-collage {
+  margin: 0 0 var(--space-xl);
+  overflow: hidden;
+  background: var(--slate);
+}
+
+.projects-collage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(62vh, 32rem);
+  object-fit: cover;
+  object-position: center;
+}
+
 .projects-toolbar {
   margin-bottom: var(--space-lg);
 }

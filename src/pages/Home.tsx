@@ -71,6 +71,31 @@ export function Home() {
         </div>
       </section>
 
+      <section className="band band--work" aria-labelledby="home-work-title">
+        <div className="band__inner reveal">
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">Recent work</p>
+              <h2 id="home-work-title">Built across Southeast Texas</h2>
+            </div>
+            <Link to="/projects" className="btn btn--dark">
+              Full gallery
+            </Link>
+          </div>
+        </div>
+        <div className="work-collage reveal">
+          <Link to="/projects" className="work-collage__link" aria-label="View project gallery">
+            <img
+              src="/projects/work-collage-home.jpg"
+              alt="Collage of TX Ropers Construction projects — metal shops, timber pavilion, stall barn, and site work"
+              width={2000}
+              height={900}
+              loading="lazy"
+            />
+          </Link>
+        </div>
+      </section>
+
       <section className="band band--process" aria-labelledby="process-title">
         <div className="band__inner reveal">
           <p className="eyebrow">How a quote starts</p>

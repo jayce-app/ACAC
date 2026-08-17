@@ -19,14 +19,24 @@ export function Projects() {
           <p className="eyebrow">Our work</p>
           <h1>Projects</h1>
           <p>
-            Completed metal buildings, interiors, and site work across Southeast Texas. Click a
-            photo to view it larger.
+            Custom metal buildings, timber structures, interiors, and site work across Southeast
+            Texas. Click a photo to view it larger.
           </p>
         </div>
       </header>
 
       <section className="band band--projects" aria-labelledby="projects-gallery-title">
         <div className="band__inner reveal">
+          <figure className="projects-collage">
+            <img
+              src="/projects/work-collage.jpg"
+              alt="Project collage — metal buildings, custom timber work, interiors, and dirt work by TX Ropers Construction"
+              width={2400}
+              height={1500}
+              loading="eager"
+            />
+          </figure>
+
           <div className="projects-toolbar">
             <h2 id="projects-gallery-title" className="sr-only">
               Project gallery
