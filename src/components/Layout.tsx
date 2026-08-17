@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { BrandLogo } from "./BrandLogo";
 import { company } from "../data/content";
 import "./Layout.css";
 
@@ -16,13 +17,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <header className="site-header">
         <div className="site-header__inner">
           <NavLink to="/" className="brand-mark" aria-label={`${company.name} home`}>
-            <img
-              className="brand-mark__logo"
-              src={company.logo}
-              alt={company.name}
-              width={420}
-              height={120}
-            />
+            <BrandLogo className="brand-mark__logo" alt={company.name} />
           </NavLink>
 
           <nav className="site-nav" aria-label="Primary">
@@ -50,13 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <footer className="site-footer">
         <div className="site-footer__inner">
           <div>
-            <img
-              className="site-footer__logo"
-              src={company.logo}
-              alt={company.legal}
-              width={420}
-              height={120}
-            />
+            <BrandLogo className="site-footer__logo" alt={company.legal} />
             <p className="site-footer__tag">
               Custom residential and commercial construction — Bellville, Southeast Texas.
             </p>
