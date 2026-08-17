@@ -26,19 +26,19 @@ export const residentialServices = [
     text: "Custom residential builds from the ground up — not production homes. We self-perform a large share of the work so the job stays coordinated and accountable.",
   },
   {
-    id: "res-homes",
-    title: "New homes & barndominiums",
-    text: "Custom homes and barndominiums built turnkey, tailored to how you live and work on the property.",
-  },
-  {
     id: "res-metal",
     title: "Metal buildings",
     text: "Shops, barns, covered arenas, and residential metal structures finished for real Texas use.",
   },
   {
     id: "res-site",
-    title: "Dirt work & concrete",
-    text: "Site prep, pads, and concrete so the structure sits right before framing ever starts.",
+    title: "Dirt & site work",
+    text: "Site prep, pads, grading, drainage, and dirt work so the ground is right before the building goes up.",
+  },
+  {
+    id: "res-concrete",
+    title: "Concrete",
+    text: "Slabs, pads, and concrete work tied to the build — poured and finished to match the structure.",
   },
 ];
 
@@ -54,14 +54,14 @@ export const commercialServices = [
     text: "Structural steel, metal buildings, and metal framing — with certified welders on the team.",
   },
   {
+    id: "com-site",
+    title: "Dirt & site work",
+    text: "Commercial site prep, pads, and dirt work so the structure sits right the first time.",
+  },
+  {
     id: "com-remodel",
     title: "Remodeling & additions",
     text: "Commercial remodeling and additions that expand or update what you already have without losing quality.",
-  },
-  {
-    id: "com-turnkey",
-    title: "Turnkey & self-performed work",
-    text: "A lot of what we do is self-performed. That means fewer handoffs and a build that stays under one standard.",
   },
 ];
 

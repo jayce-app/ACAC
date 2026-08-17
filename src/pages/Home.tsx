@@ -32,7 +32,7 @@ export function Home() {
           <h1 className="hero__headline">{company.tagline}</h1>
           <p className="hero__lede">
             Custom residential and commercial construction out of Bellville — metal buildings,
-            barndominiums, structural steel, and turnkey builds across Southeast Texas.
+            structural steel, dirt and site work, and turnkey builds across Southeast Texas.
           </p>
           <div className="hero__actions">
             <Link to="/contact" className="btn btn--primary">
@@ -50,7 +50,7 @@ export function Home() {
           <div className="section-head">
             <div>
               <p className="eyebrow">What we build</p>
-              <h2 id="home-services-title">Residential and commercial, custom and turnkey</h2>
+              <h2 id="home-services-title">Metal buildings, steel, and dirt work</h2>
             </div>
             <Link to="/services" className="btn btn--dark">
               All services

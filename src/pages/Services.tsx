@@ -21,8 +21,8 @@ export function Services() {
           <p className="eyebrow">For homeowners &amp; ranch properties</p>
           <h2 id="residential-title">Residential</h2>
           <p className="services-intro">
-            General construction, new construction, dirt work, concrete, metal buildings, new
-            homes, and barndominiums. Custom work only — we do not do production home builds.
+            General construction, new construction, metal buildings, dirt and site work, and
+            concrete. Custom work only — we do not do production home builds.
           </p>
           <ul className="services-grid">
             {residentialServices.map((service, index) => (
@@ -44,7 +44,8 @@ export function Services() {
           <h2 id="commercial-title">Commercial</h2>
           <p className="services-intro">
             General construction, new construction, structural steel, metal buildings, metal
-            framing, remodeling, and additions — built turnkey with self-performed craft.
+            framing, dirt and site work, remodeling, and additions — built turnkey with
+            self-performed craft.
           </p>
           <ul className="services-grid">
             {commercialServices.map((service, index) => (
