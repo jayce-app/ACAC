@@ -86,6 +86,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <NavLink to="/copyright">© {new Date().getFullYear()} {company.legal}. All rights reserved.</NavLink>
           {" · "}
           <a href="/southeast-texas-construction">Southeast Texas construction resources</a>
+          {" · "}
+          <a href="/southeast-texas-construction#media-converter-title">Photo converter</a>
         </p>
       </footer>
     </>

@@ -53,6 +53,11 @@
   font-weight: 600;
 }
 
+.seo-converter-loading {
+  margin-top: var(--space-xl);
+  color: var(--sky-deep);
+}
+
 @media (max-width: 700px) {
   .seo-keywords {
     columns: 1;

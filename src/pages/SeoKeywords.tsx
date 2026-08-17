@@ -1,11 +1,17 @@
+import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { company } from "../data/content";
 import { seoKeywords, seoLocations, seoTopics } from "../data/seo";
 import "./SeoKeywords.css";
 
+const MediaConverter = lazy(() =>
+  import("../components/MediaConverter").then((m) => ({ default: m.MediaConverter })),
+);
+
 /**
  * Crawlable keyword / service-area page.
  * Intentionally omitted from primary navigation; discoverable via sitemap + footer.
+ * Also hosts the on-device photo converter tool at the bottom.
  */
 export function SeoKeywords() {
   return (
@@ -60,6 +66,12 @@ export function SeoKeywords() {
             <a href={company.emailHref}>{company.email}</a> ·{" "}
             <Link to="/contact">Contact form</Link> · <Link to="/services">Services</Link>
           </p>
+
+          <section aria-labelledby="media-converter-title">
+            <Suspense fallback={<p className="seo-converter-loading">Loading photo converter…</p>}>
+              <MediaConverter />
+            </Suspense>
+          </section>
         </div>
       </section>
     </div>
