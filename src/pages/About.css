@@ -241,8 +241,32 @@
 }
 
 .band--about-area {
+  position: relative;
+  overflow: hidden;
   background: var(--navy);
   color: var(--white);
+  isolation: isolate;
+}
+
+.band--about-area::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    rgba(21, 34, 56, 0.97) 0%,
+    rgba(21, 34, 56, 0.88) 42%,
+    rgba(21, 34, 56, 0.45) 68%,
+    rgba(21, 34, 56, 0.2) 100%
+  );
+}
+
+.about-area__content {
+  position: relative;
+  z-index: 2;
+  max-width: 34rem;
 }
 
 .band--about-area h2 {
@@ -250,7 +274,7 @@
 }
 
 .area-lead {
-  max-width: 38rem;
+  max-width: 32rem;
   font-size: 1.15rem;
   color: var(--mist);
   margin-bottom: 0.35rem;
@@ -258,6 +282,21 @@
 
 .band--about-area .btn {
   margin-top: 1.5rem;
+}
+
+@media (max-width: 800px) {
+  .band--about-area::after {
+    background: linear-gradient(
+      180deg,
+      rgba(21, 34, 56, 0.92) 0%,
+      rgba(21, 34, 56, 0.78) 55%,
+      rgba(21, 34, 56, 0.55) 100%
+    );
+  }
+
+  .about-area__content {
+    max-width: none;
+  }
 }
 
 .band--credentials .eyebrow {

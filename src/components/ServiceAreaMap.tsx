@@ -1,94 +1,131 @@
 /**
- * Service-area map: Texas outline with Bellville pin and radius bands.
- * Pure SVG — no map API key required.
+ * Service-area map: accurate Texas outline with Bellville pin and radius bands.
+ * Pure SVG — no map API key. Intended as a background behind section copy.
  */
 
+/** Geographic bounds of the simplified outline (lon/lat). */
 const TEXAS = {
-  minLon: -106.65,
-  maxLon: -93.5,
-  minLat: 25.84,
-  maxLat: 36.5,
+  minLon: -106.6436,
+  maxLon: -93.5263,
+  minLat: 25.8876,
+  maxLat: 36.5019,
 };
 
-const BELLVILLE = { lat: 29.9502, lon: -96.2572, label: "Bellville" };
+const BELLVILLE = { lat: 29.9502, lon: -96.2572 };
 
-/** Rough Texas outline in lon/lat pairs (clockwise-ish). */
+/** Simplified Texas outline from GeoJSON (Douglas–Peucker). */
 const TEXAS_OUTLINE: Array<[number, number]> = [
-  [-106.65, 31.98],
-  [-106.53, 31.78],
-  [-105.87, 31.47],
-  [-104.91, 30.87],
-  [-104.69, 30.12],
-  [-104.52, 29.67],
-  [-103.32, 29.04],
-  [-103.06, 28.98],
-  [-102.0, 29.79],
-  [-101.4, 29.72],
-  [-100.96, 29.35],
-  [-100.4, 28.4],
-  [-99.51, 27.54],
-  [-99.12, 26.4],
-  [-98.2, 26.05],
-  [-97.85, 25.95],
-  [-97.4, 25.84],
-  [-97.14, 26.0],
-  [-97.4, 26.85],
-  [-97.2, 27.6],
-  [-96.9, 28.15],
-  [-95.8, 28.75],
-  [-94.8, 29.3],
-  [-93.9, 29.75],
-  [-93.84, 29.98],
-  [-93.51, 31.15],
-  [-93.55, 31.7],
-  [-93.85, 31.95],
-  [-94.04, 33.55],
-  [-94.43, 33.64],
-  [-95.15, 33.87],
-  [-95.9, 33.96],
-  [-96.75, 33.87],
-  [-97.8, 33.98],
-  [-98.5, 34.0],
-  [-99.5, 34.38],
-  [-100.0, 34.56],
-  [-100.5, 34.6],
-  [-101.4, 35.2],
-  [-102.0, 36.1],
-  [-103.0, 36.5],
-  [-103.06, 32.0],
-  [-106.53, 32.0],
-  [-106.65, 31.98],
+  [-101.8129, 36.5019],
+  [-100.0001, 36.5019],
+  [-100.0001, 34.563],
+  [-99.6988, 34.3823],
+  [-99.2607, 34.4042],
+  [-99.1895, 34.2125],
+  [-98.5706, 34.1468],
+  [-98.4884, 34.0646],
+  [-98.3625, 34.1577],
+  [-98.1708, 34.1139],
+  [-97.8695, 33.851],
+  [-97.6943, 33.9825],
+  [-97.3711, 33.8236],
+  [-97.2561, 33.862],
+  [-97.174, 33.736],
+  [-96.922, 33.9606],
+  [-96.8508, 33.8455],
+  [-96.6318, 33.8455],
+  [-96.347, 33.6867],
+  [-96.1498, 33.8401],
+  [-95.6021, 33.9332],
+  [-95.2899, 33.8729],
+  [-95.2242, 33.9606],
+  [-94.3807, 33.5443],
+  [-94.0412, 33.5498],
+  [-94.0412, 31.9943],
+  [-93.8221, 31.7753],
+  [-93.8166, 31.5562],
+  [-93.5428, 31.1509],
+  [-93.5263, 30.9373],
+  [-93.729, 30.5758],
+  [-93.6906, 30.1431],
+  [-93.9261, 29.7871],
+  [-93.8385, 29.6885],
+  [-94.5231, 29.5461],
+  [-94.7094, 29.6228],
+  [-94.7422, 29.7871],
+  [-94.9668, 29.6995],
+  [-95.0161, 29.5571],
+  [-94.912, 29.4969],
+  [-94.8956, 29.3106],
+  [-95.383, 28.867],
+  [-95.9855, 28.6041],
+  [-96.4784, 28.5986],
+  [-96.6646, 28.6972],
+  [-96.4017, 28.4398],
+  [-96.5934, 28.3577],
+  [-96.7742, 28.4069],
+  [-96.8015, 28.2262],
+  [-97.0261, 28.04],
+  [-97.5409, 27.2294],
+  [-97.4259, 27.2623],
+  [-97.5628, 26.8405],
+  [-97.2178, 25.9916],
+  [-97.5245, 25.8876],
+  [-97.6505, 26.019],
+  [-98.1982, 26.0573],
+  [-99.1731, 26.5393],
+  [-99.2662, 26.8405],
+  [-99.4469, 27.0213],
+  [-99.4798, 27.4813],
+  [-100.2958, 28.281],
+  [-100.6737, 29.1025],
+  [-101.2598, 29.5352],
+  [-101.4131, 29.7543],
+  [-102.3387, 29.8693],
+  [-102.388, 29.7652],
+  [-102.629, 29.7324],
+  [-103.1165, 28.9875],
+  [-103.2808, 28.982],
+  [-104.5076, 29.6393],
+  [-104.8965, 30.5703],
+  [-106.2054, 31.4686],
+  [-106.3807, 31.7314],
+  [-106.6436, 31.9012],
+  [-106.6162, 31.9998],
+  [-103.0672, 31.9998],
+  [-103.0398, 36.5019],
 ];
 
-const WIDTH = 640;
-const HEIGHT = 560;
+const WIDTH = 800;
+const HEIGHT = 756;
+const PAD = 12;
 const LON_SPAN = TEXAS.maxLon - TEXAS.minLon;
 const LAT_SPAN = TEXAS.maxLat - TEXAS.minLat;
 const MILES_PER_DEG_LAT = 69.0;
 const MILES_PER_DEG_LON = Math.cos((BELLVILLE.lat * Math.PI) / 180) * 69.17;
 
 function project(lon: number, lat: number) {
-  const x = ((lon - TEXAS.minLon) / LON_SPAN) * WIDTH;
-  const y = ((TEXAS.maxLat - lat) / LAT_SPAN) * HEIGHT;
+  const x = PAD + ((lon - TEXAS.minLon) / LON_SPAN) * (WIDTH - 2 * PAD);
+  const y = PAD + ((TEXAS.maxLat - lat) / LAT_SPAN) * (HEIGHT - 2 * PAD);
   return { x, y };
 }
 
 function radiusAxes(miles: number) {
-  const rx = (miles / MILES_PER_DEG_LON / LON_SPAN) * WIDTH;
-  const ry = (miles / MILES_PER_DEG_LAT / LAT_SPAN) * HEIGHT;
+  const rx = (miles / MILES_PER_DEG_LON / LON_SPAN) * (WIDTH - 2 * PAD);
+  const ry = (miles / MILES_PER_DEG_LAT / LAT_SPAN) * (HEIGHT - 2 * PAD);
   return { rx, ry };
 }
 
-const texasPath = TEXAS_OUTLINE.map(([lon, lat], i) => {
-  const { x, y } = project(lon, lat);
-  return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
-}).join(" ") + " Z";
+const texasPath =
+  TEXAS_OUTLINE.map(([lon, lat], i) => {
+    const { x, y } = project(lon, lat);
+    return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ") + " Z";
 
-const bands = [
-  { miles: 100, label: "100 mi — special projects", fill: "rgba(192, 197, 204, 0.12)", stroke: "rgba(192, 197, 204, 0.45)" },
-  { miles: 50, label: "50 mi — primary area", fill: "rgba(192, 197, 204, 0.22)", stroke: "rgba(230, 231, 232, 0.75)" },
-  { miles: 25, label: "25 mi", fill: "rgba(230, 231, 232, 0.18)", stroke: "rgba(230, 231, 232, 0.55)" },
-];
+export const SERVICE_AREA_BANDS = [
+  { miles: 100, label: "100 mi — special projects" },
+  { miles: 50, label: "50 mi — primary area" },
+  { miles: 25, label: "25 mi" },
+] as const;
 
 const pin = project(BELLVILLE.lon, BELLVILLE.lat);
 
@@ -99,32 +136,45 @@ const nearby = [
   { name: "Brenham", lat: 30.17, lon: -96.4 },
 ];
 
-export function ServiceAreaMap() {
+type Props = {
+  /** Decorative background mode — no caption, softer styling. */
+  background?: boolean;
+};
+
+export function ServiceAreaMap({ background = false }: Props) {
   return (
-    <figure className="service-map">
+    <div className={background ? "service-map service-map--bg" : "service-map"}>
       <svg
         className="service-map__svg"
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-        role="img"
-        aria-label="Map of Texas showing Bellville and the TX Ropers Construction service area radius"
+        role={background ? "presentation" : "img"}
+        aria-hidden={background ? true : undefined}
+        aria-label={
+          background
+            ? undefined
+            : "Map of Texas showing Bellville and the TX Ropers Construction service area radius"
+        }
       >
         <defs>
           <clipPath id="texas-clip">
             <path d={texasPath} />
           </clipPath>
-          <linearGradient id="texas-fill" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#1a2230" />
-            <stop offset="100%" stopColor="#0c1018" />
-          </linearGradient>
         </defs>
 
-        <rect width={WIDTH} height={HEIGHT} fill="#07090c" />
-
-        <path d={texasPath} fill="url(#texas-fill)" stroke="#c0c5cc" strokeWidth="2.25" />
+        <path
+          d={texasPath}
+          className="service-map__state"
+          fill="rgba(192, 197, 204, 0.07)"
+          stroke="rgba(230, 231, 232, 0.55)"
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
 
         <g clipPath="url(#texas-clip)">
-          {bands.map((band) => {
+          {SERVICE_AREA_BANDS.map((band) => {
             const { rx, ry } = radiusAxes(band.miles);
+            const isPrimary = band.miles === 50;
+            const isOuter = band.miles === 100;
             return (
               <ellipse
                 key={band.miles}
@@ -132,10 +182,20 @@ export function ServiceAreaMap() {
                 cy={pin.y}
                 rx={rx}
                 ry={ry}
-                fill={band.fill}
-                stroke={band.stroke}
-                strokeWidth="1.5"
-                strokeDasharray={band.miles === 100 ? "5 4" : undefined}
+                fill={
+                  isPrimary
+                    ? "rgba(192, 197, 204, 0.16)"
+                    : isOuter
+                      ? "rgba(192, 197, 204, 0.06)"
+                      : "rgba(230, 231, 232, 0.1)"
+                }
+                stroke={
+                  isPrimary
+                    ? "rgba(230, 231, 232, 0.7)"
+                    : "rgba(192, 197, 204, 0.4)"
+                }
+                strokeWidth={isPrimary ? 1.75 : 1.25}
+                strokeDasharray={isOuter ? "6 5" : undefined}
               />
             );
           })}
@@ -144,13 +204,13 @@ export function ServiceAreaMap() {
         {nearby.map((city) => {
           const p = project(city.lon, city.lat);
           return (
-            <g key={city.name}>
-              <circle cx={p.x} cy={p.y} r="2.5" fill="#6b7280" />
+            <g key={city.name} className="service-map__city">
+              <circle cx={p.x} cy={p.y} r="2.25" fill="rgba(154, 161, 171, 0.85)" />
               <text
-                x={p.x + 6}
+                x={p.x + 7}
                 y={p.y + 3}
-                fill="#9aa1ab"
-                fontSize="11"
+                fill="rgba(192, 197, 204, 0.75)"
+                fontSize="13"
                 fontFamily="Outfit, system-ui, sans-serif"
               >
                 {city.name}
@@ -159,14 +219,14 @@ export function ServiceAreaMap() {
           );
         })}
 
-        <g>
-          <circle cx={pin.x} cy={pin.y} r="7" fill="#e6e7e8" />
-          <circle cx={pin.x} cy={pin.y} r="3.5" fill="#050505" />
+        <g className="service-map__pin">
+          <circle cx={pin.x} cy={pin.y} r="8" fill="rgba(230, 231, 232, 0.95)" />
+          <circle cx={pin.x} cy={pin.y} r="3.75" fill="#152238" />
           <text
             x={pin.x + 12}
-            y={pin.y - 8}
+            y={pin.y - 10}
             fill="#e6e7e8"
-            fontSize="14"
+            fontSize="15"
             fontWeight="700"
             fontFamily="Oswald, Arial Narrow, sans-serif"
             letterSpacing="0.06em"
@@ -174,38 +234,28 @@ export function ServiceAreaMap() {
             BELLVILLE
           </text>
         </g>
-
-        <text
-          x="24"
-          y="36"
-          fill="#c0c5cc"
-          fontSize="18"
-          fontWeight="600"
-          fontFamily="Oswald, Arial Narrow, sans-serif"
-          letterSpacing="0.08em"
-        >
-          TEXAS
-        </text>
       </svg>
+    </div>
+  );
+}
 
-      <figcaption className="service-map__legend">
-        <ul>
-          {bands.map((band) => (
-            <li key={band.miles}>
-              <span
-                className={
-                  band.miles === 50
-                    ? "service-map__swatch service-map__swatch--primary"
-                    : band.miles === 100
-                      ? "service-map__swatch service-map__swatch--outer"
-                      : "service-map__swatch"
-                }
-              />
-              {band.label}
-            </li>
-          ))}
-        </ul>
-      </figcaption>
-    </figure>
+export function ServiceAreaLegend() {
+  return (
+    <ul className="service-map__legend">
+      {SERVICE_AREA_BANDS.map((band) => (
+        <li key={band.miles}>
+          <span
+            className={
+              band.miles === 50
+                ? "service-map__swatch service-map__swatch--primary"
+                : band.miles === 100
+                  ? "service-map__swatch service-map__swatch--outer"
+                  : "service-map__swatch"
+            }
+          />
+          {band.label}
+        </li>
+      ))}
+    </ul>
   );
 }
