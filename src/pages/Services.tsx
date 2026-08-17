@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import { crewApproach, serviceGroups } from "../data/content";
+import { ServiceAreaLegend, ServiceAreaMap } from "../components/ServiceAreaMap";
+import "../components/ServiceAreaMap.css";
+import { company, crewApproach, serviceGroups } from "../data/content";
 import "./Services.css";
 
 export function Services() {
@@ -15,6 +17,19 @@ export function Services() {
           </p>
         </div>
       </header>
+
+      <section className="band band--service-area" aria-labelledby="area-title">
+        <ServiceAreaMap background />
+        <div className="band__inner service-area__content reveal">
+          <p className="eyebrow">Service area</p>
+          <h2 id="area-title">Southeast Texas</h2>
+          <p className="area-lead">{company.serviceArea}</p>
+          <ServiceAreaLegend />
+          <Link to="/contact" className="btn btn--primary">
+            Get in touch
+          </Link>
+        </div>
+      </section>
 
       <section className="band band--crew" aria-labelledby="crew-title">
         <div className="band__inner reveal">

@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ServiceAreaLegend, ServiceAreaMap } from "../components/ServiceAreaMap";
-import "../components/ServiceAreaMap.css";
 import { about, company, credentials, owner } from "../data/content";
 import "./About.css";
 
@@ -116,19 +114,6 @@ export function About() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      <section className="band band--about-area" aria-labelledby="area-title">
-        <ServiceAreaMap background />
-        <div className="band__inner about-area__content reveal">
-          <p className="eyebrow">Service area</p>
-          <h2 id="area-title">Southeast Texas</h2>
-          <p className="area-lead">{company.serviceArea}</p>
-          <ServiceAreaLegend />
-          <Link to="/contact" className="btn btn--primary">
-            Get in touch
-          </Link>
         </div>
       </section>
     </div>
