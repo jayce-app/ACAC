@@ -253,7 +253,11 @@
   max-width: 38rem;
   font-size: 1.15rem;
   color: var(--mist);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.band--about-area .btn {
+  margin-top: 1.5rem;
 }
 
 .band--credentials .eyebrow {

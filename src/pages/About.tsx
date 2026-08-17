@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ServiceAreaMap } from "../components/ServiceAreaMap";
+import "../components/ServiceAreaMap.css";
 import { about, company, credentials, owner } from "../data/content";
 import "./About.css";
 
@@ -135,6 +137,7 @@ export function About() {
           <p className="eyebrow">Service area</p>
           <h2 id="area-title">Southeast Texas</h2>
           <p className="area-lead">{company.serviceArea}</p>
+          <ServiceAreaMap />
           <Link to="/contact" className="btn btn--primary">
             Get in touch
           </Link>
