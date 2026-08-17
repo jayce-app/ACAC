@@ -4,9 +4,53 @@
   margin: 0 0 var(--space-lg);
 }
 
-.band--crew {
+.band--service-area {
+  position: relative;
+  overflow: hidden;
   background: var(--navy);
   color: var(--white);
+  isolation: isolate;
+}
+
+.band--service-area::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    rgba(21, 34, 56, 0.97) 0%,
+    rgba(21, 34, 56, 0.88) 42%,
+    rgba(21, 34, 56, 0.45) 68%,
+    rgba(21, 34, 56, 0.2) 100%
+  );
+}
+
+.service-area__content {
+  position: relative;
+  z-index: 2;
+  max-width: 34rem;
+}
+
+.band--service-area h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.area-lead {
+  max-width: 32rem;
+  font-size: 1.15rem;
+  color: var(--mist);
+  margin-bottom: 0.35rem;
+}
+
+.band--service-area .btn {
+  margin-top: 1.5rem;
+}
+
+.band--crew {
+  background: var(--white);
+  color: var(--ink);
 }
 
 .band--crew h2 {
@@ -17,8 +61,12 @@
 .crew-lead {
   max-width: 40rem;
   font-size: 1.12rem;
-  color: var(--mist);
+  color: var(--slate);
   margin: 0.85rem 0 0;
+}
+
+.band--crew .eyebrow {
+  color: var(--spark-deep);
 }
 
 .band--list {
@@ -114,6 +162,21 @@
   max-width: 34rem;
   color: var(--mist);
   margin-bottom: 1.5rem;
+}
+
+@media (max-width: 800px) {
+  .band--service-area::after {
+    background: linear-gradient(
+      180deg,
+      rgba(21, 34, 56, 0.92) 0%,
+      rgba(21, 34, 56, 0.78) 55%,
+      rgba(21, 34, 56, 0.55) 100%
+    );
+  }
+
+  .service-area__content {
+    max-width: none;
+  }
 }
 
 @media (max-width: 640px) {
