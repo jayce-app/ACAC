@@ -1,0 +1,56 @@
+.band--copyright {
+  background: var(--white);
+}
+
+.copyright-doc {
+  max-width: 42rem;
+}
+
+.copyright-doc__lead {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin: 0 0 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--spark);
+}
+
+.copyright-doc h2 {
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  margin: 2rem 0 0.65rem;
+}
+
+.copyright-doc p {
+  margin: 0 0 1rem;
+  color: var(--gunmetal);
+}
+
+.copyright-doc ul {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  color: var(--gunmetal);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.copyright-doc a {
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.copyright-doc a:hover {
+  color: var(--spark-deep);
+}
+
+.copyright-doc__meta {
+  margin-top: 2.5rem !important;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--field-deep);
+  font-size: 0.95rem;
+  color: var(--sky-deep) !important;
+}

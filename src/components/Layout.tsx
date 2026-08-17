@@ -78,9 +78,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink to="/projects">Projects</NavLink>
             <NavLink to="/about">About</NavLink>
             <NavLink to="/contact">Contact</NavLink>
+            <NavLink to="/copyright">Copyright</NavLink>
           </div>
         </div>
         <p className="site-footer__crawl">
+          <NavLink to="/copyright">© {new Date().getFullYear()} {company.legal}. All rights reserved.</NavLink>
+          {" · "}
           <a href="/southeast-texas-construction">Southeast Texas construction resources</a>
         </p>
       </footer>
