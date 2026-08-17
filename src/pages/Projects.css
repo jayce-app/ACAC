@@ -1,14 +1,19 @@
 .band--projects {
   background: var(--field);
+  overflow: visible;
+}
+
+.band--projects .band__inner {
+  overflow: visible;
 }
 
 .projects-grid {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.35rem 0 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.55rem;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 3px;
 }
 
 .project-tile {
@@ -20,6 +25,13 @@
   background: var(--slate);
   cursor: pointer;
   overflow: hidden;
+  z-index: 1;
+  transform: scale(1);
+  transform-origin: center center;
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 240ms ease,
+    z-index 0s;
 }
 
 .project-tile img {
@@ -27,20 +39,19 @@
   aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
-  transition: transform 420ms ease, opacity 200ms ease;
+  transition: filter 240ms ease;
 }
 
-.project-tile:nth-child(5n + 1) img,
-.project-tile:nth-child(7n + 3) img {
-  aspect-ratio: 4 / 5;
+.project-tile:hover,
+.project-tile:focus-visible {
+  z-index: 20;
+  transform: scale(1.55);
+  box-shadow: 0 18px 48px rgba(5, 5, 5, 0.45);
 }
 
-.project-tile:nth-child(4n) img {
-  aspect-ratio: 5 / 4;
-}
-
-.project-tile:hover img {
-  transform: scale(1.03);
+.project-tile:hover img,
+.project-tile:focus-visible img {
+  filter: brightness(1.05);
 }
 
 .project-tile--video .project-tile__play {
@@ -49,15 +60,20 @@
   top: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--chrome);
   background: rgba(5, 5, 5, 0.62);
   border: 1px solid rgba(230, 231, 232, 0.55);
-  padding: 0.55rem 0.9rem;
+  padding: 0.4rem 0.65rem;
   pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.project-tile--video:hover .project-tile__play {
+  opacity: 0;
 }
 
 .projects-cta {
@@ -111,22 +127,40 @@
   background: #000;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .projects-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .projects-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .project-tile:hover,
+  .project-tile:focus-visible {
+    transform: scale(1.35);
   }
 }
 
 @media (max-width: 560px) {
   .projects-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.35rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px;
   }
 
-  .project-tile img,
-  .project-tile:nth-child(5n + 1) img,
-  .project-tile:nth-child(7n + 3) img,
-  .project-tile:nth-child(4n) img {
-    aspect-ratio: 1 / 1;
+  .project-tile:hover,
+  .project-tile:focus-visible {
+    transform: scale(1.25);
+  }
+}
+
+@media (hover: none) {
+  .project-tile:hover,
+  .project-tile:focus-visible {
+    transform: none;
+    box-shadow: none;
   }
 }
