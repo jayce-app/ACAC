@@ -12,6 +12,8 @@ export const company = {
   hoursWeekend: "Saturday and Sunday: Closed",
   hours: "Monday–Friday, 8:00 a.m.–5:00 p.m. · Closed Saturday & Sunday",
   facebook: "https://www.facebook.com/p/TX-Ropers-Construction-LLC-100089307615057/",
+  /** Drop your real logo file at public/logo.png — header, footer, and favicon all read this path. */
+  logo: "/logo.png",
   serviceArea:
     "Southeast Texas — primarily within about 50 miles of Bellville. We also travel for special projects.",
   tagline: "Custom built from the dirt up.",
