@@ -1,6 +1,22 @@
 [
   {
     "type": "photo",
+    "src": "/projects/7348624156828523777-2.jpg"
+  },
+  {
+    "type": "photo",
+    "src": "/projects/7045037573491750232-2.jpg"
+  },
+  {
+    "type": "photo",
+    "src": "/projects/6842604383411589686-2.jpg"
+  },
+  {
+    "type": "photo",
+    "src": "/projects/4911699848699129713-2.jpg"
+  },
+  {
+    "type": "photo",
     "src": "/projects/4343254866381783839-2.jpg"
   },
   {
@@ -13,6 +29,14 @@
   },
   {
     "type": "photo",
+    "src": "/projects/844507593257666756-2.jpg"
+  },
+  {
+    "type": "photo",
+    "src": "/projects/68056668507-769b06b3-ac18-4fde-9052-d8034ebd5d5c.jpg"
+  },
+  {
+    "type": "photo",
     "src": "/projects/123-1-4.jpg"
   },
   {
@@ -22,5 +46,9 @@
   {
     "type": "photo",
     "src": "/projects/123-1-2-2.jpg"
+  },
+  {
+    "type": "photo",
+    "src": "/projects/123-1-1-2.jpg"
   }
 ]
