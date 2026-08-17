@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { projectPhotos } from "../data/projects";
+import { projectMedia, type ProjectMedia } from "../data/projects";
 import "./Projects.css";
 
 export function Projects() {
-  const [active, setActive] = useState<string | null>(null);
+  const [active, setActive] = useState<ProjectMedia | null>(null);
 
   return (
     <div className="projects-page">
@@ -12,7 +12,7 @@ export function Projects() {
         <div className="page-hero__inner">
           <p className="eyebrow">Our work</p>
           <h1>Projects</h1>
-          <p>A look at jobs across Southeast Texas. Click any photo to enlarge.</p>
+          <p>A look at jobs across Southeast Texas. Click any photo or clip to enlarge.</p>
         </div>
       </header>
 
@@ -23,15 +23,26 @@ export function Projects() {
           </h2>
 
           <ul className="projects-grid">
-            {projectPhotos.map((src) => (
-              <li key={src}>
+            {projectMedia.map((item) => (
+              <li key={item.type === "photo" ? item.src : item.src}>
                 <button
                   type="button"
-                  className="project-tile"
-                  onClick={() => setActive(src)}
-                  aria-label="View photo larger"
+                  className={item.type === "video" ? "project-tile project-tile--video" : "project-tile"}
+                  onClick={() => setActive(item)}
+                  aria-label={item.type === "video" ? "Play video" : "View photo larger"}
                 >
-                  <img src={src} alt="" loading="lazy" width={800} height={560} />
+                  <img
+                    src={item.type === "photo" ? item.src : item.poster}
+                    alt=""
+                    loading="lazy"
+                    width={800}
+                    height={560}
+                  />
+                  {item.type === "video" ? (
+                    <span className="project-tile__play" aria-hidden="true">
+                      Play
+                    </span>
+                  ) : null}
                 </button>
               </li>
             ))}
@@ -50,7 +61,7 @@ export function Projects() {
           className="project-lightbox"
           role="dialog"
           aria-modal="true"
-          aria-label="Project photo"
+          aria-label={active.type === "video" ? "Project video" : "Project photo"}
           onClick={() => setActive(null)}
           onKeyDown={(event) => {
             if (event.key === "Escape") setActive(null);
@@ -68,7 +79,17 @@ export function Projects() {
             className="project-lightbox__figure"
             onClick={(event) => event.stopPropagation()}
           >
-            <img src={active} alt="" />
+            {active.type === "photo" ? (
+              <img src={active.src} alt="" />
+            ) : (
+              <video
+                src={active.src}
+                poster={active.poster}
+                controls
+                autoPlay
+                playsInline
+              />
+            )}
           </figure>
         </div>
       ) : null}
