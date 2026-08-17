@@ -16,7 +16,7 @@ export const company = {
   logo: "/logo.jpg",
   serviceArea:
     "Southeast Texas — primarily within about 50 miles of Bellville. We also travel for special projects.",
-  tagline: "Custom built from the dirt up.",
+  tagline: "Turning Visions Into Reality",
   mission:
     "By providing a premium product and service, our goal is to help elevate the standard for our industry in our community. We are dedicated to our customers' satisfaction.",
 };
