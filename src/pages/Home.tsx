@@ -41,6 +41,9 @@ export function Home() {
             <Link to="/services" className="btn btn--ghost">
               View services
             </Link>
+            <Link to="/projects" className="btn btn--ghost">
+              See projects
+            </Link>
           </div>
         </div>
       </section>

@@ -5,6 +5,7 @@ import "./Layout.css";
 const links = [
   { to: "/", label: "Home", end: true },
   { to: "/services", label: "Services" },
+  { to: "/projects", label: "Projects" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ];
@@ -69,6 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="site-footer__links">
             <NavLink to="/services">Services</NavLink>
+            <NavLink to="/projects">Projects</NavLink>
             <NavLink to="/about">About</NavLink>
             <NavLink to="/contact">Contact</NavLink>
           </div>

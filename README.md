@@ -4,10 +4,17 @@ Public website for TX Ropers Construction, LLC — Bellville, Texas.
 
 ## Pages
 
-- **Home** — Brand hero, mission, featured services, quote process
+- **Home** — Brand hero, featured services, quote process
 - **Services** — Residential and commercial service lists
+- **Projects** — Photo gallery (`public/projects/` + `src/data/projects.ts`)
 - **About** — Mission, credentials, service area, hours
 - **Contact** — Office phone/email and quote request form
+
+## Adding project photos
+
+1. Drop images into `public/projects/`
+2. Register each photo in `src/data/projects.ts`
+3. See `public/projects/README.md` for details
 
 ## Contact (as shown on site)
 
