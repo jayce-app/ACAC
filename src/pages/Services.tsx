@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { commercialServices, crewApproach, residentialServices } from "../data/content";
+import { crewApproach, serviceGroups } from "../data/content";
 import "./Services.css";
 
 export function Services() {
@@ -24,45 +24,29 @@ export function Services() {
         </div>
       </section>
 
-      <section className="band band--list" aria-labelledby="residential-title">
+      <section className="band band--list" aria-labelledby="services-groups-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">For homeowners &amp; ranch properties</p>
-          <h2 id="residential-title">Residential</h2>
+          <p className="eyebrow">Capabilities</p>
+          <h2 id="services-groups-title">What we take on</h2>
           <p className="services-intro">
-            General construction, new construction, metal buildings, and dirt and site work.
-            Custom work only — we do not do production home builds.
+            Residential and commercial under the same roof — grouped by the work we actually do,
+            not a long list of overlapping titles.
           </p>
-          <ul className="services-grid">
-            {residentialServices.map((service, index) => (
-              <li key={service.id} className="services-item">
-                <span className="services-item__num" aria-hidden="true">
+          <ul className="services-groups">
+            {serviceGroups.map((group, index) => (
+              <li key={group.id} className="services-group">
+                <span className="services-group__num" aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3>{service.title}</h3>
-                <p>{service.text}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="band band--commercial" aria-labelledby="commercial-title">
-        <div className="band__inner reveal">
-          <p className="eyebrow">For businesses &amp; commercial sites</p>
-          <h2 id="commercial-title">Commercial</h2>
-          <p className="services-intro">
-            General construction, new construction, structural steel, metal buildings, metal
-            framing, dirt and site work, remodeling, and additions — delivered turnkey with our
-            crew at the center of the job.
-          </p>
-          <ul className="services-grid">
-            {commercialServices.map((service, index) => (
-              <li key={service.id} className="services-item">
-                <span className="services-item__num" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3>{service.title}</h3>
-                <p>{service.text}</p>
+                <div className="services-group__body">
+                  <h3>{group.title}</h3>
+                  <p>{group.text}</p>
+                  <ul className="services-group__includes">
+                    {group.includes.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
               </li>
             ))}
           </ul>

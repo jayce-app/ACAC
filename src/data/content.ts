@@ -21,44 +21,35 @@ export const company = {
     "By providing a premium product and service, our goal is to help elevate the standard for our industry in our community. We are dedicated to our customers' satisfaction.",
 };
 
-export const residentialServices = [
+/** Capability groups on Services — fewer titles, related work nested under each. */
+export const serviceGroups = [
   {
-    id: "res-general",
-    title: "General & new construction",
-    text: "Custom residential builds from the ground up — not production homes. Most of the work stays with our own crew so the job stays coordinated and accountable.",
+    id: "general",
+    title: "General construction",
+    text: "Custom residential and commercial builds from the ground up — turnkey under one crew, not production homes. Remodels and additions when you need to expand or update what you already have.",
+    includes: [
+      "Custom residential builds",
+      "Commercial new construction",
+      "Remodeling & additions",
+      "Turnkey project management",
+    ],
   },
   {
-    id: "res-metal",
-    title: "Metal buildings",
-    text: "Shops, barns, covered arenas, and residential metal structures finished for real Texas use.",
+    id: "metal-steel",
+    title: "Metal buildings & structural steel",
+    text: "Shops, barns, covered arenas, metal structures, structural steel, and metal framing — finished for real Texas use, with certified welders on the team.",
+    includes: [
+      "Metal buildings & shops",
+      "Barns & covered arenas",
+      "Structural steel",
+      "Metal framing & welding",
+    ],
   },
   {
-    id: "res-site",
+    id: "dirt",
     title: "Dirt & site work",
-    text: "Site prep, pads, grading, drainage, and dirt work so the ground is right before the building goes up.",
-  },
-];
-
-export const commercialServices = [
-  {
-    id: "com-general",
-    title: "General & new construction",
-    text: "Commercial builds handled turnkey — one point of contact from start to finish, with our crew leading the work.",
-  },
-  {
-    id: "com-steel",
-    title: "Structural steel & metal framing",
-    text: "Structural steel, metal buildings, and metal framing — with certified welders on the team.",
-  },
-  {
-    id: "com-site",
-    title: "Dirt & site work",
-    text: "Commercial site prep, pads, and dirt work so the structure sits right the first time.",
-  },
-  {
-    id: "com-remodel",
-    title: "Remodeling & additions",
-    text: "Commercial remodeling and additions that expand or update what you already have without losing quality.",
+    text: "Site prep, pads, grading, drainage, and dirt work for residential and commercial sites — so the ground is right before the building goes up.",
+    includes: ["Site prep & pads", "Grading & drainage", "Residential & commercial dirt work"],
   },
 ];
 
@@ -69,11 +60,7 @@ export const crewApproach = {
 };
 
 /** Featured row on the home page */
-export const featuredServices = [
-  residentialServices[1],
-  residentialServices[2],
-  commercialServices[1],
-];
+export const featuredServices = serviceGroups;
 
 export const about = {
   title: "About us",
