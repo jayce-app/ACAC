@@ -45,14 +45,6 @@ export function Home() {
         </div>
       </section>
 
-      <section className="band band--promise" aria-labelledby="promise-title">
-        <div className="band__inner reveal">
-          <p className="eyebrow">Our goal</p>
-          <h2 id="promise-title">Elevate the standard.</h2>
-          <p className="lead">{company.mission}</p>
-        </div>
-      </section>
-
       <section className="band band--services" aria-labelledby="home-services-title">
         <div className="band__inner reveal">
           <div className="section-head">

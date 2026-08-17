@@ -102,18 +102,6 @@
   animation: rise-in 700ms ease 320ms both;
 }
 
-.band--promise {
-  background: var(--navy);
-  color: var(--white);
-}
-
-.band--promise .lead {
-  font-size: clamp(1.15rem, 2vw, 1.4rem);
-  max-width: 42rem;
-  color: var(--mist);
-  line-height: 1.7;
-}
-
 .band--services {
   background:
     linear-gradient(160deg, rgba(200, 206, 214, 0.28), transparent 45%),
