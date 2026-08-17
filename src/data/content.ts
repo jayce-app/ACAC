@@ -35,11 +35,6 @@ export const residentialServices = [
     title: "Dirt & site work",
     text: "Site prep, pads, grading, drainage, and dirt work so the ground is right before the building goes up.",
   },
-  {
-    id: "res-concrete",
-    title: "Concrete",
-    text: "Slabs, pads, and concrete work tied to the build — poured and finished to match the structure.",
-  },
 ];
 
 export const commercialServices = [
@@ -84,7 +79,7 @@ export const about = {
 export const credentials = [
   {
     title: "General contractor",
-    text: "Full-scope residential and commercial construction — from dirt work and concrete to steel, framing, and finish.",
+    text: "Full-scope residential and commercial construction — from dirt and site work to steel, framing, and finish.",
   },
   {
     title: "Certified welders",
@@ -110,6 +105,6 @@ export const process = [
   {
     step: "03",
     title: "Build it turnkey",
-    text: "From dirt and concrete to steel, framing, and finish, we keep the work under one standard.",
+    text: "From dirt and site work to steel, framing, and finish, we keep the work under one standard.",
   },
 ];

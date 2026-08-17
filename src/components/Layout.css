@@ -203,6 +203,24 @@
   text-decoration: underline;
 }
 
+.site-footer__crawl {
+  max-width: var(--max);
+  margin: 1rem auto 0;
+  padding: 0 var(--space-md);
+  font-size: 0.75rem;
+  color: var(--zinc);
+}
+
+.site-footer__crawl a {
+  color: var(--zinc);
+  text-decoration: none;
+}
+
+.site-footer__crawl a:hover {
+  color: var(--mist);
+  text-decoration: underline;
+}
+
 @media (max-width: 720px) {
   .site-header {
     height: auto;

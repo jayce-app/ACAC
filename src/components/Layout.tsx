@@ -73,6 +73,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink to="/contact">Contact</NavLink>
           </div>
         </div>
+        <p className="site-footer__crawl">
+          <a href="/southeast-texas-construction">Southeast Texas construction resources</a>
+        </p>
       </footer>
     </>
   );

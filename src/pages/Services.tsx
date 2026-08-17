@@ -21,8 +21,8 @@ export function Services() {
           <p className="eyebrow">For homeowners &amp; ranch properties</p>
           <h2 id="residential-title">Residential</h2>
           <p className="services-intro">
-            General construction, new construction, metal buildings, dirt and site work, and
-            concrete. Custom work only — we do not do production home builds.
+            General construction, new construction, metal buildings, and dirt and site work.
+            Custom work only — we do not do production home builds.
           </p>
           <ul className="services-grid">
             {residentialServices.map((service, index) => (

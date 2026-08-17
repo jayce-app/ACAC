@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout";
 import { About } from "./pages/About";
 import { Contact } from "./pages/Contact";
 import { Home } from "./pages/Home";
+import { SeoKeywords } from "./pages/SeoKeywords";
 import { Services } from "./pages/Services";
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/southeast-texas-construction" element={<SeoKeywords />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
