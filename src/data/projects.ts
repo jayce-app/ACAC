@@ -19,6 +19,38 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: "covered-arena-span",
+    title: "Covered arena — open span",
+    category: "Metal buildings",
+    location: "Southeast Texas",
+    blurb: "Clear-span steel arena with skylights, dirt floor, and stall build-out.",
+    image: "/projects/covered-arena-open-span.jpg",
+  },
+  {
+    id: "covered-arena-dirt",
+    title: "Arena floor & steel frame",
+    category: "Dirt & site work",
+    location: "Southeast Texas",
+    blurb: "Groomed arena dirt under a full steel clear-span structure.",
+    image: "/projects/covered-arena-dirt-floor.jpg",
+  },
+  {
+    id: "metal-two-tone",
+    title: "Two-tone metal barn",
+    category: "Metal buildings",
+    location: "Southeast Texas",
+    blurb: "Custom metal barn with porch, wood soffit, and two-tone siding.",
+    image: "/projects/metal-barn-two-tone.jpg",
+  },
+  {
+    id: "logo-plate",
+    title: "Custom logo plate",
+    category: "Structural steel",
+    location: "Southeast Texas",
+    blurb: "Fabricated metal brand mark mounted at the ridge.",
+    image: "/projects/logo-plate-roofline.jpg",
+  },
+  {
     id: "timber-pavilion",
     title: "Timber outdoor pavilion",
     category: "Custom builds",
