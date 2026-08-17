@@ -16,13 +16,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <header className="site-header">
         <div className="site-header__inner">
           <NavLink to="/" className="brand-mark" aria-label={`${company.name} home`}>
-            <img
-              className="brand-mark__logo"
-              src="/logo-wordmark-dark.svg"
-              alt=""
-              width={220}
-              height={67}
-            />
+            <span className="brand-mark__icon" aria-hidden="true">
+              <img src="/logo.png" alt="" width={44} height={44} />
+            </span>
+            <span className="brand-mark__word">
+              <span className="brand-mark__name">TX Ropers</span>
+              <span className="brand-mark__trade">Construction</span>
+            </span>
           </NavLink>
 
           <nav className="site-nav" aria-label="Primary">
@@ -50,14 +50,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <footer className="site-footer">
         <div className="site-footer__inner">
           <div>
-            <img
-              className="site-footer__logo"
-              src="/logo-wordmark-dark.svg"
-              alt=""
-              width={200}
-              height={61}
-            />
-            <p className="site-footer__brand">{company.legal}</p>
+            <div className="site-footer__brand-row">
+              <span className="site-footer__mark" aria-hidden="true">
+                <img src="/logo-mark.png" alt="" width={48} height={48} />
+              </span>
+              <p className="site-footer__brand">{company.legal}</p>
+            </div>
             <p className="site-footer__tag">
               Custom residential and commercial construction — Bellville, Southeast Texas.
             </p>
