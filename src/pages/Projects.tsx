@@ -14,6 +14,7 @@ function isManifestPhoto(value: unknown): value is ManifestPhoto {
 export function Projects() {
   const [active, setActive] = useState<ProjectMedia | null>(null);
   const [dumped, setDumped] = useState<ManifestPhoto[]>([]);
+  const [hidden, setHidden] = useState<Set<string>>(() => new Set());
 
   useEffect(() => {
     let cancelled = false;
@@ -40,10 +41,22 @@ export function Projects() {
     };
   }, []);
 
-  const gallery = useMemo(
-    () => mergeProjectMedia([dumped, projectMedia]),
-    [dumped],
-  );
+  const gallery = useMemo(() => {
+    const merged = mergeProjectMedia([dumped, projectMedia]);
+    return merged.filter((item) => {
+      const key = item.type === "photo" ? item.src : item.src;
+      return !hidden.has(key);
+    });
+  }, [dumped, hidden]);
+
+  function hideItem(src: string) {
+    setHidden((prev) => {
+      if (prev.has(src)) return prev;
+      const next = new Set(prev);
+      next.add(src);
+      return next;
+    });
+  }
 
   return (
     <div className="projects-page">
@@ -76,6 +89,7 @@ export function Projects() {
                     loading="lazy"
                     width={800}
                     height={560}
+                    onError={() => hideItem(item.src)}
                   />
                   {item.type === "video" ? (
                     <span className="project-tile__play" aria-hidden="true">
