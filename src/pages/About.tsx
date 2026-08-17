@@ -104,19 +104,6 @@ export function About() {
         </div>
       </section>
 
-      <section className="band band--proof" aria-label="Project photo">
-        <div className="band__inner">
-          <figure className="about-proof reveal">
-            <img
-              src="/project-stalls.jpg"
-              alt="Custom horse stalls built by TX Ropers Construction inside a metal building"
-              width={1179}
-              height={885}
-            />
-          </figure>
-        </div>
-      </section>
-
       <section className="band band--credentials" aria-labelledby="credentials-title">
         <div className="band__inner reveal">
           <p className="eyebrow">Why choose us</p>
