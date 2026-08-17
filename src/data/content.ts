@@ -63,6 +63,13 @@ export type PermitLink = {
 
 export const permitLinks: PermitLink[] = [
   {
+    name: "Texas811 — Call Before You Dig",
+    jurisdiction: "Texas 811",
+    description:
+      "Dial 811 (in Texas) or 1-800-344-8377 (out of state). Free line locates; Texas law requires notice at least two business days before digging.",
+    url: "https://www.texas811.org/",
+  },
+  {
     name: "Austin County Permits",
     jurisdiction: "Austin County",
     description:
