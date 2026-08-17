@@ -634,15 +634,6 @@ export const projectMedia: ProjectMedia[] = [
   },
   {
     id: "gallery-70",
-    title: "Img 4062",
-    category: "Jobsite",
-    location: "Southeast Texas",
-    summary: "Field photo from the TX Ropers Construction project library.",
-    type: "image" as const,
-    src: "/projects/img-4062.jpg",
-  },
-  {
-    id: "gallery-71",
     title: "Img 4067",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -651,7 +642,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4067.jpg",
   },
   {
-    id: "gallery-72",
+    id: "gallery-71",
     title: "Img 4070",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -660,7 +651,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4070.jpg",
   },
   {
-    id: "gallery-73",
+    id: "gallery-72",
     title: "Img 4074",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -669,7 +660,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4074.jpg",
   },
   {
-    id: "gallery-74",
+    id: "gallery-73",
     title: "Img 4114",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -678,7 +669,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4114.jpg",
   },
   {
-    id: "gallery-75",
+    id: "gallery-74",
     title: "Img 4115",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -687,7 +678,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4115.jpg",
   },
   {
-    id: "gallery-76",
+    id: "gallery-75",
     title: "Img 4220",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -696,7 +687,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4220.jpg",
   },
   {
-    id: "gallery-77",
+    id: "gallery-76",
     title: "Img 4271",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -705,7 +696,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4271.jpg",
   },
   {
-    id: "gallery-78",
+    id: "gallery-77",
     title: "Img 4315",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -714,7 +705,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4315.jpg",
   },
   {
-    id: "gallery-79",
+    id: "gallery-78",
     title: "Img 4326",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -723,7 +714,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4326.jpg",
   },
   {
-    id: "gallery-80",
+    id: "gallery-79",
     title: "Img 4425",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -732,7 +723,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-4425.jpg",
   },
   {
-    id: "gallery-81",
+    id: "gallery-80",
     title: "Img 6278",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -741,7 +732,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6278.jpg",
   },
   {
-    id: "gallery-82",
+    id: "gallery-81",
     title: "Img 6283",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -750,7 +741,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6283.jpg",
   },
   {
-    id: "gallery-83",
+    id: "gallery-82",
     title: "Img 6284",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -759,7 +750,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6284.jpg",
   },
   {
-    id: "gallery-84",
+    id: "gallery-83",
     title: "Img 6285",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -768,7 +759,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6285.jpg",
   },
   {
-    id: "gallery-85",
+    id: "gallery-84",
     title: "Img 6287",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -777,7 +768,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6287.jpg",
   },
   {
-    id: "gallery-86",
+    id: "gallery-85",
     title: "Img 6288",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -786,7 +777,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6288.jpg",
   },
   {
-    id: "gallery-87",
+    id: "gallery-86",
     title: "Img 6498",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -795,7 +786,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6498.jpg",
   },
   {
-    id: "gallery-88",
+    id: "gallery-87",
     title: "Img 6505",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -804,7 +795,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6505.jpg",
   },
   {
-    id: "gallery-89",
+    id: "gallery-88",
     title: "Img 6547",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -813,7 +804,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6547.jpg",
   },
   {
-    id: "gallery-90",
+    id: "gallery-89",
     title: "Img 6548",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -822,7 +813,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6548.jpg",
   },
   {
-    id: "gallery-91",
+    id: "gallery-90",
     title: "Img 6549",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -831,7 +822,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6549.jpg",
   },
   {
-    id: "gallery-92",
+    id: "gallery-91",
     title: "Img 6551",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -840,7 +831,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6551.jpg",
   },
   {
-    id: "gallery-93",
+    id: "gallery-92",
     title: "Img 6705",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -849,7 +840,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-6705.jpg",
   },
   {
-    id: "gallery-94",
+    id: "gallery-93",
     title: "Img 9592",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -858,7 +849,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-9592.jpg",
   },
   {
-    id: "gallery-95",
+    id: "gallery-94",
     title: "Img 9640",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -867,7 +858,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-9640.jpg",
   },
   {
-    id: "gallery-96",
+    id: "gallery-95",
     title: "Img 9641",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -876,7 +867,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-9641.jpg",
   },
   {
-    id: "gallery-97",
+    id: "gallery-96",
     title: "Img 9642",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -885,7 +876,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-9642.jpg",
   },
   {
-    id: "gallery-98",
+    id: "gallery-97",
     title: "Img 9657",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -894,7 +885,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-9657.jpg",
   },
   {
-    id: "gallery-99",
+    id: "gallery-98",
     title: "Img 9659",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -903,7 +894,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-9659.jpg",
   },
   {
-    id: "gallery-100",
+    id: "gallery-99",
     title: "Img 9842",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -912,7 +903,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-9842.jpg",
   },
   {
-    id: "gallery-101",
+    id: "gallery-100",
     title: "Img 9892",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -921,7 +912,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/img-9892.jpg",
   },
   {
-    id: "gallery-102",
+    id: "gallery-101",
     title: "Job Site Sign",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -930,7 +921,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/job-site-sign.jpg",
   },
   {
-    id: "gallery-103",
+    id: "gallery-102",
     title: "Logo Plate Roofline",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -939,7 +930,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/logo-plate-roofline.jpg",
   },
   {
-    id: "gallery-104",
+    id: "gallery-103",
     title: "Luxury Stalls Interior",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -948,7 +939,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/luxury-stalls-interior.jpg",
   },
   {
-    id: "gallery-105",
+    id: "gallery-104",
     title: "Metal Barn Red",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -957,7 +948,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-barn-red.jpg",
   },
   {
-    id: "gallery-106",
+    id: "gallery-105",
     title: "Metal Barn Two Tone",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -966,7 +957,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-barn-two-tone.jpg",
   },
   {
-    id: "gallery-107",
+    id: "gallery-106",
     title: "Metal Building Shop",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -975,7 +966,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-building-shop.jpg",
   },
   {
-    id: "gallery-108",
+    id: "gallery-107",
     title: "Metal Shop Charcoal Door",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -984,7 +975,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-shop-charcoal-door.jpg",
   },
   {
-    id: "gallery-109",
+    id: "gallery-108",
     title: "Metal Shop Multi Bay",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -993,7 +984,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-shop-multi-bay.jpg",
   },
   {
-    id: "gallery-110",
+    id: "gallery-109",
     title: "Metal Shop Tan Porch 2",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1002,7 +993,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-shop-tan-porch-2.jpg",
   },
   {
-    id: "gallery-111",
+    id: "gallery-110",
     title: "Metal Shop Tan Porch",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1011,7 +1002,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-shop-tan-porch.jpg",
   },
   {
-    id: "gallery-112",
+    id: "gallery-111",
     title: "Metal Shop White",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1020,7 +1011,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-shop-white.jpg",
   },
   {
-    id: "gallery-113",
+    id: "gallery-112",
     title: "Metal Shop Wrap Porch",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1029,7 +1020,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/metal-shop-wrap-porch.jpg",
   },
   {
-    id: "gallery-114",
+    id: "gallery-113",
     title: "Outdoor Kitchen Pavilion",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1038,7 +1029,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/outdoor-kitchen-pavilion.jpg",
   },
   {
-    id: "gallery-115",
+    id: "gallery-114",
     title: "Steel Cmu Commercial",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1047,7 +1038,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/steel-cmu-commercial.jpg",
   },
   {
-    id: "gallery-116",
+    id: "gallery-115",
     title: "Timber Pavilion 2",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1056,7 +1047,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/timber-pavilion-2.jpg",
   },
   {
-    id: "gallery-117",
+    id: "gallery-116",
     title: "Timber Pavilion",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1065,7 +1056,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/timber-pavilion.jpg",
   },
   {
-    id: "gallery-118",
+    id: "gallery-117",
     title: "Work Collage Home",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1074,7 +1065,7 @@ export const projectMedia: ProjectMedia[] = [
     src: "/projects/work-collage-home.jpg",
   },
   {
-    id: "gallery-119",
+    id: "gallery-118",
     title: "Work Collage",
     category: "Jobsite",
     location: "Southeast Texas",
@@ -1102,6 +1093,7 @@ export function mergeProjectMedia(extra: ProjectMedia[] = []): ProjectMedia[] {
       'img-3083.jpg',
       'img-3084.jpg',
       'img-3085.jpg',
+      'img-4062.jpg',
       'img-4106.jpg',
       'img-4107.jpg',
       'img-4110.jpg',
