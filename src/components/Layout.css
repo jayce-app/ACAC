@@ -23,9 +23,16 @@
 .brand-mark {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   text-decoration: none;
   color: inherit;
+  flex-shrink: 0;
+  max-width: min(14.5rem, 46vw);
+}
+
+.brand-mark__logo {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .brand-mark__icon {
@@ -153,10 +160,17 @@
   flex-wrap: wrap;
 }
 
+.site-footer__logo {
+  display: block;
+  width: min(13.5rem, 100%);
+  height: auto;
+  margin-bottom: 0.85rem;
+}
+
 .site-footer__brand {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.35rem;
+  font-size: 1.05rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--white);
