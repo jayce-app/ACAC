@@ -17,31 +17,6 @@ export function Permits() {
 
       <section className="permits-list">
         <div className="permits-list__inner">
-          <aside className="permits-811" aria-label="Texas 811 contact">
-            <p className="permits-811__label">Before you dig</p>
-            <h2>Call 811</h2>
-            <p>
-              Contact <strong>Texas811</strong> at least two business days before excavating
-              (weekends and holidays excluded). It&apos;s free, and it&apos;s the law.
-            </p>
-            <ul className="permits-811__contacts">
-              <li>
-                <span>In Texas</span>
-                <a href="tel:811">811</a>
-              </li>
-              <li>
-                <span>Out of state</span>
-                <a href="tel:+18003448377">1-800-344-8377</a>
-              </li>
-              <li>
-                <span>Online</span>
-                <a href="https://www.texas811.org/" target="_blank" rel="noreferrer">
-                  texas811.org
-                </a>
-              </li>
-            </ul>
-          </aside>
-
           <p className="permits-note">
             Confirm whether your project sits in city limits or unincorporated county before
             applying. City projects use municipal permitting; county projects generally go through

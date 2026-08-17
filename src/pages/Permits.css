@@ -27,67 +27,6 @@
   padding: var(--space-xl) var(--space-md) var(--space-2xl);
 }
 
-.permits-811 {
-  margin-bottom: var(--space-lg);
-  padding: 1.25rem 1.35rem;
-  border-left: 4px solid var(--brass);
-  background: rgba(28, 36, 48, 0.06);
-  display: grid;
-  gap: 0.55rem;
-  max-width: 40rem;
-}
-
-.permits-811__label {
-  margin: 0;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--brass-deep);
-}
-
-.permits-811 h2 {
-  margin: 0;
-  font-size: clamp(1.6rem, 3vw, 2rem);
-}
-
-.permits-811 > p {
-  margin: 0;
-  color: var(--slate);
-  line-height: 1.55;
-}
-
-.permits-811__contacts {
-  list-style: none;
-  margin: 0.35rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.permits-811__contacts li {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.85rem;
-  align-items: baseline;
-}
-
-.permits-811__contacts span {
-  min-width: 6.5rem;
-  font-size: 0.88rem;
-  color: var(--mist);
-}
-
-.permits-811__contacts a {
-  font-weight: 700;
-  color: var(--brass-deep);
-  text-decoration: none;
-}
-
-.permits-811__contacts a:hover {
-  text-decoration: underline;
-}
-
 .permits-note {
   max-width: 46rem;
   margin-bottom: var(--space-lg);
