@@ -26,14 +26,14 @@
   text-decoration: none;
   color: inherit;
   flex-shrink: 0;
-  max-width: min(14rem, 48vw);
+  max-width: min(16rem, 52vw);
 }
 
 .brand-mark__logo {
   display: block;
-  width: 100%;
-  height: auto;
-  max-height: 3.1rem;
+  width: auto;
+  height: 3.6rem;
+  max-width: 100%;
   object-fit: contain;
   object-position: left center;
 }
