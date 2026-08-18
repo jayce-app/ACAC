@@ -9,8 +9,11 @@ services:
     plan: free
     branch: cursor/tx-ropers-website-9034
     autoDeploy: true
-    buildCommand: npm ci && npm run build
+    buildCommand: npm run build
     staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
     routes:
       - type: rewrite
         source: /*

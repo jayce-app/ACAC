@@ -27,12 +27,20 @@ Public website for TX Ropers Construction, LLC — Bellville, Texas.
 
 This is a static Vite site. On [Render](https://dashboard.render.com):
 
-1. **New → Static Site** (or **New → Blueprint** to use `render.yaml`)
+1. **New → Static Site** (not a Web Service)
 2. Connect **`jayce-app/ACAC`**
-3. Branch: **`cursor/tx-ropers-website-9034`** (do not use `main` — that is the ACAC site)
-4. Build command: `npm ci && npm run build`
-5. Publish directory: `dist`
-6. Add a rewrite: source `/*` → destination `/index.html`
+3. Use these exact fields:
+
+   | Field | Value |
+   |---|---|
+   | Branch | `cursor/tx-ropers-website-9034` |
+   | Build Command | `npm run build` |
+   | Publish Directory | `dist` |
+   | NODE_VERSION (env) | `22` |
+
+   Do not put the build command in Publish Directory. Do not use branch `main` (that is the ACAC site).
+
+4. Add a rewrite: source `/*` → destination `/index.html`
 
 Render will give you an `onrender.com` URL. After that you can attach **www.txropersconstruction.com** under Settings → Custom Domains.
 
