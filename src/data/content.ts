@@ -74,7 +74,6 @@ export const about = {
 export const owner = {
   name: "Jayce Johnson",
   role: "Owner",
-  /** Drop a solo headshot at /public/jayce-johnson.jpg to show it here */
   image: "/jayce-johnson.jpg",
   headline: "Fourth-generation construction. Fifth-generation agriculture.",
   paragraphs: [
