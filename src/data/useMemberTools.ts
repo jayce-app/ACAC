@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
-import type { BidPost, BlacklistEntry, BoardPost } from "./content";
+import type { BidPost, ForumPost, BoardPost } from "./content";
 import { discussionBoards } from "./content";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
@@ -19,20 +19,39 @@ function saveJson<T>(key: string, value: T) {
 }
 
 const BIDS_KEY = "acac-bids-v1";
-const BLACKLIST_KEY = "acac-blacklist-v2";
+const FORUM_KEY = "acac-forum-v1";
+const LEGACY_FORUM_KEY = "acac-blacklist-v2";
 const POSTS_KEY = "acac-board-posts-v1";
 
 const emptyPosts = () =>
   Object.fromEntries(discussionBoards.map((b) => [b.id, [] as BoardPost[]]));
 
-function migrateBlacklist(raw: unknown[]): BlacklistEntry[] {
-  return raw.map((item) => {
-    const entry = item as BlacklistEntry & { status?: string };
-    if (entry.status === "pending" || entry.status === "approved" || entry.status === "rejected") {
-      return entry as BlacklistEntry;
-    }
-    return { ...entry, status: "pending" as const };
-  });
+function toForumPost(raw: unknown): ForumPost | null {
+  if (!raw || typeof raw !== "object") return null;
+  const item = raw as Record<string, unknown>;
+  const title = String(item.title ?? item.name ?? "").trim();
+  const body = String(item.body ?? item.reason ?? "").trim();
+  if (!title && !body) return null;
+  const status = item.status;
+  return {
+    id: String(item.id ?? `forum-${Date.now()}`),
+    title: title || "Untitled post",
+    body,
+    date: String(item.date ?? new Date().toISOString().slice(0, 10)),
+    status:
+      status === "pending" || status === "approved" || status === "rejected"
+        ? status
+        : "approved",
+  };
+}
+
+function loadLocalForum(): ForumPost[] {
+  const current = loadJson<unknown[]>(FORUM_KEY, []);
+  if (current.length) {
+    return current.map(toForumPost).filter((p): p is ForumPost => Boolean(p));
+  }
+  const legacy = loadJson<unknown[]>(LEGACY_FORUM_KEY, []);
+  return legacy.map(toForumPost).filter((p): p is ForumPost => Boolean(p));
 }
 
 export function useMemberTools() {
@@ -42,10 +61,8 @@ export function useMemberTools() {
   const [bids, setBids] = useState<BidPost[]>(() =>
     usingCloud ? [] : loadJson(BIDS_KEY, []),
   );
-  const [blacklist, setBlacklist] = useState<BlacklistEntry[]>(() =>
-    usingCloud
-      ? []
-      : migrateBlacklist(loadJson<unknown[]>(BLACKLIST_KEY, [])),
+  const [forumPosts, setForumPosts] = useState<ForumPost[]>(() =>
+    usingCloud ? [] : loadLocalForum(),
   );
   const [postsByBoard, setPostsByBoard] = useState<Record<string, BoardPost[]>>(() =>
     usingCloud ? emptyPosts() : loadJson(POSTS_KEY, emptyPosts()),
@@ -59,14 +76,14 @@ export function useMemberTools() {
     }
     setLoading(true);
 
-    const [bidsRes, blRes, postsRes] = await Promise.all([
+    const [bidsRes, forumRes, postsRes] = await Promise.all([
       supabase
         .from("bids")
         .select("*, profiles:author_id(full_name, company)")
         .order("created_at", { ascending: false }),
       supabase
         .from("blacklist_entries")
-        .select("*, reporter:reporter_id(full_name, company), reviewer:reviewed_by(full_name)")
+        .select("id, name, company, reason, status, created_at")
         .order("created_at", { ascending: false }),
       supabase
         .from("board_posts")
@@ -93,25 +110,19 @@ export function useMemberTools() {
       );
     }
 
-    if (blRes.data) {
-      setBlacklist(
-        blRes.data.map((row) => {
-          const reporter = row.reporter as { full_name?: string; company?: string } | null;
-          const reviewer = row.reviewer as { full_name?: string } | null;
-          return {
-            id: row.id as string,
-            partyType: row.party_type as BlacklistEntry["partyType"],
-            name: row.name as string,
-            company: (row.company as string) ?? "",
-            reason: row.reason as string,
-            reportedBy: reporter?.full_name ?? "",
-            reportedCompany: reporter?.company ?? "",
-            date: String(row.created_at).slice(0, 10),
-            status: row.status as BlacklistEntry["status"],
-            reviewedBy: reviewer?.full_name,
-            reviewedDate: row.reviewed_at ? String(row.reviewed_at).slice(0, 10) : undefined,
-          };
-        }),
+    if (forumRes.data) {
+      setForumPosts(
+        forumRes.data
+          .map((row) =>
+            toForumPost({
+              id: row.id,
+              title: row.name,
+              body: [row.company, row.reason].filter(Boolean).join("\n\n"),
+              date: String(row.created_at).slice(0, 10),
+              status: row.status,
+            }),
+          )
+          .filter((p): p is ForumPost => Boolean(p)),
       );
     }
 
@@ -144,9 +155,9 @@ export function useMemberTools() {
 
   useEffect(() => {
     if (!usingCloud) {
-      saveJson(BLACKLIST_KEY, blacklist);
+      saveJson(FORUM_KEY, forumPosts);
     }
-  }, [blacklist, usingCloud]);
+  }, [forumPosts, usingCloud]);
 
   useEffect(() => {
     if (!usingCloud) {
@@ -182,38 +193,34 @@ export function useMemberTools() {
     [usingCloud, member, refresh],
   );
 
-  const submitBlacklist = useCallback(
-    async (
-      entry: Omit<BlacklistEntry, "id" | "date" | "status" | "reviewedBy" | "reviewedDate">,
-    ) => {
+  const submitForumPost = useCallback(
+    async (entry: Pick<ForumPost, "title" | "body">) => {
       if (usingCloud && supabase && member?.id) {
         await supabase.from("blacklist_entries").insert({
-          party_type: entry.partyType,
-          name: entry.name,
-          company: entry.company,
-          reason: entry.reason,
+          party_type: "contractor",
+          name: entry.title,
+          company: "",
+          reason: entry.body,
           reporter_id: member.id,
           status: "approved",
         });
         await refresh();
         return;
       }
-      const next: BlacklistEntry = {
-        ...entry,
-        id: `bl-${Date.now()}`,
+      const next: ForumPost = {
+        id: `forum-${Date.now()}`,
+        title: entry.title,
+        body: entry.body,
         date: new Date().toISOString().slice(0, 10),
         status: "approved",
-        // Keep reporter for local admin moderation only — never shown on the member board.
-        reportedBy: entry.reportedBy,
-        reportedCompany: entry.reportedCompany,
       };
-      setBlacklist((prev) => [next, ...prev]);
+      setForumPosts((prev) => [next, ...prev]);
     },
     [usingCloud, member, refresh],
   );
 
-  const approveBlacklist = useCallback(
-    async (id: string, _reviewedBy: string) => {
+  const approveForumPost = useCallback(
+    async (id: string) => {
       if (usingCloud && supabase && member?.id) {
         await supabase
           .from("blacklist_entries")
@@ -226,20 +233,17 @@ export function useMemberTools() {
         await refresh();
         return;
       }
-      const reviewedDate = new Date().toISOString().slice(0, 10);
-      setBlacklist((prev) =>
+      setForumPosts((prev) =>
         prev.map((entry) =>
-          entry.id === id
-            ? { ...entry, status: "approved" as const, reviewedBy: _reviewedBy, reviewedDate }
-            : entry,
+          entry.id === id ? { ...entry, status: "approved" as const } : entry,
         ),
       );
     },
     [usingCloud, member, refresh],
   );
 
-  const rejectBlacklist = useCallback(
-    async (id: string, _reviewedBy: string) => {
+  const removeForumPost = useCallback(
+    async (id: string) => {
       if (usingCloud && supabase && member?.id) {
         await supabase
           .from("blacklist_entries")
@@ -252,12 +256,9 @@ export function useMemberTools() {
         await refresh();
         return;
       }
-      const reviewedDate = new Date().toISOString().slice(0, 10);
-      setBlacklist((prev) =>
+      setForumPosts((prev) =>
         prev.map((entry) =>
-          entry.id === id
-            ? { ...entry, status: "rejected" as const, reviewedBy: _reviewedBy, reviewedDate }
-            : entry,
+          entry.id === id ? { ...entry, status: "rejected" as const } : entry,
         ),
       );
     },
@@ -289,27 +290,27 @@ export function useMemberTools() {
     [usingCloud, member, refresh],
   );
 
-  const approvedBlacklist = useMemo(
-    () => blacklist.filter((e) => e.status === "approved"),
-    [blacklist],
+  const liveForumPosts = useMemo(
+    () => forumPosts.filter((e) => e.status === "approved"),
+    [forumPosts],
   );
 
-  const pendingBlacklist = useMemo(
-    () => blacklist.filter((e) => e.status === "pending"),
-    [blacklist],
+  const pendingForumPosts = useMemo(
+    () => forumPosts.filter((e) => e.status === "pending"),
+    [forumPosts],
   );
 
   return {
     bids,
-    blacklist,
-    approvedBlacklist,
-    pendingBlacklist,
+    forumPosts,
+    liveForumPosts,
+    pendingForumPosts,
     postsByBoard,
     loading,
     addBid,
-    submitBlacklist,
-    approveBlacklist,
-    rejectBlacklist,
+    submitForumPost,
+    approveForumPost,
+    removeForumPost,
     addBoardPost,
     refresh,
   };

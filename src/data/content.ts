@@ -167,20 +167,13 @@ export type BidPost = {
   date: string;
 };
 
-export type BlacklistPartyType = "customer" | "contractor";
+export type ForumPostStatus = "pending" | "approved" | "rejected";
 
-export type BlacklistStatus = "pending" | "approved" | "rejected";
-
-export type BlacklistEntry = {
+/** Anonymous member-forum post. Poster identity is never shown to members. */
+export type ForumPost = {
   id: string;
-  partyType: BlacklistPartyType;
-  name: string;
-  company: string;
-  reason: string;
-  reportedBy: string;
-  reportedCompany: string;
+  title: string;
+  body: string;
   date: string;
-  status: BlacklistStatus;
-  reviewedBy?: string;
-  reviewedDate?: string;
+  status: ForumPostStatus;
 };

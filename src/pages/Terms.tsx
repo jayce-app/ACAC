@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { org } from "../data/org";
 import "./Legal.css";
 
-const updated = "August 16, 2026";
+const updated = "August 18, 2026";
 
 export function Terms() {
   return (
@@ -27,7 +27,7 @@ export function Terms() {
           <p>
             The public pages (home, member directory, education calendar, permits, and these legal
             pages) are available to visitors. Membership tools — including the Members Lounge, bid
-            board, discussion boards, and the anonymous blacklist board — are limited to approved
+            board, discussion boards, and the anonymous member forum — are limited to approved
             members and administrators.
           </p>
 
@@ -48,21 +48,21 @@ export function Terms() {
             <li>Use the lounge for legitimate trade networking and peer support</li>
             <li>Avoid harassment, threats, illegal content, or spam</li>
             <li>
-              Post on the blacklist board only with firsthand, factual information they believe to be
-              true
+              Post on the anonymous member forum only with firsthand, factual information they
+              believe to be true
             </li>
           </ul>
 
-          <h2>4. Anonymous blacklist board (important)</h2>
+          <h2>4. Anonymous member forum (important)</h2>
           <p>
-            The blacklist board is an <strong>internal, members-only, anonymous, post-only</strong>{" "}
-            forum. There are no replies or comments. It is not a public consumer complaint board and
+            The member forum is an <strong>internal, members-only, anonymous, post-only</strong>{" "}
+            space. There are no replies or comments. It is not a public consumer complaint board and
             is not a court finding.
           </p>
           <ul>
             <li>
               <strong>ACAC does not bear any responsibility</strong> for what members post on this
-              board. Posts are the sole responsibility of the individual who submits them.
+              forum. Posts are the sole responsibility of the individual who submits them.
             </li>
             <li>
               ACAC does not verify, endorse, warrant, or guarantee the accuracy of any post. Members
@@ -83,12 +83,12 @@ export function Terms() {
           </ul>
           <p>
             ACAC may remove or archive posts at any time, and may suspend members who misuse the
-            board.
+            forum.
           </p>
 
           <h2>5. User content license</h2>
           <p>
-            By posting content (including bids, discussions, and reports), you grant ACAC a
+            By posting content (including bids, discussions, and forum posts), you grant ACAC a
             non-exclusive license to host, display, and moderate that content for association
             purposes.
           </p>
@@ -111,14 +111,14 @@ export function Terms() {
             To the fullest extent allowed by law, ACAC and its organizers are not liable for
             indirect, incidental, special, consequential, or punitive damages, or for decisions made
             by members or the public based on directory listings, bids, discussions, or anonymous
-            blacklist board posts. ACAC does not bear responsibility for content posted by members on
-            the blacklist board.
+            forum posts. ACAC does not bear responsibility for content posted by members on the
+            anonymous member forum.
           </p>
 
           <h2>9. Indemnity</h2>
           <p>
-            If you submit false or unlawful content — including defamatory blacklist board posts —
-            you agree to defend and indemnify ACAC against related claims, damages, and expenses.
+            If you submit false or unlawful content — including defamatory forum posts — you agree
+            to defend and indemnify ACAC against related claims, damages, and expenses.
           </p>
 
           <h2>10. Changes</h2>

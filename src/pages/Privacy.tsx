@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { org } from "../data/org";
 import "./Legal.css";
 
-const updated = "August 16, 2026";
+const updated = "August 18, 2026";
 
 export function Privacy() {
   return (
@@ -31,8 +31,8 @@ export function Privacy() {
               upload for vetting
             </li>
             <li>
-              <strong>Lounge activity:</strong> bid posts, discussion posts, and anonymous blacklist
-              board posts you choose to send
+              <strong>Lounge activity:</strong> bid posts, discussion posts, and anonymous forum
+              posts you choose to send
             </li>
             <li>
               <strong>Admin actions:</strong> approval/rejection decisions and related timestamps
@@ -48,8 +48,8 @@ export function Privacy() {
             <li>Operate membership, login, and admin review</li>
             <li>Publish approved members in the public directory (name, company, trade, phone)</li>
             <li>
-              Host anonymous blacklist board posts for approved members only (poster identity is not
-              shown on the board)
+              Host anonymous member-forum posts for approved members only (poster identity is not
+              shown)
             </li>
             <li>Improve site reliability and prevent abuse</li>
           </ul>
@@ -61,21 +61,21 @@ export function Privacy() {
               member directory fields listed above
             </li>
             <li>
-              <strong>Members only:</strong> bid board, discussions, anonymous blacklist board, and
+              <strong>Members only:</strong> bid board, discussions, anonymous member forum, and
               admin tools
             </li>
           </ul>
           <p>
-            Blacklist board posts are not intended for public search engines or non-member visitors.
-            Poster identity is not shown on the member-facing board.
+            Anonymous forum posts are not intended for public search engines or non-member visitors.
+            Poster identity is not shown on the member-facing forum.
           </p>
 
-          <h2>4. Blacklist board and privacy</h2>
+          <h2>4. Anonymous forum and privacy</h2>
           <p>
-            When a member posts about a customer or contractor, that post may include names and
-            business details. Do not submit sensitive identifiers (SSNs, financial account numbers,
-            medical data, or children’s information). Admins may remove posts that include
-            unnecessary personal data or misuse the board.
+            Forum posts may include names and business details that a member chooses to write. Do
+            not submit sensitive identifiers (SSNs, financial account numbers, medical data, or
+            children’s information). Admins may remove posts that include unnecessary personal data
+            or misuse the forum.
           </p>
 
           <h2>5. Where data is stored</h2>
@@ -103,7 +103,7 @@ export function Privacy() {
 
           <h2>7. Retention</h2>
           <p>
-            We keep membership and report records while needed for association operations, dispute
+            We keep membership and forum records while needed for association operations, dispute
             handling, and legal obligations. You may request correction or removal of your own
             membership profile by contacting ACAC; some records may be retained if required for
             integrity of prior admin decisions.

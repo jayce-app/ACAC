@@ -34,6 +34,7 @@ create table if not exists public.bids (
   created_at timestamptz not null default now()
 );
 
+-- Anonymous member forum storage. Table name is historical and must not be renamed.
 create table if not exists public.blacklist_entries (
   id uuid primary key default gen_random_uuid(),
   party_type text not null check (party_type in ('customer', 'contractor')),
@@ -152,8 +153,8 @@ create policy "Approved members insert bids"
   on public.bids for insert
   with check (public.is_approved_member() and author_id = auth.uid());
 
--- Blacklist
-create policy "Approved members read approved blacklist"
+-- Anonymous member forum (legacy table name retained for existing databases)
+create policy "Approved members read approved forum posts"
   on public.blacklist_entries for select
   using (
     public.is_admin()
@@ -161,15 +162,15 @@ create policy "Approved members read approved blacklist"
     or (public.is_approved_member() and reporter_id = auth.uid())
   );
 
-create policy "Approved members submit blacklist"
+create policy "Approved members submit forum posts"
   on public.blacklist_entries for insert
   with check (
     public.is_approved_member()
     and reporter_id = auth.uid()
-    and status = 'pending'
+    and status in ('pending', 'approved')
   );
 
-create policy "Admins update blacklist"
+create policy "Admins update forum posts"
   on public.blacklist_entries for update
   using (public.is_admin())
   with check (public.is_admin());

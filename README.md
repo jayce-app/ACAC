@@ -14,7 +14,7 @@ Follow **[GO_LIVE.md](./GO_LIVE.md)** to connect:
 - **Home** — Vision, About, Goals, public member list
 - **Members** — Public directory of vetted members
 - **Member login** — Apply / sign in; lounge unlocks after approval
-- **Admin** — Approve applications and blacklist submissions
+- **Admin** — Approve applications and moderate the anonymous member forum
 - **Permits** — County and city permit links, Texas 811
 - **Education** — Curated calendar of third-party trade seminars (auto-refreshed)
 

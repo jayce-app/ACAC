@@ -65,7 +65,7 @@ where email = 'you@yourdomain.com';
 
 - Put a real contact email on the site
 - Review **Terms** (`/terms`) and **Privacy** (`/privacy`) with a Texas attorney — drafts are live
-- Especially review blacklist / accountability rules for defamation and privacy risk
+- Especially review anonymous-forum rules for defamation and privacy risk
 - Customize those pages with your exact DBA name and support email
 
 ---

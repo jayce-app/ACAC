@@ -1,20 +1,20 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { discussionBoards, type BlacklistPartyType } from "../data/content";
+import { discussionBoards } from "../data/content";
 import { useMemberTools } from "../data/useMemberTools";
 import "./Membership.css";
 
-type MemberPanel = "discussions" | "bids" | "blacklist";
+type MemberPanel = "discussions" | "bids" | "forum";
 
 export function Membership() {
   const { member, login } = useAuth();
   const {
     bids,
-    approvedBlacklist,
+    liveForumPosts,
     postsByBoard,
     addBid,
-    submitBlacklist,
+    submitForumPost,
     addBoardPost,
   } = useMemberTools();
   const [panel, setPanel] = useState<MemberPanel>("bids");
@@ -23,8 +23,8 @@ export function Membership() {
   const [activeBoard, setActiveBoard] = useState(discussionBoards[0].id);
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
-  const [blacklistNotice, setBlacklistNotice] = useState<string | null>(null);
-  const [blacklistAttest, setBlacklistAttest] = useState(false);
+  const [forumNotice, setForumNotice] = useState<string | null>(null);
+  const [forumAttest, setForumAttest] = useState(false);
 
   const board = useMemo(
     () => discussionBoards.find((b) => b.id === activeBoard) ?? discussionBoards[0],
@@ -70,25 +70,21 @@ export function Membership() {
     e.currentTarget.reset();
   }
 
-  async function onBlacklist(e: FormEvent<HTMLFormElement>) {
+  async function onForumPost(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!member) return;
-    if (!blacklistAttest) {
-      setBlacklistNotice("Confirm the attestation before submitting a report.");
+    if (!forumAttest) {
+      setForumNotice("Confirm the attestation before posting.");
       return;
     }
     const data = new FormData(e.currentTarget);
-    await submitBlacklist({
-      partyType: String(data.get("partyType")) as BlacklistPartyType,
-      name: String(data.get("name")).trim(),
-      company: String(data.get("company")).trim(),
-      reason: String(data.get("reason")).trim(),
-      reportedBy: member.name,
-      reportedCompany: member.company,
+    await submitForumPost({
+      title: String(data.get("title")).trim(),
+      body: String(data.get("body")).trim(),
     });
     e.currentTarget.reset();
-    setBlacklistAttest(false);
-    setBlacklistNotice("Posted anonymously. There are no replies or comments on this board.");
+    setForumAttest(false);
+    setForumNotice("Posted anonymously. There are no replies or comments on this forum.");
   }
 
   if (member) {
@@ -100,8 +96,8 @@ export function Membership() {
             <h1>Welcome, {member.name}</h1>
             <p>
               {member.company}
-              {member.trade ? ` · ${member.trade}` : ""}. Use the bid board, the anonymous blacklist
-              board (post-only), and discussion boards below.
+              {member.trade ? ` · ${member.trade}` : ""}. Use the bid board, the anonymous member
+              forum (post-only), and discussion boards below.
             </p>
           </div>
         </section>
@@ -119,11 +115,11 @@ export function Membership() {
               <button
                 type="button"
                 className={
-                  panel === "blacklist" ? "boards__nav-btn is-active" : "boards__nav-btn"
+                  panel === "forum" ? "boards__nav-btn is-active" : "boards__nav-btn"
                 }
-                onClick={() => setPanel("blacklist")}
+                onClick={() => setPanel("forum")}
               >
-                Blacklist board
+                Anonymous forum
               </button>
               <button
                 type="button"
@@ -200,20 +196,20 @@ export function Membership() {
                 </>
               )}
 
-              {panel === "blacklist" && (
+              {panel === "forum" && (
                 <>
                   <header className="boards__header">
-                    <h2>Anonymous blacklist board</h2>
+                    <h2>Anonymous member forum</h2>
                     <p>
-                      Members-only, post-only board. There are no replies or comments — you can post
-                      a notice, and that is it. Posts appear anonymously.
+                      An open, members-only forum. Posts are anonymous. There are no replies or
+                      comments — you can post, and that is it.
                     </p>
                   </header>
 
                   <div className="legal-callout legal-callout--strong" role="note">
                     <p>
                       <strong>Disclaimer:</strong> ACAC does not bear any responsibility for what is
-                      posted on this board. Posts are the sole responsibility of the individual who
+                      posted on this forum. Posts are the sole responsibility of the individual who
                       submits them. ACAC does not verify, endorse, warrant, or guarantee the accuracy
                       of any post. Use your own judgment and verify information independently before
                       acting.
@@ -229,52 +225,38 @@ export function Membership() {
                     </p>
                   </div>
 
-                  {blacklistNotice ? (
+                  {forumNotice ? (
                     <p className="form-alert" role="status">
-                      {blacklistNotice}
+                      {forumNotice}
                     </p>
                   ) : null}
 
-                  <form className="post-form" onSubmit={(e) => void onBlacklist(e)}>
-                    <div className="auth-form__grid">
-                      <label>
-                        <span>Type</span>
-                        <select name="partyType" required defaultValue="customer">
-                          <option value="customer">Customer</option>
-                          <option value="contractor">Contractor</option>
-                        </select>
-                      </label>
-                      <label>
-                        <span>Name</span>
-                        <input name="name" required maxLength={120} />
-                      </label>
-                      <label className="auth-form__full">
-                        <span>Company (if any)</span>
-                        <input name="company" maxLength={120} />
-                      </label>
-                    </div>
+                  <form className="post-form" onSubmit={(e) => void onForumPost(e)}>
                     <label>
-                      <span>Post (dates, what happened, documentation if any)</span>
+                      <span>Title</span>
+                      <input name="title" required maxLength={120} />
+                    </label>
+                    <label>
+                      <span>Post</span>
                       <textarea
-                        name="reason"
+                        name="body"
                         required
-                        rows={4}
+                        rows={5}
                         maxLength={2000}
-                        placeholder="Example: Invoice #1042 unpaid since March 12, 2026 after final walkthrough on job at [city]."
+                        placeholder="Write your notice for fellow members."
                       />
                     </label>
                     <label className="attest-check">
                       <input
                         type="checkbox"
-                        checked={blacklistAttest}
-                        onChange={(e) => setBlacklistAttest(e.target.checked)}
+                        checked={forumAttest}
+                        onChange={(e) => setForumAttest(e.target.checked)}
                         required
                       />
                       <span>
                         I attest this post is based on firsthand facts I believe are true, does not
                         include sensitive personal data, and is submitted in good faith. I understand
-                        my name will not appear on the board, and ACAC is not responsible for this
-                        post.
+                        my name will not appear, and ACAC is not responsible for this post.
                       </span>
                     </label>
                     <button type="submit" className="btn btn--primary">
@@ -282,24 +264,22 @@ export function Membership() {
                     </button>
                   </form>
 
-                  <h3 className="admin-subhead">Board posts</h3>
-                  <p className="blacklist-board-note">
-                    Anonymous notices only — no replies, no comments, no attribution.
+                  <h3 className="admin-subhead">Forum posts</h3>
+                  <p className="forum-board-note">
+                    Anonymous posts only — no replies, no comments, no names.
                   </p>
                   <ul className="post-list">
-                    {approvedBlacklist.length === 0 ? (
+                    {liveForumPosts.length === 0 ? (
                       <li className="empty-note">No posts yet. Be the first to post.</li>
                     ) : (
-                      approvedBlacklist.map((entry) => (
-                        <li key={entry.id} className="post post--blacklist">
+                      liveForumPosts.map((entry) => (
+                        <li key={entry.id} className="post post--forum">
                           <div className="post__meta">
-                            <span className="badge">{entry.partyType}</span>
                             <span className="badge">anonymous</span>
                             <time dateTime={entry.date}>{entry.date}</time>
                           </div>
-                          <h3>{entry.name}</h3>
-                          {entry.company ? <p className="post__company">{entry.company}</p> : null}
-                          <p>{entry.reason}</p>
+                          <h3>{entry.title}</h3>
+                          <p>{entry.body}</p>
                         </li>
                       ))
                     )}

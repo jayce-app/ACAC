@@ -5,15 +5,15 @@ import { useMemberTools } from "../data/useMemberTools";
 import "./Membership.css";
 import "./Admin.css";
 
-type AdminPanel = "applications" | "blacklist";
+type AdminPanel = "applications" | "forum";
 
 export function Admin() {
   const { member, isAdmin, pendingMembers, approve, reject } = useAuth();
   const {
-    pendingBlacklist,
-    approvedBlacklist,
-    approveBlacklist,
-    rejectBlacklist,
+    pendingForumPosts,
+    liveForumPosts,
+    approveForumPost,
+    removeForumPost,
   } = useMemberTools();
   const [panel, setPanel] = useState<AdminPanel>("applications");
 
@@ -32,7 +32,7 @@ export function Admin() {
           <p className="eyebrow">Admin console</p>
           <h1>Association admin</h1>
           <p>
-            Approve membership applications and moderate the anonymous blacklist board.
+            Approve membership applications and moderate the anonymous member forum.
           </p>
         </div>
       </section>
@@ -50,11 +50,11 @@ export function Admin() {
             </button>
             <button
               type="button"
-              className={panel === "blacklist" ? "boards__nav-btn is-active" : "boards__nav-btn"}
-              onClick={() => setPanel("blacklist")}
+              className={panel === "forum" ? "boards__nav-btn is-active" : "boards__nav-btn"}
+              onClick={() => setPanel("forum")}
             >
-              Blacklist board
-              {pendingBlacklist.length > 0 ? ` (${pendingBlacklist.length})` : ""}
+              Anonymous forum
+              {pendingForumPosts.length > 0 ? ` (${pendingForumPosts.length})` : ""}
             </button>
           </aside>
 
@@ -144,48 +144,42 @@ export function Admin() {
               </>
             )}
 
-            {panel === "blacklist" && (
+            {panel === "forum" && (
               <>
                 <header className="boards__header">
-                  <h2>Anonymous blacklist board</h2>
+                  <h2>Anonymous member forum</h2>
                   <p>
                     Members post anonymously with no replies or comments. ACAC does not bear
-                    responsibility for post content. Use remove for abuse, sensitive data, or clear
-                    misuse. Submitter identity is for moderation only — it is never shown on the
-                    member board.
+                    responsibility for post content. Remove posts for abuse, sensitive data, or
+                    clear misuse. Poster identity is not shown.
                   </p>
                 </header>
 
-                {pendingBlacklist.length > 0 ? (
+                {pendingForumPosts.length > 0 ? (
                   <>
-                    <h3 className="admin-subhead">Legacy pending items</h3>
+                    <h3 className="admin-subhead">Pending posts</h3>
                     <ul className="post-list">
-                      {pendingBlacklist.map((entry) => (
-                        <li key={entry.id} className="post post--blacklist">
+                      {pendingForumPosts.map((entry) => (
+                        <li key={entry.id} className="post post--forum">
                           <div className="post__meta">
-                            <span className="badge">{entry.partyType}</span>
                             <span className="badge badge--pending">pending</span>
+                            <span className="badge">anonymous</span>
                             <time dateTime={entry.date}>{entry.date}</time>
-                            <span>
-                              Submitted by {entry.reportedBy}
-                              {entry.reportedCompany ? ` · ${entry.reportedCompany}` : ""}
-                            </span>
                           </div>
-                          <h3>{entry.name}</h3>
-                          {entry.company ? <p className="post__company">{entry.company}</p> : null}
-                          <p>{entry.reason}</p>
+                          <h3>{entry.title}</h3>
+                          <p>{entry.body}</p>
                           <div className="admin-actions">
                             <button
                               type="button"
                               className="btn btn--primary"
-                              onClick={() => void approveBlacklist(entry.id, member.name)}
+                              onClick={() => void approveForumPost(entry.id)}
                             >
-                              Publish to board
+                              Publish to forum
                             </button>
                             <button
                               type="button"
                               className="btn btn--ghost-dark"
-                              onClick={() => void rejectBlacklist(entry.id, member.name)}
+                              onClick={() => void removeForumPost(entry.id)}
                             >
                               Remove
                             </button>
@@ -196,32 +190,26 @@ export function Admin() {
                   </>
                 ) : null}
 
-                <h3 className="admin-subhead">Live board posts</h3>
+                <h3 className="admin-subhead">Live forum posts</h3>
                 <ul className="post-list">
-                  {approvedBlacklist.length === 0 ? (
-                    <li className="empty-note">No live blacklist posts yet.</li>
+                  {liveForumPosts.length === 0 ? (
+                    <li className="empty-note">No live forum posts yet.</li>
                   ) : (
-                    approvedBlacklist.map((entry) => (
-                      <li key={entry.id} className="post post--blacklist">
+                    liveForumPosts.map((entry) => (
+                      <li key={entry.id} className="post post--forum">
                         <div className="post__meta">
-                          <span className="badge">{entry.partyType}</span>
-                          <span className="badge">anonymous on board</span>
+                          <span className="badge">anonymous</span>
                           <time dateTime={entry.date}>{entry.date}</time>
-                          <span>
-                            Moderator view — {entry.reportedBy}
-                            {entry.reportedCompany ? ` · ${entry.reportedCompany}` : ""}
-                          </span>
                         </div>
-                        <h3>{entry.name}</h3>
-                        {entry.company ? <p className="post__company">{entry.company}</p> : null}
-                        <p>{entry.reason}</p>
+                        <h3>{entry.title}</h3>
+                        <p>{entry.body}</p>
                         <div className="admin-actions">
                           <button
                             type="button"
                             className="btn btn--ghost-dark"
-                            onClick={() => void rejectBlacklist(entry.id, member.name)}
+                            onClick={() => void removeForumPost(entry.id)}
                           >
-                            Remove from board
+                            Remove from forum
                           </button>
                         </div>
                       </li>
