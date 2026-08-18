@@ -1,0 +1,30 @@
+# TX Ropers Construction — Render static site
+# https://dashboard.render.com → New → Blueprint
+# Connect repo jayce-app/ACAC and this branch.
+
+services:
+  - type: web
+    name: tx-ropers-construction
+    runtime: static
+    plan: free
+    branch: cursor/tx-ropers-website-9034
+    autoDeploy: true
+    buildCommand: npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff

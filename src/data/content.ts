@@ -1,225 +1,116 @@
-export const vision = {
-  title: "Vision",
-  text: "We are committed to elevating the integrity of the construction industry in our community. We are here to be a hub for contractors and the community alike; promoting networking, education, and support.",
+export const company = {
+  name: "TX Ropers Construction",
+  legal: "TX Ropers Construction, LLC",
+  owner: "Jayce Johnson",
+  phone: "979-353-1292",
+  phoneHref: "tel:9793531292",
+  email: "sales@txropersconstruction.com",
+  emailHref: "mailto:sales@txropersconstruction.com",
+  address: "3016 Newsom Rd",
+  city: "Bellville, Texas 77418",
+  hoursWeekday: "Monday through Friday 8:00a – 5:00p",
+  hoursWeekend: "Saturday and Sunday: Closed",
+  hours: "Monday–Friday, 8:00 a.m.–5:00 p.m. · Closed Saturday & Sunday",
+  facebook: "https://www.facebook.com/p/TX-Ropers-Construction-LLC-100089307615057/",
+  /** Drop your real logo at public/logo.jpg — header, footer, and icons all use this path. */
+  logo: "/logo.jpg",
+  serviceArea:
+    "Southeast Texas — primarily within about 50 miles of Bellville. We also travel for special projects.",
+  tagline: "Turning Visions Into Reality",
+  mission:
+    "By providing a premium product and service, our goal is to help elevate the standard for our industry in our community. We are dedicated to our customers' satisfaction.",
 };
 
+/** Capability groups on Services — fewer titles, related work nested under each. */
+export const serviceGroups = [
+  {
+    id: "general",
+    title: "General construction",
+    text: "Custom residential and commercial builds from the ground up — turnkey under one crew, not production homes. Remodels and additions when you need to expand or update what you already have.",
+    includes: [
+      "Custom residential builds",
+      "Commercial new construction",
+      "Remodeling & additions",
+      "Turnkey project management",
+    ],
+  },
+  {
+    id: "metal-steel",
+    title: "Metal buildings & structural steel",
+    text: "Shops, barns, covered arenas, metal structures, structural steel, and metal framing — finished for real Texas use, with certified welders on the team.",
+    includes: [
+      "Metal buildings & shops",
+      "Barns & covered arenas",
+      "Structural steel",
+      "Metal framing & welding",
+    ],
+  },
+  {
+    id: "dirt",
+    title: "Dirt & site work",
+    text: "Site prep, pads, grading, drainage, and dirt work for residential and commercial sites — so the ground is right before the building goes up.",
+    includes: ["Site prep & pads", "Grading & drainage", "Residential & commercial dirt work"],
+  },
+];
+
+/** How TX Ropers staffs full-scope jobs — shown on Services. */
+export const crewApproach = {
+  title: "In-house crew. Full-scope coverage.",
+  text: "Most of our work is done by our own people — that is how we keep quality, schedule, and communication tight. When a trade sits outside what we self-perform, we pull from a deep network of trusted subcontractors so every piece of a general construction project is covered under one roof.",
+};
+
+/** Featured row on the home page */
+export const featuredServices = serviceGroups;
+
 export const about = {
-  title: "About Us",
+  title: "About us",
   paragraphs: [
-    "Founded by contractors in an effort to give back to the community. There is no licensing for general contractors in Texas at a state level. We support freedom and personal liberty, but we have been witness to many utilizing freedom without being responsible.",
-    "Our membership is made up of only professionals that have been vetted through our system. Our goal is to give credibility to the pros that deserve it and promote ethics throughout.",
+    "TX Ropers Construction is a small, locally rooted construction company serving residential and commercial clients. We focus on quality craftsmanship and honest communication on every job.",
+    "Our goal is to deliver a premium product and elevate the standard for construction in our community — whether the project is large or small.",
+    "Relationships matter here, and we are dedicated to our customers' satisfaction. When you work with TX Ropers Construction, you get a crew that stands behind the work.",
   ],
 };
 
-export const goals = [
+export const owner = {
+  name: "Jayce Johnson",
+  role: "Owner",
+  image: "/jayce-johnson.jpg",
+  headline: "Fourth-generation construction. Fifth-generation agriculture.",
+  paragraphs: [
+    "That combination shaped a particular skill set — one that knows how a shop, arena, barn, or ranch structure has to work on a real day, not just look right on paper.",
+    "Growing up around land, livestock, and building work taught Jayce to read a site, respect the dirt, and finish steel and structures that hold up under Texas use. It is why so much of what TX Ropers builds is custom, turnkey, and self-performed from the dirt up.",
+  ],
+};
+
+export const credentials = [
   {
-    title: "Home base for contractors",
-    text: "Be a home base for contractors in our county to network, support, and educate each other.",
+    title: "General contractor",
+    text: "Full-scope residential and commercial construction — from dirt and site work to steel, framing, and finish.",
   },
   {
-    title: "Accountability",
-    text: "Allow the membership to also blacklist notable wrongdoings.",
+    title: "Certified welders",
+    text: "Jayce and team members are certified welders — critical for structural steel and metal building work.",
   },
   {
-    title: "Best practices",
-    text: "Provide a platform for contractors to discover and disclose new practices and best practices in each trade.",
-  },
-  {
-    title: "Showcase specialty",
-    text: "Provide a platform for contractors to showcase their specialty within the industry.",
-  },
-  {
-    title: "Education for all",
-    text: "Provide seminars and educational opportunities for the construction industry here in our county available to all willing to attend.",
+    title: "Custom, not production",
+    text: "Every project is tailored. We lead the build in-house and bring in trusted trades when the scope calls for it.",
   },
 ];
 
-export type MemberAd = {
-  id: string;
-  business: string;
-  specialty: string;
-  owner: string;
-  blurb: string;
-  phone: string;
-  website?: string;
-};
-
-export const memberAds: MemberAd[] = [
+export const process = [
   {
-    id: "1",
-    business: "Lone Star Framing Co.",
-    specialty: "Residential Framing",
-    owner: "Marcus Hale",
-    blurb: "Precision stick-frame and metal framing for custom homes across Austin County.",
-    phone: "(979) 555-0142",
+    step: "01",
+    title: "Tell us what you need",
+    text: "Send your name, address, phone, email, and a quick description of the project through our quote form.",
   },
   {
-    id: "2",
-    business: "Brazos Bend Electric",
-    specialty: "Electrical",
-    owner: "Elena Ruiz",
-    blurb: "Licensed electrical work for new builds, remodels, and commercial service upgrades.",
-    phone: "(979) 555-0188",
+    step: "02",
+    title: "Walk the scope",
+    text: "We talk through the site, use, and budget so the plan matches how you will actually use the building.",
   },
   {
-    id: "3",
-    business: "Prairie Oak Cabinetry",
-    specialty: "Finish Carpentry",
-    owner: "James Whitaker",
-    blurb: "Custom millwork and cabinetry built in Bellville for kitchens, baths, and built-ins.",
-    phone: "(979) 555-0117",
-  },
-  {
-    id: "4",
-    business: "Sealy Concrete Works",
-    specialty: "Concrete & Flatwork",
-    owner: "Devin Carter",
-    blurb: "Foundations, driveways, and decorative flatwork with schedule-driven crews.",
-    phone: "(979) 555-0163",
-  },
-];
-
-export type PermitLink = {
-  name: string;
-  jurisdiction: string;
-  description: string;
-  url: string;
-};
-
-export const permitLinks: PermitLink[] = [
-  {
-    name: "Austin County Permits",
-    jurisdiction: "Austin County",
-    description:
-      "Development, septic (OSSF), driveway culvert, and subdivision applications for unincorporated areas.",
-    url: "https://www.austincounty.com/page/austin.permits",
-  },
-  {
-    name: "Austin County Permit Guidelines",
-    jurisdiction: "Austin County",
-    description: "Official guidelines for obtaining permits in Austin County (PDF).",
-    url: "https://www.austincounty.com/upload/page/0130/Temp%20GUIDELINES%20FOR%20OBTAINING%20PERMITS%20IN%20AUSTIN%20COUNTY%202025R1.pdf",
-  },
-  {
-    name: "911 Rural Addressing",
-    jurisdiction: "Austin County ECD",
-    description: "Obtain a 911 address required for many county development permits.",
-    url: "https://www.austincounty911.net/permits-property-information",
-  },
-  {
-    name: "City of Bellville Permits & Inspections",
-    jurisdiction: "City of Bellville",
-    description: "Building, plumbing, mechanical, and electrical permit information and forms.",
-    url: "https://www.cityofbellville.com/page/city.permits_inspections",
-  },
-  {
-    name: "City of Sealy Permit Applications",
-    jurisdiction: "City of Sealy",
-    description: "Central list of planning, building, and license permit applications.",
-    url: "https://www.ci.sealy.tx.us/residents/permit_forms.php",
-  },
-  {
-    name: "City of Sealy Building & Inspection",
-    jurisdiction: "City of Sealy",
-    description: "Building codes, plan review checklists, and inspection process details.",
-    url: "https://www.ci.sealy.tx.us/departments/planning_and_community_development/building_and_inspection.php",
-  },
-  {
-    name: "City of Wallis Permits",
-    jurisdiction: "City of Wallis",
-    description: "Building permits and contractor registration requirements for Wallis.",
-    url: "https://www.wallistexas.org/page/permits",
-  },
-];
-
-export type BoardPost = {
-  id: string;
-  author: string;
-  company: string;
-  title: string;
-  body: string;
-  date: string;
-};
-
-export type DiscussionBoard = {
-  id: string;
-  name: string;
-  description: string;
-  membersOnly: true;
-  posts: BoardPost[];
-};
-
-export const discussionBoards: DiscussionBoard[] = [
-  {
-    id: "networking",
-    name: "Networking & Support",
-    description: "Connect with fellow members for crew swaps, referrals, and jobsite help.",
-    membersOnly: true,
-    posts: [
-      {
-        id: "n1",
-        author: "Marcus Hale",
-        company: "Lone Star Framing Co.",
-        title: "Looking for a reliable concrete crew mid-September",
-        body: "Have a custom home outside Bellville needing a slab pour the week of Sept 15. Prefer ACAC members. Message me if your crew has availability.",
-        date: "2026-08-10",
-      },
-      {
-        id: "n2",
-        author: "Elena Ruiz",
-        company: "Brazos Bend Electric",
-        title: "Apprentice mentorship meetup",
-        body: "Hosting a Saturday morning walkthrough on service upgrades for apprentices. All vetted members welcome to bring one trainee.",
-        date: "2026-08-08",
-      },
-    ],
-  },
-  {
-    id: "practices",
-    name: "Best Practices by Trade",
-    description: "Share discoveries, methods, and standards that raise the bar in each trade.",
-    membersOnly: true,
-    posts: [
-      {
-        id: "p1",
-        author: "James Whitaker",
-        company: "Prairie Oak Cabinetry",
-        title: "Moisture control tips for coastal humidity",
-        body: "We have been using a different acclimation window for maple before install. Happy to share the checklist we use on Sealy jobs.",
-        date: "2026-08-12",
-      },
-    ],
-  },
-  {
-    id: "accountability",
-    name: "Accountability & Blacklist",
-    description: "Report notable wrongdoings for membership review. Facts only — no speculation.",
-    membersOnly: true,
-    posts: [
-      {
-        id: "a1",
-        author: "Board Admin",
-        company: "ACAC",
-        title: "How to submit an accountability report",
-        body: "Use this board to document verified issues: missing payments to subs, abandoned jobs, forged insurance, or unsafe practices. Include dates, jurisdictions, and documentation when possible. The board reviews before any public action.",
-        date: "2026-07-01",
-      },
-    ],
-  },
-  {
-    id: "showcase",
-    name: "Specialty Showcase",
-    description: "Highlight your specialty work and educate peers on niche capabilities.",
-    membersOnly: true,
-    posts: [
-      {
-        id: "s1",
-        author: "Devin Carter",
-        company: "Sealy Concrete Works",
-        title: "Stamped patio finish portfolio — summer 2026",
-        body: "Posted photos from three recent patio pours using integral color. Happy to walk members through the release technique we settled on.",
-        date: "2026-08-05",
-      },
-    ],
+    step: "03",
+    title: "Build it turnkey",
+    text: "From dirt and site work to steel, framing, and finish, we keep the work under one standard.",
   },
 ];

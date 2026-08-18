@@ -1,0 +1,65 @@
+.band--seo h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-top: var(--space-lg);
+}
+
+.seo-topic {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(22, 32, 51, 0.12);
+}
+
+.seo-topic h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+
+.seo-topic p {
+  color: var(--slate);
+  max-width: 48rem;
+}
+
+.seo-chips {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.85rem;
+}
+
+.seo-chips li {
+  font-size: 0.92rem;
+  color: var(--slate);
+  border-bottom: 1px solid var(--spark);
+  padding-bottom: 0.1rem;
+}
+
+.seo-keywords {
+  columns: 2;
+  gap: 2rem;
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--slate);
+}
+
+.seo-contact {
+  margin-top: var(--space-xl);
+  padding-top: 1rem;
+  border-top: 1px solid rgba(22, 32, 51, 0.14);
+}
+
+.seo-contact a {
+  color: var(--spark-deep);
+  font-weight: 600;
+}
+
+.seo-converter-loading {
+  margin-top: var(--space-xl);
+  color: var(--sky-deep);
+}
+
+@media (max-width: 700px) {
+  .seo-keywords {
+    columns: 1;
+  }
+}

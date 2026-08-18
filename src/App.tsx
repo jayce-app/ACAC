@@ -1,23 +1,28 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { AuthProvider } from "./auth/AuthContext";
 import { Layout } from "./components/Layout";
+import { About } from "./pages/About";
+import { Contact } from "./pages/Contact";
+import { Copyright } from "./pages/Copyright";
 import { Home } from "./pages/Home";
-import { Membership } from "./pages/Membership";
-import { Permits } from "./pages/Permits";
+import { Projects } from "./pages/Projects";
+import { SeoKeywords } from "./pages/SeoKeywords";
+import { Services } from "./pages/Services";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/membership" element={<Membership />} />
-            <Route path="/permits" element={<Permits />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </AuthProvider>
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/copyright" element={<Copyright />} />
+          <Route path="/southeast-texas-construction" element={<SeoKeywords />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   );
 }

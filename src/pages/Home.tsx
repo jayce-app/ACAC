@@ -1,74 +1,114 @@
 import { Link } from "react-router-dom";
-import { about, goals, memberAds, vision } from "../data/content";
+import { useState } from "react";
+import { company, featuredServices, process } from "../data/content";
 import "./Home.css";
 
-const heroImage =
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2000&q=80";
-
 export function Home() {
+  const [heroReady, setHeroReady] = useState(false);
+
   return (
     <div className="home">
       <section className="hero" aria-labelledby="hero-brand">
         <div className="hero__media" aria-hidden="true">
-          <img src={heroImage} alt="" className="hero__img" />
+          <div className="hero__fallback" />
+          <img
+            src="/hero.jpg"
+            alt=""
+            className={heroReady ? "hero__img is-ready" : "hero__img"}
+            width={1600}
+            height={900}
+            onLoad={() => setHeroReady(true)}
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
           <div className="hero__veil" />
         </div>
 
         <div className="hero__content">
           <p id="hero-brand" className="hero__brand">
-            Austin County Association of Contractors
+            TX Ropers Construction
           </p>
-          <h1 className="hero__headline">Integrity built into every job.</h1>
+          <h1 className="hero__headline">{company.tagline}</h1>
           <p className="hero__lede">
-            A vetted hub for contractors and community — networking, education, and ethical
-            practice across Austin County.
+            Custom residential and commercial construction out of Bellville — metal buildings,
+            structural steel, dirt and site work, and turnkey builds across Southeast Texas.
           </p>
           <div className="hero__actions">
-            <Link to="/membership" className="btn btn--primary">
-              Apply for membership
+            <Link to="/contact" className="btn btn--primary">
+              Request a quote
             </Link>
-            <Link to="/permits" className="btn btn--ghost">
-              Find permit forms
+            <Link to="/services" className="btn btn--ghost">
+              View services
+            </Link>
+            <Link to="/projects" className="btn btn--ghost">
+              See projects
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="band band--vision" aria-labelledby="vision-title">
+      <section className="band band--services" aria-labelledby="home-services-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">Our commitment</p>
-          <h2 id="vision-title">{vision.title}</h2>
-          <p className="lead">{vision.text}</p>
-        </div>
-      </section>
-
-      <section className="band band--about" aria-labelledby="about-title">
-        <div className="band__inner band__split reveal">
-          <div>
-            <p className="eyebrow">Who we are</p>
-            <h2 id="about-title">{about.title}</h2>
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">What we build</p>
+              <h2 id="home-services-title">Metal buildings, steel, and dirt work</h2>
+            </div>
+            <Link to="/services" className="btn btn--dark">
+              All services
+            </Link>
           </div>
-          <div className="about-copy">
-            {about.paragraphs.map((p) => (
-              <p key={p.slice(0, 24)}>{p}</p>
+
+          <ul className="service-rows">
+            {featuredServices.map((service) => (
+              <li key={service.id} className="service-row">
+                <h3>{service.title}</h3>
+                <p>{service.text}</p>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      <section className="band band--goals" aria-labelledby="goals-title">
+      <section className="band band--work" aria-labelledby="home-work-title">
         <div className="band__inner reveal">
-          <p className="eyebrow">What we work toward</p>
-          <h2 id="goals-title">Goals</h2>
-          <ol className="goal-list">
-            {goals.map((goal, i) => (
-              <li key={goal.title} className="goal-item">
-                <span className="goal-item__num" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">Recent work</p>
+              <h2 id="home-work-title">Built across Southeast Texas</h2>
+            </div>
+            <Link to="/projects" className="btn btn--dark">
+              Full gallery
+            </Link>
+          </div>
+        </div>
+        <div className="work-collage reveal">
+          <Link to="/projects" className="work-collage__link" aria-label="View project gallery">
+            <img
+              src="/projects/work-collage-home.jpg"
+              alt="Collage of TX Ropers Construction projects — metal shops, timber pavilion, stall barn, and site work"
+              width={2000}
+              height={900}
+              loading="lazy"
+            />
+          </Link>
+        </div>
+      </section>
+
+      <section className="band band--process" aria-labelledby="process-title">
+        <div className="band__inner reveal">
+          <p className="eyebrow">How a quote starts</p>
+          <h2 id="process-title">Simple process, solid build</h2>
+          <ol className="process-list">
+            {process.map((item) => (
+              <li key={item.step} className="process-item">
+                <span className="process-item__step" aria-hidden="true">
+                  {item.step}
                 </span>
                 <div>
-                  <h3>{goal.title}</h3>
-                  <p>{goal.text}</p>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
                 </div>
               </li>
             ))}
@@ -76,35 +116,24 @@ export function Home() {
         </div>
       </section>
 
-      <section className="band band--ads" aria-labelledby="ads-title">
-        <div className="band__inner reveal">
-          <div className="ads-head">
-            <div>
-              <p className="eyebrow">Member spotlight</p>
-              <h2 id="ads-title">Vetted professionals advertising here</h2>
-              <p className="ads-lede">
-                Only members who pass our vetting system can advertise. Hire with confidence —
-                these are pros who stand behind their work.
-              </p>
-            </div>
-            <Link to="/membership" className="btn btn--primary">
-              Advertise as a member
+      <section className="band band--cta" aria-labelledby="cta-title">
+        <div className="band__inner band__cta reveal">
+          <div>
+            <p className="eyebrow">Ready to start</p>
+            <h2 id="cta-title">Tell us what you need built</h2>
+            <p>
+              {company.serviceArea} Call the office or send a quote request —{" "}
+              {company.hours}.
+            </p>
+          </div>
+          <div className="band__cta-actions">
+            <a href={company.phoneHref} className="btn btn--primary">
+              {company.phone}
+            </a>
+            <Link to="/contact" className="btn btn--ghost">
+              Quote form
             </Link>
           </div>
-
-          <ul className="ad-grid">
-            {memberAds.map((ad) => (
-              <li key={ad.id} className="ad-tile">
-                <p className="ad-tile__trade">{ad.specialty}</p>
-                <h3>{ad.business}</h3>
-                <p className="ad-tile__owner">{ad.owner}</p>
-                <p>{ad.blurb}</p>
-                <a className="ad-tile__phone" href={`tel:${ad.phone.replace(/\D/g, "")}`}>
-                  {ad.phone}
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
     </div>
