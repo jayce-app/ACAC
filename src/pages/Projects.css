@@ -5,82 +5,67 @@
 
 .band--projects .band__inner {
   overflow: visible;
+  max-width: min(1180px, calc(100% - 1.5rem));
 }
 
-.projects-grid {
+.projects-pile {
   list-style: none;
   margin: 0;
-  padding: 0.35rem 0 0;
+  padding: 2.25rem 0.35rem 3rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
 }
 
-.project-tile {
+.projects-pile > li {
   position: relative;
-  display: grid;
-  place-items: center;
-  width: 5.25rem;
-  height: 5.25rem;
-  padding: 0.2rem;
+  z-index: var(--z, 1);
+  width: var(--w, 10.5rem);
+  margin: -1.35rem -1.55rem;
+}
+
+.project-print {
+  display: block;
+  width: 100%;
+  padding: 0.42rem;
   border: none;
-  background: #1a1c1e;
+  background: #f3efe6;
   cursor: pointer;
-  overflow: visible;
-  z-index: 1;
-  transform: scale(1);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    0 1px 2px rgba(20, 16, 10, 0.16),
+    0 10px 22px rgba(20, 16, 10, 0.2);
+  transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--rot, 0deg));
   transform-origin: center center;
   transition:
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 240ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms ease,
     z-index 0s;
-  flex: 0 0 auto;
 }
 
-.project-tile img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
+.project-print img {
+  width: 100%;
   height: auto;
-  object-fit: contain;
+  aspect-ratio: var(--ratio, 4 / 3);
+  object-fit: cover;
   display: block;
-  transition: filter 240ms ease;
+  background: #d8d4cb;
 }
 
-.project-tile:hover,
-.project-tile:focus-visible {
-  z-index: 20;
-  transform: scale(2.4);
-  box-shadow: 0 18px 48px rgba(5, 5, 5, 0.5);
-  background: #0c0e12;
+.project-print:hover,
+.project-print:focus-visible {
+  z-index: 40;
+  transform: translate(var(--dx, 0), var(--dy, 0)) rotate(-1.5deg) scale(1.38);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.75) inset,
+    0 18px 40px rgba(20, 16, 10, 0.38);
 }
 
-.project-tile:hover img,
-.project-tile:focus-visible img {
-  filter: brightness(1.04);
-}
-
-.project-tile--video .project-tile__play {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-family: var(--font-display);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--chrome);
-  background: rgba(5, 5, 5, 0.7);
-  border: 1px solid rgba(230, 231, 232, 0.55);
-  padding: 0.28rem 0.45rem;
-  pointer-events: none;
-  transition: opacity 200ms ease;
-}
-
-.project-tile--video:hover .project-tile__play {
-  opacity: 0;
+.projects-pile > li:has(.project-print:hover),
+.projects-pile > li:has(.project-print:focus-visible) {
+  z-index: 40;
 }
 
 .projects-cta {
@@ -126,46 +111,45 @@
   margin: 0 auto;
 }
 
-.project-lightbox__figure video {
-  max-width: min(720px, 100%);
-  max-height: 85vh;
-  display: block;
-  margin: 0 auto;
-  background: #000;
-}
-
 @media (max-width: 800px) {
-  .project-tile {
-    width: 4.5rem;
-    height: 4.5rem;
+  .projects-pile {
+    padding: 1.5rem 0 2.25rem;
   }
 
-  .project-tile:hover,
-  .project-tile:focus-visible {
-    transform: scale(2);
+  .projects-pile > li {
+    margin: -1.05rem -1.15rem;
+  }
+
+  .project-print:hover,
+  .project-print:focus-visible {
+    transform: translate(var(--dx, 0), var(--dy, 0)) rotate(-1deg) scale(1.22);
   }
 }
 
 @media (max-width: 560px) {
-  .projects-grid {
-    gap: 3px;
-  }
-
-  .project-tile {
-    width: 4rem;
-    height: 4rem;
-  }
-
-  .project-tile:hover,
-  .project-tile:focus-visible {
-    transform: scale(1.85);
+  .projects-pile > li {
+    margin: -0.85rem -0.95rem;
   }
 }
 
 @media (hover: none) {
-  .project-tile:hover,
-  .project-tile:focus-visible {
-    transform: none;
-    box-shadow: none;
+  .project-print:hover,
+  .project-print:focus-visible {
+    transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--rot, 0deg));
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 1px 2px rgba(20, 16, 10, 0.16),
+      0 10px 22px rgba(20, 16, 10, 0.2);
+  }
+
+  .projects-pile > li:has(.project-print:hover),
+  .projects-pile > li:has(.project-print:focus-visible) {
+    z-index: var(--z, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-print {
+    transition: none;
   }
 }
