@@ -4,14 +4,32 @@ Your site is already online: **https://jayce-app.github.io/ACAC/**
 
 This checklist turns it into a real association website with shared member accounts and your DBA domain.
 
+**DBA:** Austin County Association of Contractors  
+**Domain:** still pending — leave blank until secured  
+**Deploy branch for Render:** `cursor/acac-website-2453` (auto-deploys on push)
+
 ---
 
-## A. Tell Cursor these 4 things (reply in chat)
+## Render auto-deploy (recommended)
 
-1. **Exact DBA name** (as registered)
-2. **Domain name** you own or want (example: `austincountycontractors.org`)
-3. **Admin email** you will use to run the site (your real email)
-4. After step B below, paste:
+Once the service exists in Render, updates deploy themselves when this branch is pushed.
+
+1. In [Render](https://dashboard.render.com), create a **Static Site** (or Blueprint from `render.yaml`)
+2. Connect GitHub repo **jayce-app/ACAC**
+3. Branch: **`cursor/acac-website-2453`**
+4. Turn **Auto-Deploy** on (Blueprint sets `autoDeployTrigger: commit`)
+5. Build command: `npm ci && npm run build`
+6. Publish directory: `dist`
+
+Optional backup: in the Render service → **Settings → Deploy Hook**, copy the URL, then in GitHub → **Settings → Secrets → Actions**, add secret `RENDER_DEPLOY_HOOK`. The workflow `.github/workflows/deploy-render.yml` will ping it on every push.
+
+---
+
+## A. Tell Cursor these things when ready
+
+1. **Domain name** once you own it (example: `austincountycontractors.org`)
+2. **Admin email** you will use to run the site
+3. After step B below, paste:
    - **Project URL**
    - **anon public key**
 

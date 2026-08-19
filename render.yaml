@@ -2,7 +2,10 @@ services:
   - type: web
     name: acac-website
     runtime: static
+    repo: https://github.com/jayce-app/ACAC
     branch: cursor/acac-website-2453
+    # Redeploy automatically on every push to this branch
+    autoDeployTrigger: commit
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
     envVars:
