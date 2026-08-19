@@ -39,6 +39,11 @@
   align-items: start;
 }
 
+.auth-panel__inner--solo {
+  grid-template-columns: minmax(0, 32rem);
+  max-width: 36rem;
+}
+
 .auth-tabs {
   display: flex;
   gap: 0.5rem;
@@ -83,6 +88,7 @@
 
 .auth-form input,
 .post-form input,
+.post-form select,
 .post-form textarea {
   border: 1px solid rgba(42, 52, 68, 0.22);
   background: var(--white);
@@ -93,6 +99,7 @@
 
 .auth-form input:focus,
 .post-form input:focus,
+.post-form select:focus,
 .post-form textarea:focus {
   outline: 2px solid rgba(201, 162, 74, 0.55);
   outline-offset: 1px;
@@ -104,11 +111,25 @@
   gap: 0 1rem;
 }
 
+.auth-form__full {
+  grid-column: 1 / -1;
+}
+
+.membership .auth-note a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}
+
 .auth-note,
 .auth-hint {
   font-size: 0.92rem;
   color: var(--slate);
   margin: 0.5rem 0 1rem;
+}
+
+.auth-hero a {
+  color: var(--brass);
+  font-weight: 700;
 }
 
 .auth-hint code {
@@ -216,6 +237,116 @@
 .post h3 {
   font-size: 1.15rem;
   margin-bottom: 0.4rem;
+}
+
+.post__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--brass-deep);
+  margin-bottom: 0.5rem;
+}
+
+.post__contact,
+.post__company {
+  font-weight: 600;
+  color: var(--slate);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(168, 72, 56, 0.12);
+  color: var(--danger);
+  padding: 0.2rem 0.45rem;
+}
+
+.badge--pending {
+  background: rgba(201, 162, 74, 0.18);
+  color: var(--brass-deep);
+}
+
+.admin-subhead {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.legal-callout {
+  background: rgba(168, 72, 56, 0.08);
+  border-left: 3px solid var(--danger);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  color: var(--slate);
+}
+
+.legal-callout--strong {
+  background: rgba(168, 72, 56, 0.12);
+  border-left-width: 4px;
+}
+
+.legal-callout--strong strong {
+  color: var(--ink);
+}
+
+.legal-callout a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}
+
+.forum-board-note {
+  margin: -0.25rem 0 0.85rem;
+  color: var(--slate);
+  font-size: 0.92rem;
+}
+
+.attest-check {
+  display: grid !important;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  font-weight: 500 !important;
+  margin: 0.5rem 0 1rem;
+}
+
+.attest-check input {
+  margin-top: 0.25rem;
+}
+
+.empty-note {
+  color: var(--slate);
+  padding: 0.5rem 0;
+  list-style: none;
+}
+
+.discussion-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.discussion-subnav__btn {
+  background: transparent;
+  border: 1px solid rgba(42, 52, 68, 0.18);
+  padding: 0.45rem 0.75rem;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--slate);
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+.discussion-subnav__btn.is-active,
+.discussion-subnav__btn:hover {
+  color: var(--ink);
+  border-color: var(--brass);
+  background: rgba(201, 162, 74, 0.12);
 }
 
 .membership .btn {

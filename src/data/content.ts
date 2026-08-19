@@ -3,22 +3,42 @@ export const vision = {
   text: "We are committed to elevating the integrity of the construction industry in our community. We are here to be a hub for contractors and the community alike; promoting networking, education, and support.",
 };
 
+export const hubDisclaimer = {
+  title: "Important disclaimer",
+  text: "ACAC is a hub for contractors and customers to connect and network. We curate a calendar of third-party education opportunities and best-practice resources, but we do not teach courses ourselves and we do not warranty or guarantee any member’s workmanship, insurance, licensing, pricing, timelines, or project outcomes. Always do your own due diligence before hiring or contracting.",
+};
+
+export const education = {
+  title: "Education opportunities",
+  lead: "We do not teach courses directly. Instead, we maintain a public calendar of seminars, CE classes, and safety training from trade associations, colleges, and state agencies — so Austin County contractors can find ways to keep skills and licenses current.",
+  points: [
+    {
+      title: "Curated calendar",
+      text: "OSHA/safety, plumbing CE, HVAC CE, and other construction-trade sessions reachable from Austin County.",
+    },
+    {
+      title: "Trusted providers",
+      text: "Links to DWC, PHCC, TACCA, ABC, AGC, ACC, Blinn, and other established education hubs.",
+    },
+    {
+      title: "Peer sharing in the lounge",
+      text: "Members still swap jobsite know-how and trade tips with each other — separate from formal classes.",
+    },
+  ],
+};
+
 export const about = {
   title: "About Us",
   paragraphs: [
     "Founded by contractors in an effort to give back to the community. There is no licensing for general contractors in Texas at a state level. We support freedom and personal liberty, but we have been witness to many utilizing freedom without being responsible.",
-    "Our membership is made up of only professionals that have been vetted through our system. Our goal is to give credibility to the pros that deserve it and promote ethics throughout.",
+    "Our membership is made up of only professionals that have been vetted through our system. Our goal is to give credibility to the pros that deserve it, promote ethics throughout, and help members find quality education and best-practice resources.",
   ],
 };
 
 export const goals = [
   {
     title: "Home base for contractors",
-    text: "Be a home base for contractors in our county to network, support, and educate each other.",
-  },
-  {
-    title: "Accountability",
-    text: "Allow the membership to also blacklist notable wrongdoings.",
+    text: "Be a home base for contractors in our county to network and support each other.",
   },
   {
     title: "Best practices",
@@ -29,53 +49,8 @@ export const goals = [
     text: "Provide a platform for contractors to showcase their specialty within the industry.",
   },
   {
-    title: "Education for all",
-    text: "Provide seminars and educational opportunities for the construction industry here in our county available to all willing to attend.",
-  },
-];
-
-export type MemberAd = {
-  id: string;
-  business: string;
-  specialty: string;
-  owner: string;
-  blurb: string;
-  phone: string;
-  website?: string;
-};
-
-export const memberAds: MemberAd[] = [
-  {
-    id: "1",
-    business: "Lone Star Framing Co.",
-    specialty: "Residential Framing",
-    owner: "Marcus Hale",
-    blurb: "Precision stick-frame and metal framing for custom homes across Austin County.",
-    phone: "(979) 555-0142",
-  },
-  {
-    id: "2",
-    business: "Brazos Bend Electric",
-    specialty: "Electrical",
-    owner: "Elena Ruiz",
-    blurb: "Licensed electrical work for new builds, remodels, and commercial service upgrades.",
-    phone: "(979) 555-0188",
-  },
-  {
-    id: "3",
-    business: "Prairie Oak Cabinetry",
-    specialty: "Finish Carpentry",
-    owner: "James Whitaker",
-    blurb: "Custom millwork and cabinetry built in Bellville for kitchens, baths, and built-ins.",
-    phone: "(979) 555-0117",
-  },
-  {
-    id: "4",
-    business: "Sealy Concrete Works",
-    specialty: "Concrete & Flatwork",
-    owner: "Devin Carter",
-    blurb: "Foundations, driveways, and decorative flatwork with schedule-driven crews.",
-    phone: "(979) 555-0163",
+    title: "Education calendar",
+    text: "Share a public calendar of third-party seminars and classes for the construction trades — we curate opportunities; we do not teach the courses ourselves.",
   },
 ];
 
@@ -87,6 +62,13 @@ export type PermitLink = {
 };
 
 export const permitLinks: PermitLink[] = [
+  {
+    name: "Texas811 — Call Before You Dig",
+    jurisdiction: "Texas 811",
+    description:
+      "Dial 811 (in Texas) or 1-800-344-8377 (out of state). Free line locates; Texas law requires notice at least two business days before digging.",
+    url: "https://www.texas811.org/",
+  },
   {
     name: "Austin County Permits",
     jurisdiction: "Austin County",
@@ -155,71 +137,43 @@ export const discussionBoards: DiscussionBoard[] = [
     name: "Networking & Support",
     description: "Connect with fellow members for crew swaps, referrals, and jobsite help.",
     membersOnly: true,
-    posts: [
-      {
-        id: "n1",
-        author: "Marcus Hale",
-        company: "Lone Star Framing Co.",
-        title: "Looking for a reliable concrete crew mid-September",
-        body: "Have a custom home outside Bellville needing a slab pour the week of Sept 15. Prefer ACAC members. Message me if your crew has availability.",
-        date: "2026-08-10",
-      },
-      {
-        id: "n2",
-        author: "Elena Ruiz",
-        company: "Brazos Bend Electric",
-        title: "Apprentice mentorship meetup",
-        body: "Hosting a Saturday morning walkthrough on service upgrades for apprentices. All vetted members welcome to bring one trainee.",
-        date: "2026-08-08",
-      },
-    ],
+    posts: [],
   },
   {
     id: "practices",
     name: "Best Practices by Trade",
     description: "Share discoveries, methods, and standards that raise the bar in each trade.",
     membersOnly: true,
-    posts: [
-      {
-        id: "p1",
-        author: "James Whitaker",
-        company: "Prairie Oak Cabinetry",
-        title: "Moisture control tips for coastal humidity",
-        body: "We have been using a different acclimation window for maple before install. Happy to share the checklist we use on Sealy jobs.",
-        date: "2026-08-12",
-      },
-    ],
-  },
-  {
-    id: "accountability",
-    name: "Accountability & Blacklist",
-    description: "Report notable wrongdoings for membership review. Facts only — no speculation.",
-    membersOnly: true,
-    posts: [
-      {
-        id: "a1",
-        author: "Board Admin",
-        company: "ACAC",
-        title: "How to submit an accountability report",
-        body: "Use this board to document verified issues: missing payments to subs, abandoned jobs, forged insurance, or unsafe practices. Include dates, jurisdictions, and documentation when possible. The board reviews before any public action.",
-        date: "2026-07-01",
-      },
-    ],
+    posts: [],
   },
   {
     id: "showcase",
     name: "Specialty Showcase",
     description: "Highlight your specialty work and educate peers on niche capabilities.",
     membersOnly: true,
-    posts: [
-      {
-        id: "s1",
-        author: "Devin Carter",
-        company: "Sealy Concrete Works",
-        title: "Stamped patio finish portfolio — summer 2026",
-        body: "Posted photos from three recent patio pours using integral color. Happy to walk members through the release technique we settled on.",
-        date: "2026-08-05",
-      },
-    ],
+    posts: [],
   },
 ];
+
+export type BidPost = {
+  id: string;
+  title: string;
+  tradeNeeded: string;
+  location: string;
+  details: string;
+  contact: string;
+  author: string;
+  company: string;
+  date: string;
+};
+
+export type ForumPostStatus = "pending" | "approved" | "rejected";
+
+/** Anonymous member-forum post. Poster identity is never shown to members. */
+export type ForumPost = {
+  id: string;
+  title: string;
+  body: string;
+  date: string;
+  status: ForumPostStatus;
+};

@@ -1,0 +1,129 @@
+.members-hero {
+  background:
+    linear-gradient(115deg, rgba(18, 22, 28, 0.94), rgba(28, 36, 48, 0.82)),
+    url("https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1600&q=70")
+      center / cover;
+  color: var(--white);
+  padding: var(--space-2xl) var(--space-md) var(--space-xl);
+}
+
+.members-hero__inner,
+.members-list__inner {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.members-list__inner .disclaimer--compact {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(42, 52, 68, 0.14);
+}
+
+.members-hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  max-width: 12ch;
+}
+
+.members-hero p {
+  max-width: 40rem;
+  color: var(--concrete);
+}
+
+.members-list {
+  padding: var(--space-xl) var(--space-md) var(--space-2xl);
+}
+
+.members-empty {
+  max-width: 34rem;
+  padding: 1.5rem 0;
+}
+
+.members-empty h2 {
+  font-size: 1.6rem;
+}
+
+.members-empty p {
+  color: var(--slate);
+  margin-bottom: 1.25rem;
+}
+
+.member-directory {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.member-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 1.35rem 0;
+  border-top: 1px solid rgba(42, 52, 68, 0.14);
+}
+
+.member-directory li:last-child {
+  border-bottom: 1px solid rgba(42, 52, 68, 0.14);
+}
+
+.member-row__trade {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  margin-bottom: 0.25rem;
+}
+
+.member-row h2 {
+  font-size: 1.35rem;
+  margin-bottom: 0.2rem;
+}
+
+.member-row__name {
+  color: var(--slate);
+  margin: 0;
+}
+
+.member-row__phone {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--brass);
+  white-space: nowrap;
+}
+
+.members-page .eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 0.65rem;
+}
+
+.members-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  background: var(--brass);
+  color: var(--ink);
+}
+
+.members-page .btn:hover {
+  background: #d8b35a;
+}
+
+@media (max-width: 640px) {
+  .member-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

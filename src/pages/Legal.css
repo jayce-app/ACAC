@@ -1,0 +1,78 @@
+.legal-page {
+  color: var(--ink);
+}
+
+.legal-hero {
+  background:
+    linear-gradient(115deg, rgba(18, 22, 28, 0.94), rgba(28, 36, 48, 0.85)),
+    url("https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1600&q=70")
+      center / cover;
+  color: var(--white);
+  padding: var(--space-2xl) var(--space-md) var(--space-xl);
+}
+
+.legal-inner {
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+.legal-hero h1 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  max-width: 16ch;
+}
+
+.legal-hero p {
+  color: var(--concrete);
+  max-width: 40rem;
+}
+
+.legal-body {
+  padding: var(--space-xl) var(--space-md) var(--space-2xl);
+}
+
+.legal-note {
+  background: rgba(201, 162, 74, 0.12);
+  border-left: 3px solid var(--brass);
+  padding: 0.85rem 1rem;
+  color: var(--slate);
+  margin-bottom: 1.75rem;
+}
+
+.legal-body h2 {
+  font-size: 1.2rem;
+  margin: 1.75rem 0 0.55rem;
+}
+
+.legal-body p,
+.legal-body li {
+  color: var(--slate);
+}
+
+.legal-body ul {
+  margin: 0.4rem 0 1rem;
+  padding-left: 1.2rem;
+}
+
+.legal-body li + li {
+  margin-top: 0.35rem;
+}
+
+.legal-related {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(42, 52, 68, 0.14);
+}
+
+.legal-related a {
+  color: var(--brass-deep);
+  font-weight: 700;
+}
+
+.legal-page .eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 0.65rem;
+}

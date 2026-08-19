@@ -1,0 +1,66 @@
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.admin-subhead {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.badge--pending {
+  background: rgba(201, 162, 74, 0.18);
+  color: var(--brass-deep);
+}
+
+.membership .btn--ghost-dark {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid rgba(42, 52, 68, 0.28);
+}
+
+.membership .btn--ghost-dark:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.admin-refs,
+.admin-photos {
+  margin-top: 0.85rem;
+}
+
+.admin-refs h4,
+.admin-photos h4 {
+  margin: 0 0 0.45rem;
+  font-size: 0.95rem;
+  color: var(--brass-deep);
+}
+
+.admin-refs ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.55rem;
+  color: var(--slate);
+  font-size: 0.92rem;
+}
+
+.admin-photos__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: 0.55rem;
+}
+
+.admin-photos__grid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid rgba(42, 52, 68, 0.16);
+}

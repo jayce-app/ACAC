@@ -1,0 +1,50 @@
+name: Update education calendar
+
+on:
+  schedule:
+    # Mondays at 14:00 UTC
+    - cron: "0 14 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: education-calendar-update
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Fetch latest trade education listings
+        run: npm run update:education
+
+      - name: Create pull request if calendar changed
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: refresh education calendar from DWC and TACCA"
+          branch: chore/education-calendar-auto
+          delete-branch: true
+          title: "Refresh education calendar"
+          body: |
+            Automated refresh of the public education calendar.
+
+            - Pulls construction-related OSHA / safety classes from the Texas DWC calendar
+            - Pulls TACCA HVAC CE and license-prep upcoming events
+            - Keeps manually curated hubs (PHCC, ABC, etc.)
+
+            Review the diff, then merge to publish.
+          add-paths: |
+            src/data/educationGenerated.json

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "phcc-plumbing-ce-hub",
+    "title": "PHCC of Texas Plumbing Continuing Education",
+    "organizer": "PHCC of Texas",
+    "tradeFocus": "Plumbing CE",
+    "startDate": "2026-08-18",
+    "endDate": "2026-12-31",
+    "location": "Live online & statewide (Texas)",
+    "format": "Hybrid",
+    "cost": "See PHCC registration",
+    "summary": "Ongoing plumbing continuing education and related trade classes for Texas plumbers. Check the PHCC event list for current live-online and in-person dates, textbooks, and TSBPE credit details.",
+    "url": "https://phcc-tx.org/events/event_list.asp"
+  },
+  {
+    "id": "abc-ctx-events-hub",
+    "title": "ABC Central Texas contractor training & events",
+    "organizer": "ABC Central Texas",
+    "tradeFocus": "Field supervision / craft training",
+    "startDate": "2026-09-01",
+    "endDate": "2026-12-31",
+    "location": "Central Texas (ABC chapter)",
+    "format": "In person",
+    "cost": "See ABC registration",
+    "summary": "Central Texas Associated Builders and Contractors training, superintendent academies, and chapter events. Confirm current dates on the ABC Central Texas site.",
+    "url": "https://www.abccentraltexas.org/"
+  }
+]

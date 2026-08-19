@@ -1,23 +1,32 @@
 # Austin County Association of Contractors
 
-Public website for the Austin County Association of Contractors (ACAC).
+Live site: **https://jayce-app.github.io/ACAC/**
+
+## For the association owner (no coding)
+
+Follow **[GO_LIVE.md](./GO_LIVE.md)** to connect:
+- your registered DBA name
+- a custom domain
+- real shared member accounts (Supabase)
 
 ## Pages
 
-- **Home** — Vision, About Us, Goals, and member advertising spotlights
-- **Membership** — Application form, member login, and members-only discussion boards
-- **Permits** — Links to Austin County and municipal permit resources
+- **Home** — Vision, About, Goals, public member list
+- **Members** — Public directory of vetted members
+- **Member login** — Apply / sign in; lounge unlocks after approval
+- **Admin** — Approve applications and moderate the anonymous member forum
+- **Permits** — County and city permit links, Texas 811
+- **Education** — Curated calendar of third-party trade seminars (auto-refreshed)
 
-## Develop
+## Developers
 
 ```bash
 npm install
+cp .env.example .env   # add Supabase URL + anon key
 npm run dev
+npm run update:education   # refresh DWC + TACCA calendar listings
 ```
 
-## Demo member login
+Without `.env`, the app uses a local browser demo mode so the UI still works.
 
-- Email: `member@acac.local`
-- Password: `integrity`
-
-Membership data is stored in the browser (`localStorage`) for this demo.
+A weekly GitHub Action (`.github/workflows/update-education-calendar.yml`) runs the same updater and opens a PR when listings change.
