@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { hubDisclaimer } from "../data/content";
-import { SetupBanner } from "./SetupBanner";
 import "./Layout.css";
 import "./Disclaimer.css";
 
@@ -26,7 +25,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <SetupBanner />
       <header className="site-header">
         <div className="site-header__inner">
           <NavLink to="/" className="brand-mark" aria-label="ACAC home">
