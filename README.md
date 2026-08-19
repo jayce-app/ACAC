@@ -2,6 +2,8 @@
 
 Live site: **https://jayce-app.github.io/ACAC/**
 
+**Render deploy branch:** `cursor/acac-website-2453` (auto-deploys on push once connected)
+
 ## For the association owner (no coding)
 
 Follow **[GO_LIVE.md](./GO_LIVE.md)** to connect:
