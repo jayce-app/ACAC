@@ -11,10 +11,12 @@ import { Permits } from "./pages/Permits";
 import { Privacy } from "./pages/Privacy";
 import { Terms } from "./pages/Terms";
 
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
+
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter basename="/ACAC">
+      <BrowserRouter basename={routerBasename === "/" ? undefined : routerBasename}>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />

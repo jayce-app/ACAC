@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: acac-website
+    runtime: static
+    branch: cursor/acac-website-2453
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: RENDER
+        value: "true"
+      - key: VITE_BASE_PATH
+        value: /
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
