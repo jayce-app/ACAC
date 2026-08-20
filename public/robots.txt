@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+# Primary sitemap for Google, Bing, and other crawlers
 Sitemap: https://www.txropersconstruction.com/sitemap.xml

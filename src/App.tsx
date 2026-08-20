@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
+import { SeoHead } from "./components/SeoHead";
 import { About } from "./pages/About";
 import { Contact } from "./pages/Contact";
 import { Copyright } from "./pages/Copyright";
@@ -11,6 +12,7 @@ import { Services } from "./pages/Services";
 export default function App() {
   return (
     <BrowserRouter>
+      <SeoHead />
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
