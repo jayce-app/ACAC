@@ -1,6 +1,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { useEmployeeAuth } from "./EmployeeAuth";
 import { formatDuration, formatWhen, kindLabel } from "./format";
+import { mapsUrl } from "./geo";
 import type { InternalDocument } from "./types";
 
 export function EmployeeAdmin() {
@@ -78,6 +79,7 @@ export function EmployeeAdmin() {
                   <th>In</th>
                   <th>Out</th>
                   <th>Duration</th>
+                  <th>GPS</th>
                   <th>Note</th>
                 </tr>
               </thead>
@@ -88,6 +90,33 @@ export function EmployeeAdmin() {
                     <td>{formatWhen(entry.clockIn)}</td>
                     <td>{entry.clockOut ? formatWhen(entry.clockOut) : "— open —"}</td>
                     <td>{formatDuration(entry.clockIn, entry.clockOut)}</td>
+                    <td>
+                      {entry.clockInGeo || entry.clockOutGeo ? (
+                        <span className="emp-gps-cell">
+                          {entry.clockInGeo ? (
+                            <a
+                              href={mapsUrl(entry.clockInGeo) ?? undefined}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              In
+                            </a>
+                          ) : null}
+                          {entry.clockInGeo && entry.clockOutGeo ? " · " : null}
+                          {entry.clockOutGeo ? (
+                            <a
+                              href={mapsUrl(entry.clockOutGeo) ?? undefined}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              Out
+                            </a>
+                          ) : null}
+                        </span>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
                     <td>{entry.note || "—"}</td>
                   </tr>
                 ))}

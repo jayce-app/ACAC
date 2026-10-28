@@ -20,9 +20,24 @@ create table if not exists public.time_entries (
   clock_in timestamptz not null default now(),
   clock_out timestamptz,
   note text not null default '',
+  clock_in_lat double precision,
+  clock_in_lng double precision,
+  clock_in_accuracy_m double precision,
+  clock_out_lat double precision,
+  clock_out_lng double precision,
+  clock_out_accuracy_m double precision,
   created_at timestamptz not null default now(),
   constraint time_entries_out_after_in check (clock_out is null or clock_out >= clock_in)
 );
+
+-- If you already created time_entries without GPS columns, run:
+-- alter table public.time_entries
+--   add column if not exists clock_in_lat double precision,
+--   add column if not exists clock_in_lng double precision,
+--   add column if not exists clock_in_accuracy_m double precision,
+--   add column if not exists clock_out_lat double precision,
+--   add column if not exists clock_out_lng double precision,
+--   add column if not exists clock_out_accuracy_m double precision;
 
 -- At most one open punch per employee
 create unique index if not exists time_entries_one_open_per_employee

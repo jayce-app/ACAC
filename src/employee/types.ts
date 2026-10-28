@@ -11,6 +11,13 @@ export type Employee = {
   password?: string;
 };
 
+export type GeoPoint = {
+  lat: number;
+  lng: number;
+  accuracyM: number | null;
+  capturedAt: string;
+};
+
 export type TimeEntry = {
   id: string;
   employeeId: string;
@@ -18,6 +25,17 @@ export type TimeEntry = {
   clockIn: string;
   clockOut: string | null;
   note: string;
+  clockInGeo?: GeoPoint | null;
+  clockOutGeo?: GeoPoint | null;
+};
+
+export type ReminderPrefs = {
+  enabled: boolean;
+  /** Local America/Chicago wall time HH:mm */
+  clockInAt: string;
+  clockOutAt: string;
+  longShiftHours: number;
+  weekdaysOnly: boolean;
 };
 
 export type InternalDocument = {

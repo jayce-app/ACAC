@@ -15,12 +15,25 @@ Public website for TX Ropers Construction, LLC — Bellville, Texas.
 
 Private crew area at **`/employee`**.
 
+Features:
+- Clock in/out with **GPS** captured on each punch
+- Personal + admin time logs (map links)
+- **Reminders** to clock in / clock out / long-shift (browser notifications)
+- Internal documents (SOPs, announcements)
+- **Installable phone shell** via PWA (`manifest.webmanifest` + service worker) — native store app can wrap the same APIs later
+
 ### Local demo (no Supabase yet)
 
 | Role | Email | Password |
 |---|---|---|
 | Admin | `admin@txropersconstruction.com` | `ropers2026` |
 | Crew | `crew@txropersconstruction.com` | `crew2026` |
+
+### Install on a phone (PWA)
+
+1. Open `/employee` in Safari (iPhone) or Chrome (Android)
+2. Share / menu → **Add to Home Screen**
+3. Allow notifications when prompted on the Time clock page
 
 ### Production (Supabase)
 

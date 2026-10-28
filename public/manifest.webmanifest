@@ -1,0 +1,25 @@
+{
+  "name": "TX Ropers Employee Console",
+  "short_name": "TX Ropers",
+  "description": "Clock in/out, time logs, and internal documents for TX Ropers Construction.",
+  "start_url": "/employee",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#152238",
+  "theme_color": "#152238",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

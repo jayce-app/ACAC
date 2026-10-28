@@ -23,6 +23,11 @@ export function formatDuration(clockIn: string, clockOut: string | null) {
   return `${h}h ${m.toString().padStart(2, "0")}m`;
 }
 
+export function formatGpsShort(point: { lat: number; lng: number; accuracyM?: number | null } | null | undefined) {
+  if (!point) return "—";
+  return `${point.lat.toFixed(4)}, ${point.lng.toFixed(4)}`;
+}
+
 export function kindLabel(kind: string) {
   switch (kind) {
     case "announcement":

@@ -1,11 +1,17 @@
+import { useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { BrandLogo } from "../components/BrandLogo";
 import { company } from "../data/content";
 import { useEmployeeAuth } from "./EmployeeAuth";
+import { registerEmployeeServiceWorker } from "./registerEmployeeSw";
 import "./employee.css";
 
 export function EmployeeLayout() {
   const { employee, isAdmin, logout, usingCloud, openEntry } = useEmployeeAuth();
+
+  useEffect(() => {
+    registerEmployeeServiceWorker();
+  }, []);
 
   return (
     <div className="emp-shell">

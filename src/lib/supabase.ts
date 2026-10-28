@@ -29,6 +29,12 @@ export type TimeEntryRow = {
   clock_in: string;
   clock_out: string | null;
   note: string;
+  clock_in_lat?: number | null;
+  clock_in_lng?: number | null;
+  clock_in_accuracy_m?: number | null;
+  clock_out_lat?: number | null;
+  clock_out_lng?: number | null;
+  clock_out_accuracy_m?: number | null;
   created_at?: string;
 };
 

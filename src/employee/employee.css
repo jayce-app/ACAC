@@ -359,6 +359,10 @@
   white-space: nowrap;
 }
 
+.emp-gps-cell a {
+  color: var(--navy);
+}
+
 @media (max-width: 860px) {
   .emp-docs,
   .emp-stats,
