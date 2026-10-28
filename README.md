@@ -18,7 +18,8 @@ Private crew area at **`/employee`**.
 Features:
 - Clock in/out with **required GPS** (punch blocked until location works)
 - **Required notifications** for punch reminders (punch blocked until allowed)
-- **Geofences** (admin sets circular jobsite/shop fences; crew get clock-in/out alerts on enter/exit while the console is open)
+- **Geofences** (admin enters a street address — or GPS — for circular jobsite/shop fences; crew get clock-in/out alerts on enter/exit while the console is open)
+- Top-nav **Login** → `/employee`
 - Personal + admin time logs (map links)
 - Reminders: clock in / clock out / long-shift
 - Internal documents (SOPs, announcements)

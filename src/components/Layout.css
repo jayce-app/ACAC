@@ -118,6 +118,25 @@
   transform: scaleX(1);
 }
 
+.site-nav__login {
+  margin-left: 0.2rem;
+  text-decoration: none;
+  color: var(--white);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius);
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.site-nav__login:hover,
+.site-nav__login.is-active {
+  border-color: var(--spark);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+}
+
 .site-nav__cta {
   margin-left: 0.35rem;
   text-decoration: none;

@@ -53,6 +53,8 @@ export type InternalDocument = {
 export type Geofence = {
   id: string;
   name: string;
+  /** Human-entered / geocoded street address (optional) */
+  address: string;
   lat: number;
   lng: number;
   /** Radius in meters */
@@ -69,6 +71,7 @@ export type Geofence = {
 
 export type GeofenceInput = {
   name: string;
+  address: string;
   lat: number;
   lng: number;
   radiusM: number;

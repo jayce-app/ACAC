@@ -52,6 +52,7 @@ export type DocumentRow = {
 export type GeofenceRow = {
   id: string;
   name: string;
+  address: string;
   lat: number;
   lng: number;
   radius_m: number;

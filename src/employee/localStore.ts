@@ -102,7 +102,8 @@ const seedGeofences: Geofence[] = [
   {
     id: "fence-shop",
     name: "Bellville shop / yard",
-    // Approximate — admin should refine with “Use my location” on site
+    address: "3016 Newsom Rd, Bellville, TX 77418",
+    // Approximate — admin can re-look up the address or use GPS on site
     lat: 29.9508,
     lng: -96.2572,
     radiusM: 200,
@@ -121,7 +122,11 @@ export function loadGeofences(): Geofence[] {
     writeJson(FENCES_KEY, seedGeofences);
     return seedGeofences;
   }
-  return list;
+  // Backfill address for fences saved before the address field existed
+  return list.map((fence) => ({
+    ...fence,
+    address: typeof fence.address === "string" ? fence.address : "",
+  }));
 }
 
 export function saveGeofences(list: Geofence[]) {

@@ -2,13 +2,15 @@ import { useMemo, useState, type FormEvent } from "react";
 import { useEmployeeAuth } from "./EmployeeAuth";
 import { formatDuration, formatWhen, kindLabel } from "./format";
 import { formatRadius } from "./geofence";
+import { geocodeAddress } from "./geocode";
 import { mapsUrl, requireGps } from "./geo";
 import type { Geofence, GeofenceInput, InternalDocument } from "./types";
 
 const emptyFenceForm: GeofenceInput = {
   name: "",
-  lat: 29.9508,
-  lng: -96.2572,
+  address: "",
+  lat: Number.NaN,
+  lng: Number.NaN,
   radiusM: 200,
   active: true,
   notifyEnter: true,
@@ -64,6 +66,7 @@ export function EmployeeAdmin() {
     setEditingFenceId(fence.id);
     setFenceForm({
       name: fence.name,
+      address: fence.address || "",
       lat: fence.lat,
       lng: fence.lng,
       radiusM: fence.radiusM,
@@ -80,6 +83,34 @@ export function EmployeeAdmin() {
     setFenceMessage("");
   }
 
+  const fenceHasCoords =
+    Number.isFinite(fenceForm.lat) && Number.isFinite(fenceForm.lng);
+
+  async function lookupAddressForFence(addressOverride?: string) {
+    const query = (addressOverride ?? fenceForm.address).trim();
+    if (!query) {
+      setFenceMessage("Enter a street address first.");
+      return null;
+    }
+    setFenceBusy(true);
+    setFenceMessage("");
+    const found = await geocodeAddress(query);
+    setFenceBusy(false);
+    if (!found.ok) {
+      setFenceMessage(found.message);
+      return null;
+    }
+    setFenceForm((prev) => ({
+      ...prev,
+      address: found.result.label || query,
+      lat: found.result.lat,
+      lng: found.result.lng,
+      name: prev.name.trim() ? prev.name : found.result.label.split(",")[0] || prev.name,
+    }));
+    setFenceMessage(`Found: ${found.result.label}`);
+    return found.result;
+  }
+
   async function useMyLocationForFence() {
     setFenceBusy(true);
     setFenceMessage("");
@@ -89,16 +120,48 @@ export function EmployeeAdmin() {
       setFenceMessage(gps.message);
       return;
     }
-    setFenceForm((prev) => ({ ...prev, lat: gps.point.lat, lng: gps.point.lng }));
+    setFenceForm((prev) => ({
+      ...prev,
+      lat: gps.point.lat,
+      lng: gps.point.lng,
+      address: prev.address.trim() || "Current GPS location",
+    }));
     setFenceMessage("Center set from your current GPS.");
   }
 
   async function onSaveFence(event: FormEvent) {
     event.preventDefault();
     setFenceBusy(true);
+    setFenceMessage("");
+
+    let nextForm = fenceForm;
+    if (!Number.isFinite(nextForm.lat) || !Number.isFinite(nextForm.lng)) {
+      if (!nextForm.address.trim()) {
+        setFenceBusy(false);
+        setFenceMessage("Enter an address (or use your location) before saving.");
+        return;
+      }
+      const found = await geocodeAddress(nextForm.address);
+      if (!found.ok) {
+        setFenceBusy(false);
+        setFenceMessage(found.message);
+        return;
+      }
+      nextForm = {
+        ...nextForm,
+        address: found.result.label || nextForm.address,
+        lat: found.result.lat,
+        lng: found.result.lng,
+        name: nextForm.name.trim()
+          ? nextForm.name
+          : found.result.label.split(",")[0] || nextForm.name,
+      };
+      setFenceForm(nextForm);
+    }
+
     const result = editingFenceId
-      ? await updateGeofence(editingFenceId, fenceForm)
-      : await createGeofence(fenceForm);
+      ? await updateGeofence(editingFenceId, nextForm)
+      : await createGeofence(nextForm);
     setFenceBusy(false);
     setFenceMessage(result.message);
     if (result.ok) resetFenceForm();
@@ -146,8 +209,8 @@ export function EmployeeAdmin() {
           <h2>Geofences</h2>
         </div>
         <p className="emp-lede">
-          When a crew member with the console open crosses a fence, they get a notification to
-          clock in (enter) or clock out (exit). Refine the center with GPS while standing on site.
+          Type a street address to place the fence. When a crew member with the console open
+          crosses it, they get a notification to clock in (enter) or clock out (exit).
         </p>
 
         <form className="emp-form" onSubmit={(e) => void onSaveFence(e)}>
@@ -161,67 +224,84 @@ export function EmployeeAdmin() {
             />
           </label>
 
-          <div className="emp-form--inline">
-            <label>
-              Latitude
-              <input
-                type="number"
-                step="0.000001"
-                value={fenceForm.lat}
-                onChange={(e) =>
-                  setFenceForm((p) => ({ ...p, lat: Number(e.target.value) }))
-                }
-                required
-              />
-            </label>
-            <label>
-              Longitude
-              <input
-                type="number"
-                step="0.000001"
-                value={fenceForm.lng}
-                onChange={(e) =>
-                  setFenceForm((p) => ({ ...p, lng: Number(e.target.value) }))
-                }
-                required
-              />
-            </label>
-          </div>
+          <label>
+            Address
+            <input
+              value={fenceForm.address}
+              onChange={(e) =>
+                setFenceForm((p) => ({
+                  ...p,
+                  address: e.target.value,
+                  // Clear stale coords until the new address is looked up
+                  lat: Number.NaN,
+                  lng: Number.NaN,
+                }))
+              }
+              placeholder="3016 Newsom Rd, Bellville, TX 77418"
+              required
+            />
+          </label>
 
-          <div className="emp-form--inline">
-            <label>
-              Radius (meters)
-              <input
-                type="number"
-                min={50}
-                max={5000}
-                step={10}
-                value={fenceForm.radiusM}
-                onChange={(e) =>
-                  setFenceForm((p) => ({ ...p, radiusM: Number(e.target.value) || 200 }))
-                }
-                required
-              />
-            </label>
-            <div className="emp-fence-actions">
-              <button
-                type="button"
-                className="btn btn--dark"
-                disabled={fenceBusy}
-                onClick={() => void useMyLocationForFence()}
-              >
-                {fenceBusy ? "Reading GPS…" : "Use my location"}
-              </button>
+          <div className="emp-fence-actions">
+            <button
+              type="button"
+              className="btn btn--dark"
+              disabled={fenceBusy}
+              onClick={() => void lookupAddressForFence()}
+            >
+              {fenceBusy ? "Looking up…" : "Find address"}
+            </button>
+            <button
+              type="button"
+              className="btn btn--dark"
+              disabled={fenceBusy}
+              onClick={() => void useMyLocationForFence()}
+            >
+              Use my location
+            </button>
+            {fenceHasCoords ? (
               <a
                 className="emp-linkish"
-                href={mapsUrl({ lat: fenceForm.lat, lng: fenceForm.lng, accuracyM: null, capturedAt: "" }) ?? undefined}
+                href={
+                  mapsUrl({
+                    lat: fenceForm.lat,
+                    lng: fenceForm.lng,
+                    accuracyM: null,
+                    capturedAt: "",
+                  }) ?? undefined
+                }
                 target="_blank"
                 rel="noreferrer"
               >
                 Preview on map
               </a>
-            </div>
+            ) : null}
           </div>
+
+          {fenceHasCoords ? (
+            <p className="emp-meta">
+              Center: {fenceForm.lat.toFixed(5)}, {fenceForm.lng.toFixed(5)}
+            </p>
+          ) : (
+            <p className="emp-meta">
+              Enter an address and tap Find address (or save — we&apos;ll look it up for you).
+            </p>
+          )}
+
+          <label>
+            Radius (meters)
+            <input
+              type="number"
+              min={50}
+              max={5000}
+              step={10}
+              value={fenceForm.radiusM}
+              onChange={(e) =>
+                setFenceForm((p) => ({ ...p, radiusM: Number(e.target.value) || 200 }))
+              }
+              required
+            />
+          </label>
 
           <div className="emp-fence-checks">
             <label className="emp-check">
@@ -257,7 +337,7 @@ export function EmployeeAdmin() {
           {fenceMessage ? (
             <p
               className={
-                /saved|updated|deleted|Center set/i.test(fenceMessage)
+                /saved|updated|deleted|Center set|Found:/i.test(fenceMessage)
                   ? "emp-flash"
                   : "emp-error"
               }
@@ -294,6 +374,7 @@ export function EmployeeAdmin() {
                     {!fence.active ? " (inactive)" : ""}
                   </strong>
                   <span>
+                    {fence.address ? `${fence.address} · ` : ""}
                     {formatRadius(fence.radiusM)} ·{" "}
                     <a
                       href={mapsUrl({
@@ -305,7 +386,7 @@ export function EmployeeAdmin() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {fence.lat.toFixed(5)}, {fence.lng.toFixed(5)}
+                      map
                     </a>
                     {" · "}
                     {[

@@ -62,6 +62,7 @@ create table if not exists public.documents (
 create table if not exists public.geofences (
   id uuid primary key default gen_random_uuid(),
   name text not null,
+  address text not null default '',
   lat double precision not null,
   lng double precision not null,
   radius_m integer not null check (radius_m >= 50 and radius_m <= 5000),
@@ -73,8 +74,8 @@ create table if not exists public.geofences (
   updated_at timestamptz not null default now()
 );
 
--- If you already ran an older schema, add:
--- create table if not exists public.geofences (...);
+-- If you already ran an older schema without address:
+-- alter table public.geofences add column if not exists address text not null default '';
 
 create or replace function public.is_active_employee()
 returns boolean

@@ -138,6 +138,7 @@ function rowToGeofence(row: GeofenceRow): Geofence {
   return {
     id: row.id,
     name: row.name,
+    address: row.address ?? "",
     lat: row.lat,
     lng: row.lng,
     radiusM: row.radius_m,
@@ -530,6 +531,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       if (usingCloud && supabase) {
         const { error } = await supabase.from("geofences").insert({
           name: input.name.trim(),
+          address: input.address.trim(),
           lat: input.lat,
           lng: input.lng,
           radius_m: Math.round(input.radiusM),
@@ -547,6 +549,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       const fence: Geofence = {
         id: newId("fence"),
         name: input.name.trim(),
+        address: input.address.trim(),
         lat: Number(input.lat.toFixed(6)),
         lng: Number(input.lng.toFixed(6)),
         radiusM: Math.round(input.radiusM),
@@ -577,6 +580,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
           .from("geofences")
           .update({
             name: input.name.trim(),
+            address: input.address.trim(),
             lat: input.lat,
             lng: input.lng,
             radius_m: Math.round(input.radiusM),
@@ -595,6 +599,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
           ? {
               ...fence,
               name: input.name.trim(),
+              address: input.address.trim(),
               lat: Number(input.lat.toFixed(6)),
               lng: Number(input.lng.toFixed(6)),
               radiusM: Math.round(input.radiusM),

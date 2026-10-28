@@ -33,6 +33,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {link.label}
               </NavLink>
             ))}
+            <NavLink
+              to="/employee"
+              className={({ isActive }) =>
+                isActive ? "site-nav__login is-active" : "site-nav__login"
+              }
+            >
+              Login
+            </NavLink>
             <a href={company.phoneHref} className="site-nav__cta">
               Call now
             </a>
