@@ -452,10 +452,6 @@
   align-items: flex-start;
 }
 
-.emp-stats {
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-}
-
 @media (max-width: 860px) {
   .emp-docs,
   .emp-stats,
