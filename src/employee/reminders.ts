@@ -4,6 +4,7 @@ const PREFS_KEY = "txr-reminder-prefs-v1";
 const FIRED_KEY = "txr-reminder-fired-v1";
 
 export const defaultReminderPrefs: ReminderPrefs = {
+  /** Always on for TX Ropers crew punches. */
   enabled: true,
   clockInAt: "07:45",
   clockOutAt: "17:00",

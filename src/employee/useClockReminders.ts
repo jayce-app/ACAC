@@ -59,7 +59,7 @@ export function useClockReminders(input: {
 
   function updatePrefs(patch: Partial<ReminderPrefs>) {
     if (!input.employeeId) return;
-    const next = { ...prefs, ...patch };
+    const next = { ...prefs, ...patch, enabled: true };
     setPrefs(next);
     saveReminderPrefs(input.employeeId, next);
   }

@@ -14,7 +14,7 @@ import {
   type EmployeeRow,
   type TimeEntryRow,
 } from "../lib/supabase";
-import { captureGps } from "./geo";
+import { requireGps } from "./geo";
 import {
   loadDocuments,
   loadEmployees,
@@ -277,23 +277,27 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       if (!employee) return { ok: false, message: "Not signed in." };
       if (openEntry) return { ok: false, message: "Already clocked in." };
 
-      const gps = await captureGps();
-      const geoSuffix = gps.error ? ` (${gps.error})` : "";
+      if (typeof Notification === "undefined" || Notification.permission !== "granted") {
+        return {
+          ok: false,
+          message: "Notifications are required. Allow notifications before clocking in.",
+        };
+      }
+
+      const gps = await requireGps();
+      if (!gps.ok) return { ok: false, message: gps.message };
 
       if (usingCloud && supabase) {
         const { error } = await supabase.from("time_entries").insert({
           employee_id: employee.id,
           note: note.trim(),
-          clock_in_lat: gps.point?.lat ?? null,
-          clock_in_lng: gps.point?.lng ?? null,
-          clock_in_accuracy_m: gps.point?.accuracyM ?? null,
+          clock_in_lat: gps.point.lat,
+          clock_in_lng: gps.point.lng,
+          clock_in_accuracy_m: gps.point.accuracyM,
         });
         if (error) return { ok: false, message: error.message };
         await refreshCloud();
-        return {
-          ok: true,
-          message: gps.point ? "Clocked in with GPS." : `Clocked in${geoSuffix}`,
-        };
+        return { ok: true, message: "Clocked in with GPS." };
       }
 
       const next: TimeEntry = {
@@ -308,10 +312,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       };
       saveEntries([next, ...loadEntries()]);
       refreshLocal();
-      return {
-        ok: true,
-        message: gps.point ? "Clocked in with GPS." : `Clocked in${geoSuffix}`,
-      };
+      return { ok: true, message: "Clocked in with GPS." };
     },
     [employee, openEntry, usingCloud, refreshCloud, refreshLocal],
   );
@@ -321,8 +322,16 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       if (!employee) return { ok: false, message: "Not signed in." };
       if (!openEntry) return { ok: false, message: "Not clocked in." };
 
-      const gps = await captureGps();
-      const geoSuffix = gps.error ? ` (${gps.error})` : "";
+      if (typeof Notification === "undefined" || Notification.permission !== "granted") {
+        return {
+          ok: false,
+          message: "Notifications are required. Allow notifications before clocking out.",
+        };
+      }
+
+      const gps = await requireGps();
+      if (!gps.ok) return { ok: false, message: gps.message };
+
       const mergedNote = note.trim()
         ? [openEntry.note, note.trim()].filter(Boolean).join(" · ")
         : openEntry.note;
@@ -334,18 +343,15 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
           .update({
             clock_out: clockOutIso,
             note: mergedNote,
-            clock_out_lat: gps.point?.lat ?? null,
-            clock_out_lng: gps.point?.lng ?? null,
-            clock_out_accuracy_m: gps.point?.accuracyM ?? null,
+            clock_out_lat: gps.point.lat,
+            clock_out_lng: gps.point.lng,
+            clock_out_accuracy_m: gps.point.accuracyM,
           })
           .eq("id", openEntry.id)
           .is("clock_out", null);
         if (error) return { ok: false, message: error.message };
         await refreshCloud();
-        return {
-          ok: true,
-          message: gps.point ? "Clocked out with GPS." : `Clocked out${geoSuffix}`,
-        };
+        return { ok: true, message: "Clocked out with GPS." };
       }
 
       const next = loadEntries().map((entry) =>
@@ -360,10 +366,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       );
       saveEntries(next);
       refreshLocal();
-      return {
-        ok: true,
-        message: gps.point ? "Clocked out with GPS." : `Clocked out${geoSuffix}`,
-      };
+      return { ok: true, message: "Clocked out with GPS." };
     },
     [employee, openEntry, usingCloud, refreshCloud, refreshLocal],
   );

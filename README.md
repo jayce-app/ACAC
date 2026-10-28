@@ -16,9 +16,10 @@ Public website for TX Ropers Construction, LLC — Bellville, Texas.
 Private crew area at **`/employee`**.
 
 Features:
-- Clock in/out with **GPS** captured on each punch
+- Clock in/out with **required GPS** (punch blocked until location works)
+- **Required notifications** for punch reminders (punch blocked until allowed)
 - Personal + admin time logs (map links)
-- **Reminders** to clock in / clock out / long-shift (browser notifications)
+- Reminders: clock in / clock out / long-shift
 - Internal documents (SOPs, announcements)
 - **Installable phone shell** via PWA (`manifest.webmanifest` + service worker) — native store app can wrap the same APIs later
 

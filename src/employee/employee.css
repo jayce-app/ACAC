@@ -363,6 +363,40 @@
   color: var(--navy);
 }
 
+.emp-perm-list {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.emp-perm-list li {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid rgba(22, 32, 51, 0.12);
+}
+
+.emp-perm-list li.is-ok strong::after {
+  content: " ✓";
+  color: var(--success);
+}
+
+.emp-perm-list li.is-blocked strong::after {
+  content: " • required";
+  color: #8a2f2f;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.emp-perm-list .btn {
+  justify-self: start;
+}
+
 @media (max-width: 860px) {
   .emp-docs,
   .emp-stats,
