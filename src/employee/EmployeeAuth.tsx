@@ -64,6 +64,7 @@ type EmployeeAuthValue = {
     id: string,
     patch: Partial<Pick<InternalDocument, "kind" | "title" | "body" | "published">>,
   ) => Promise<AuthResult>;
+  deleteDocument: (id: string) => Promise<AuthResult>;
   setEmployeeStatus: (id: string, status: Employee["status"]) => Promise<AuthResult>;
   createGeofence: (input: GeofenceInput) => Promise<AuthResult>;
   updateGeofence: (id: string, input: GeofenceInput) => Promise<AuthResult>;
@@ -479,9 +480,18 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       if (!employee || employee.role !== "admin") {
         return { ok: false, message: "Admin only." };
       }
+      if (patch.title !== undefined && !patch.title.trim()) {
+        return { ok: false, message: "Title is required." };
+      }
+
+      const cloudPatch = {
+        ...patch,
+        ...(patch.title !== undefined ? { title: patch.title.trim() } : {}),
+        ...(patch.body !== undefined ? { body: patch.body.trim() } : {}),
+      };
 
       if (usingCloud && supabase) {
-        const { error } = await supabase.from("documents").update(patch).eq("id", id);
+        const { error } = await supabase.from("documents").update(cloudPatch).eq("id", id);
         if (error) return { ok: false, message: error.message };
         await refreshCloud();
         return { ok: true, message: "Document updated." };
@@ -489,12 +499,36 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
 
       const next = loadDocuments().map((doc) =>
         doc.id === id
-          ? { ...doc, ...patch, updatedAt: new Date().toISOString() }
+          ? {
+              ...doc,
+              ...cloudPatch,
+              updatedAt: new Date().toISOString(),
+            }
           : doc,
       );
       saveDocuments(next);
       refreshLocal();
       return { ok: true, message: "Document updated." };
+    },
+    [employee, usingCloud, refreshCloud, refreshLocal],
+  );
+
+  const deleteDocument = useCallback(
+    async (id: string): Promise<AuthResult> => {
+      if (!employee || employee.role !== "admin") {
+        return { ok: false, message: "Admin only." };
+      }
+
+      if (usingCloud && supabase) {
+        const { error } = await supabase.from("documents").delete().eq("id", id);
+        if (error) return { ok: false, message: error.message };
+        await refreshCloud();
+        return { ok: true, message: "Document deleted." };
+      }
+
+      saveDocuments(loadDocuments().filter((doc) => doc.id !== id));
+      refreshLocal();
+      return { ok: true, message: "Document deleted." };
     },
     [employee, usingCloud, refreshCloud, refreshLocal],
   );
@@ -655,6 +689,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       refresh,
       createDocument,
       updateDocument,
+      deleteDocument,
       setEmployeeStatus,
       createGeofence,
       updateGeofence,
@@ -677,6 +712,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       refresh,
       createDocument,
       updateDocument,
+      deleteDocument,
       setEmployeeStatus,
       createGeofence,
       updateGeofence,

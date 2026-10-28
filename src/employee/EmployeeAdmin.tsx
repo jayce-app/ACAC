@@ -1,10 +1,11 @@
 import { useMemo, useState, type FormEvent } from "react";
+import { DocumentManager } from "./DocumentManager";
 import { useEmployeeAuth } from "./EmployeeAuth";
-import { formatDuration, formatWhen, kindLabel } from "./format";
+import { formatDuration, formatWhen } from "./format";
 import { formatRadius } from "./geofence";
 import { geocodeAddress } from "./geocode";
 import { mapsUrl, requireGps } from "./geo";
-import type { Geofence, GeofenceInput, InternalDocument } from "./types";
+import type { Geofence, GeofenceInput } from "./types";
 
 const emptyFenceForm: GeofenceInput = {
   name: "",
@@ -23,20 +24,11 @@ export function EmployeeAdmin() {
     entries,
     documents,
     geofences,
-    createDocument,
-    updateDocument,
     setEmployeeStatus,
     createGeofence,
     updateGeofence,
     deleteGeofence,
   } = useEmployeeAuth();
-
-  const [kind, setKind] = useState<InternalDocument["kind"]>("announcement");
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [published, setPublished] = useState(true);
-  const [message, setMessage] = useState("");
-  const [busy, setBusy] = useState(false);
 
   const [fenceForm, setFenceForm] = useState<GeofenceInput>(emptyFenceForm);
   const [editingFenceId, setEditingFenceId] = useState<string | null>(null);
@@ -47,20 +39,6 @@ export function EmployeeAdmin() {
     () => entries.filter((entry) => !entry.clockOut),
     [entries],
   );
-
-  async function onCreate(event: FormEvent) {
-    event.preventDefault();
-    setBusy(true);
-    const result = await createDocument({ kind, title, body, published });
-    setBusy(false);
-    setMessage(result.message);
-    if (result.ok) {
-      setTitle("");
-      setBody("");
-      setPublished(true);
-      setKind("announcement");
-    }
-  }
 
   function startEditFence(fence: Geofence) {
     setEditingFenceId(fence.id);
@@ -182,7 +160,7 @@ export function EmployeeAdmin() {
         <p className="eyebrow">Admin</p>
         <h1>Crew overview</h1>
         <p className="emp-lede">
-          Review who is on the clock, manage jobsite geofences, documents, and accounts.
+          Add crew documents, manage jobsite geofences, review punches, and activate accounts.
         </p>
         <div className="emp-stats">
           <div>
@@ -203,6 +181,8 @@ export function EmployeeAdmin() {
           </div>
         </div>
       </section>
+
+      <DocumentManager />
 
       <section className="emp-card">
         <div className="emp-section-head">
@@ -529,73 +509,6 @@ export function EmployeeAdmin() {
         </div>
       </section>
 
-      <section className="emp-card">
-        <div className="emp-section-head">
-          <h2>Publish a document</h2>
-        </div>
-        <form className="emp-form" onSubmit={(e) => void onCreate(e)}>
-          <label>
-            Type
-            <select
-              value={kind}
-              onChange={(e) => setKind(e.target.value as InternalDocument["kind"])}
-            >
-              <option value="announcement">Announcement</option>
-              <option value="sop">SOP</option>
-              <option value="policy">Policy</option>
-              <option value="other">Other</option>
-            </select>
-          </label>
-          <label>
-            Title
-            <input value={title} onChange={(e) => setTitle(e.target.value)} required />
-          </label>
-          <label>
-            Body
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              rows={6}
-              required
-            />
-          </label>
-          <label className="emp-check">
-            <input
-              type="checkbox"
-              checked={published}
-              onChange={(e) => setPublished(e.target.checked)}
-            />
-            Publish now
-          </label>
-          {message ? <p className="emp-flash">{message}</p> : null}
-          <button type="submit" className="btn btn--primary" disabled={busy}>
-            {busy ? "Saving…" : "Save document"}
-          </button>
-        </form>
-
-        <ul className="emp-admin-docs">
-          {documents.map((doc) => (
-            <li key={doc.id}>
-              <div>
-                <strong>{doc.title}</strong>
-                <span>
-                  {kindLabel(doc.kind)} · {doc.published ? "Published" : "Draft"} ·{" "}
-                  {formatWhen(doc.updatedAt)}
-                </span>
-              </div>
-              <button
-                type="button"
-                className="emp-linkish"
-                onClick={() =>
-                  void updateDocument(doc.id, { published: !doc.published })
-                }
-              >
-                {doc.published ? "Unpublish" : "Publish"}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
     </div>
   );
 }

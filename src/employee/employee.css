@@ -327,7 +327,7 @@
 
 .emp-admin-docs {
   list-style: none;
-  margin: 1.5rem 0 0;
+  margin: 0.5rem 0 0;
   padding: 0;
   display: grid;
   gap: 0.65rem;
@@ -335,18 +335,33 @@
 
 .emp-admin-docs li {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem;
-  align-items: center;
+  gap: 0.75rem 1rem;
+  align-items: flex-start;
   padding-top: 0.75rem;
   border-top: 1px solid rgba(22, 32, 51, 0.1);
+}
+
+.emp-admin-docs li > div:first-child {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.emp-admin-docs strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
 }
 
 .emp-admin-docs span {
   display: block;
   color: var(--slate);
   font-size: 0.88rem;
-  margin-top: 0.2rem;
+}
+
+.emp-doc-manager textarea {
+  min-height: 10rem;
 }
 
 .emp-linkish {

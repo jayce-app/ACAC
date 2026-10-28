@@ -22,7 +22,7 @@ Features:
 - Top-nav **Login** → `/employee`
 - Personal + admin time logs (map links)
 - Reminders: clock in / clock out / long-shift
-- Internal documents (SOPs, announcements)
+- Internal documents (SOPs, announcements) — admins add/edit/delete under **Admin** or **Documents**
 - **Installable phone shell** via PWA (`manifest.webmanifest` + service worker) — native store app can wrap the same APIs later for true background geofencing
 
 ### Local demo (no Supabase yet)
