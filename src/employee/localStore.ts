@@ -27,28 +27,7 @@ const seedEmployees: Employee[] = [
   },
 ];
 
-const seedDocuments: InternalDocument[] = [
-  {
-    id: "doc-welcome",
-    kind: "announcement",
-    title: "Welcome to the employee console",
-    body: "Use this console to clock in and out, review your hours, and read company SOPs and announcements. Ask Jayce if you need an account reset.",
-    published: true,
-    authorId: "local-admin",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "doc-sop-safety",
-    kind: "sop",
-    title: "Jobsite safety basics",
-    body: "Wear required PPE. Call before you dig. Report hazards to the lead immediately. No one clocks out until tools and materials are secured.",
-    published: true,
-    authorId: "local-admin",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+const seedDocuments: InternalDocument[] = [];
 
 function readJson<T>(key: string, fallback: T): T {
   try {
@@ -86,12 +65,18 @@ export function saveEntries(list: TimeEntry[]) {
 }
 
 export function loadDocuments(): InternalDocument[] {
-  const list = readJson<InternalDocument[]>(DOCS_KEY, []);
-  if (!list.length) {
+  const list = readJson<InternalDocument[] | null>(DOCS_KEY, null);
+  if (list == null) {
     writeJson(DOCS_KEY, seedDocuments);
     return seedDocuments;
   }
-  return list;
+  return list.map((doc) => ({
+    ...doc,
+    fileName: doc.fileName ?? null,
+    fileMime: doc.fileMime ?? null,
+    fileSize: doc.fileSize ?? null,
+    filePath: doc.filePath ?? null,
+  }));
 }
 
 export function saveDocuments(list: InternalDocument[]) {

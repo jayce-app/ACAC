@@ -22,7 +22,7 @@ Features:
 - Top-nav **Login** → `/employee`
 - Personal + admin time logs (map links)
 - Reminders: clock in / clock out / long-shift
-- Internal documents (SOPs, announcements) — admins add/edit/delete under **Admin** or **Documents**
+- Internal documents — admins **upload file attachments** (PDF/Word/Excel/images) under **Admin** or **Documents**; crew open/download
 - **Installable phone shell** via PWA (`manifest.webmanifest` + service worker) — native store app can wrap the same APIs later for true background geofencing
 
 ### Local demo (no Supabase yet)
@@ -48,6 +48,7 @@ Features:
 5. Set Render env vars from `.env.example`:
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
+6. Schema also creates the private Storage bucket `employee-docs` for attached files
 
 ## Adding project photos
 

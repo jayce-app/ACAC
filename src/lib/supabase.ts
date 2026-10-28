@@ -47,7 +47,14 @@ export type DocumentRow = {
   author_id: string | null;
   created_at: string;
   updated_at: string;
+  file_name?: string | null;
+  file_mime?: string | null;
+  file_size?: number | null;
+  file_path?: string | null;
 };
+
+/** Private Supabase Storage bucket for crew document attachments */
+export const EMPLOYEE_DOCS_BUCKET = "employee-docs";
 
 export type GeofenceRow = {
   id: string;

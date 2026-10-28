@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import {
+  EMPLOYEE_DOCS_BUCKET,
   isSupabaseConfigured,
   supabase,
   type DocumentRow,
@@ -15,6 +16,12 @@ import {
   type GeofenceRow,
   type TimeEntryRow,
 } from "../lib/supabase";
+import {
+  deleteLocalDocumentBlob,
+  loadLocalDocumentBlob,
+  saveLocalDocumentBlob,
+  validateDocumentFile,
+} from "./documentFiles";
 import { requireGps } from "./geo";
 import {
   loadDocuments,
@@ -31,6 +38,7 @@ import {
 } from "./localStore";
 import type {
   AuthResult,
+  DocumentWriteInput,
   Employee,
   Geofence,
   GeofenceInput,
@@ -54,17 +62,14 @@ type EmployeeAuthValue = {
   clockIn: (note?: string) => Promise<AuthResult>;
   clockOut: (note?: string) => Promise<AuthResult>;
   refresh: () => Promise<void>;
-  createDocument: (input: {
-    kind: InternalDocument["kind"];
-    title: string;
-    body: string;
-    published: boolean;
-  }) => Promise<AuthResult>;
+  createDocument: (input: DocumentWriteInput) => Promise<AuthResult>;
   updateDocument: (
     id: string,
-    patch: Partial<Pick<InternalDocument, "kind" | "title" | "body" | "published">>,
+    patch: Partial<Omit<DocumentWriteInput, "file">> & { file?: File | null },
   ) => Promise<AuthResult>;
   deleteDocument: (id: string) => Promise<AuthResult>;
+  /** Returns a temporary URL to open/download the attachment */
+  getDocumentFileUrl: (doc: InternalDocument) => Promise<string | null>;
   setEmployeeStatus: (id: string, status: Employee["status"]) => Promise<AuthResult>;
   createGeofence: (input: GeofenceInput) => Promise<AuthResult>;
   updateGeofence: (id: string, input: GeofenceInput) => Promise<AuthResult>;
@@ -132,7 +137,15 @@ function rowToDocument(row: DocumentRow): InternalDocument {
     authorId: row.author_id,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    fileName: row.file_name ?? null,
+    fileMime: row.file_mime ?? null,
+    fileSize: typeof row.file_size === "number" ? row.file_size : null,
+    filePath: row.file_path ?? null,
   };
+}
+
+function safeStorageFileName(name: string) {
+  return name.replace(/[^\w.\-()+ ]+/g, "_").slice(0, 120) || "document";
 }
 
 function rowToGeofence(row: GeofenceRow): Geofence {
@@ -430,33 +443,51 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
   );
 
   const createDocument = useCallback(
-    async (input: {
-      kind: InternalDocument["kind"];
-      title: string;
-      body: string;
-      published: boolean;
-    }): Promise<AuthResult> => {
+    async (input: DocumentWriteInput): Promise<AuthResult> => {
       if (!employee || employee.role !== "admin") {
         return { ok: false, message: "Admin only." };
       }
       if (!input.title.trim()) return { ok: false, message: "Title is required." };
+      if (!input.file) return { ok: false, message: "Attach a file to upload." };
+      const fileError = validateDocumentFile(input.file);
+      if (fileError) return { ok: false, message: fileError };
 
       if (usingCloud && supabase) {
+        const docId = crypto.randomUUID();
+        const filePath = `${employee.id}/${docId}/${safeStorageFileName(input.file.name)}`;
+        const { error: uploadError } = await supabase.storage
+          .from(EMPLOYEE_DOCS_BUCKET)
+          .upload(filePath, input.file, {
+            contentType: input.file.type || "application/octet-stream",
+            upsert: false,
+          });
+        if (uploadError) return { ok: false, message: uploadError.message };
+
         const { error } = await supabase.from("documents").insert({
+          id: docId,
           kind: input.kind,
           title: input.title.trim(),
           body: input.body.trim(),
           published: input.published,
           author_id: employee.id,
+          file_name: input.file.name,
+          file_mime: input.file.type || "application/octet-stream",
+          file_size: input.file.size,
+          file_path: filePath,
         });
-        if (error) return { ok: false, message: error.message };
+        if (error) {
+          await supabase.storage.from(EMPLOYEE_DOCS_BUCKET).remove([filePath]);
+          return { ok: false, message: error.message };
+        }
         await refreshCloud();
-        return { ok: true, message: "Document saved." };
+        return { ok: true, message: "Document uploaded." };
       }
 
       const now = new Date().toISOString();
+      const id = newId("doc");
+      await saveLocalDocumentBlob(id, input.file);
       const doc: InternalDocument = {
-        id: newId("doc"),
+        id,
         kind: input.kind,
         title: input.title.trim(),
         body: input.body.trim(),
@@ -464,10 +495,14 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
         authorId: employee.id,
         createdAt: now,
         updatedAt: now,
+        fileName: input.file.name,
+        fileMime: input.file.type || "application/octet-stream",
+        fileSize: input.file.size,
+        filePath: id,
       };
       saveDocuments([doc, ...loadDocuments()]);
       refreshLocal();
-      return { ok: true, message: "Document saved." };
+      return { ok: true, message: "Document uploaded." };
     },
     [employee, usingCloud, refreshCloud, refreshLocal],
   );
@@ -475,7 +510,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
   const updateDocument = useCallback(
     async (
       id: string,
-      patch: Partial<Pick<InternalDocument, "kind" | "title" | "body" | "published">>,
+      patch: Partial<Omit<DocumentWriteInput, "file">> & { file?: File | null },
     ): Promise<AuthResult> => {
       if (!employee || employee.role !== "admin") {
         return { ok: false, message: "Admin only." };
@@ -483,25 +518,75 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       if (patch.title !== undefined && !patch.title.trim()) {
         return { ok: false, message: "Title is required." };
       }
+      if (patch.file) {
+        const fileError = validateDocumentFile(patch.file);
+        if (fileError) return { ok: false, message: fileError };
+      }
 
-      const cloudPatch = {
-        ...patch,
-        ...(patch.title !== undefined ? { title: patch.title.trim() } : {}),
-        ...(patch.body !== undefined ? { body: patch.body.trim() } : {}),
-      };
+      const existing =
+        (usingCloud
+          ? null
+          : loadDocuments().find((doc) => doc.id === id)) ??
+        documents.find((doc) => doc.id === id) ??
+        null;
 
       if (usingCloud && supabase) {
+        const cloudPatch: Record<string, unknown> = {};
+        if (patch.kind !== undefined) cloudPatch.kind = patch.kind;
+        if (patch.title !== undefined) cloudPatch.title = patch.title.trim();
+        if (patch.body !== undefined) cloudPatch.body = patch.body.trim();
+        if (patch.published !== undefined) cloudPatch.published = patch.published;
+
+        let newPath: string | null = null;
+        const oldPath = existing?.filePath ?? null;
+
+        if (patch.file) {
+          newPath = `${employee.id}/${id}/${safeStorageFileName(patch.file.name)}`;
+          const { error: uploadError } = await supabase.storage
+            .from(EMPLOYEE_DOCS_BUCKET)
+            .upload(newPath, patch.file, {
+              contentType: patch.file.type || "application/octet-stream",
+              upsert: true,
+            });
+          if (uploadError) return { ok: false, message: uploadError.message };
+          cloudPatch.file_name = patch.file.name;
+          cloudPatch.file_mime = patch.file.type || "application/octet-stream";
+          cloudPatch.file_size = patch.file.size;
+          cloudPatch.file_path = newPath;
+        }
+
         const { error } = await supabase.from("documents").update(cloudPatch).eq("id", id);
-        if (error) return { ok: false, message: error.message };
+        if (error) {
+          if (newPath) await supabase.storage.from(EMPLOYEE_DOCS_BUCKET).remove([newPath]);
+          return { ok: false, message: error.message };
+        }
+        if (oldPath && newPath && oldPath !== newPath) {
+          await supabase.storage.from(EMPLOYEE_DOCS_BUCKET).remove([oldPath]);
+        }
         await refreshCloud();
         return { ok: true, message: "Document updated." };
+      }
+
+      if (patch.file) {
+        await saveLocalDocumentBlob(id, patch.file);
       }
 
       const next = loadDocuments().map((doc) =>
         doc.id === id
           ? {
               ...doc,
-              ...cloudPatch,
+              ...(patch.kind !== undefined ? { kind: patch.kind } : {}),
+              ...(patch.title !== undefined ? { title: patch.title.trim() } : {}),
+              ...(patch.body !== undefined ? { body: patch.body.trim() } : {}),
+              ...(patch.published !== undefined ? { published: patch.published } : {}),
+              ...(patch.file
+                ? {
+                    fileName: patch.file.name,
+                    fileMime: patch.file.type || "application/octet-stream",
+                    fileSize: patch.file.size,
+                    filePath: id,
+                  }
+                : {}),
               updatedAt: new Date().toISOString(),
             }
           : doc,
@@ -510,7 +595,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       refreshLocal();
       return { ok: true, message: "Document updated." };
     },
-    [employee, usingCloud, refreshCloud, refreshLocal],
+    [employee, usingCloud, refreshCloud, refreshLocal, documents],
   );
 
   const deleteDocument = useCallback(
@@ -519,18 +604,43 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
         return { ok: false, message: "Admin only." };
       }
 
+      const existing = documents.find((doc) => doc.id === id) ?? null;
+
       if (usingCloud && supabase) {
+        if (existing?.filePath) {
+          await supabase.storage.from(EMPLOYEE_DOCS_BUCKET).remove([existing.filePath]);
+        }
         const { error } = await supabase.from("documents").delete().eq("id", id);
         if (error) return { ok: false, message: error.message };
         await refreshCloud();
         return { ok: true, message: "Document deleted." };
       }
 
+      await deleteLocalDocumentBlob(id);
       saveDocuments(loadDocuments().filter((doc) => doc.id !== id));
       refreshLocal();
       return { ok: true, message: "Document deleted." };
     },
-    [employee, usingCloud, refreshCloud, refreshLocal],
+    [employee, usingCloud, refreshCloud, refreshLocal, documents],
+  );
+
+  const getDocumentFileUrl = useCallback(
+    async (doc: InternalDocument): Promise<string | null> => {
+      if (!doc.filePath && !doc.fileName) return null;
+
+      if (usingCloud && supabase && doc.filePath) {
+        const { data, error } = await supabase.storage
+          .from(EMPLOYEE_DOCS_BUCKET)
+          .createSignedUrl(doc.filePath, 60 * 60);
+        if (error || !data?.signedUrl) return null;
+        return data.signedUrl;
+      }
+
+      const blob = await loadLocalDocumentBlob(doc.filePath || doc.id);
+      if (!blob) return null;
+      return URL.createObjectURL(blob);
+    },
+    [usingCloud],
   );
 
   const setEmployeeStatus = useCallback(
@@ -690,6 +800,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       createDocument,
       updateDocument,
       deleteDocument,
+      getDocumentFileUrl,
       setEmployeeStatus,
       createGeofence,
       updateGeofence,
@@ -713,6 +824,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       createDocument,
       updateDocument,
       deleteDocument,
+      getDocumentFileUrl,
       setEmployeeStatus,
       createGeofence,
       updateGeofence,

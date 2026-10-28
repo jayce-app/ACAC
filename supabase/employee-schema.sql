@@ -54,9 +54,20 @@ create table if not exists public.documents (
   body text not null default '',
   published boolean not null default true,
   author_id uuid references public.employees (id) on delete set null,
+  file_name text,
+  file_mime text,
+  file_size bigint,
+  file_path text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- If you already ran an older schema without file columns:
+-- alter table public.documents
+--   add column if not exists file_name text,
+--   add column if not exists file_mime text,
+--   add column if not exists file_size bigint,
+--   add column if not exists file_path text;
 
 -- Circular geofences for jobsite / shop clock reminders
 create table if not exists public.geofences (
@@ -226,6 +237,43 @@ create policy "Admins update geofences"
 create policy "Admins delete geofences"
   on public.geofences for delete
   using (public.is_admin());
+
+-- Private storage for attached SOP / policy files
+insert into storage.buckets (id, name, public)
+values ('employee-docs', 'employee-docs', false)
+on conflict (id) do nothing;
+
+create policy "Active employees read employee-docs"
+  on storage.objects for select
+  using (
+    bucket_id = 'employee-docs'
+    and public.is_active_employee()
+  );
+
+create policy "Admins upload employee-docs"
+  on storage.objects for insert
+  with check (
+    bucket_id = 'employee-docs'
+    and public.is_admin()
+  );
+
+create policy "Admins update employee-docs"
+  on storage.objects for update
+  using (
+    bucket_id = 'employee-docs'
+    and public.is_admin()
+  )
+  with check (
+    bucket_id = 'employee-docs'
+    and public.is_admin()
+  );
+
+create policy "Admins delete employee-docs"
+  on storage.objects for delete
+  using (
+    bucket_id = 'employee-docs'
+    and public.is_admin()
+  );
 
 -- After creating your first Auth user in Supabase Dashboard, promote them:
 -- update public.employees set role = 'admin' where email = 'you@txropersconstruction.com';
