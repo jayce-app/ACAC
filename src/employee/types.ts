@@ -49,4 +49,32 @@ export type InternalDocument = {
   updatedAt: string;
 };
 
+/** Circular jobsite / shop fence. Admin-managed. */
+export type Geofence = {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  /** Radius in meters */
+  radiusM: number;
+  active: boolean;
+  /** Notify crew to clock in when they enter */
+  notifyEnter: boolean;
+  /** Notify crew to clock out when they leave */
+  notifyExit: boolean;
+  createdBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type GeofenceInput = {
+  name: string;
+  lat: number;
+  lng: number;
+  radiusM: number;
+  active: boolean;
+  notifyEnter: boolean;
+  notifyExit: boolean;
+};
+
 export type AuthResult = { ok: boolean; message: string };

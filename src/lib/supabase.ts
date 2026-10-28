@@ -48,3 +48,17 @@ export type DocumentRow = {
   created_at: string;
   updated_at: string;
 };
+
+export type GeofenceRow = {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  radius_m: number;
+  active: boolean;
+  notify_enter: boolean;
+  notify_exit: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};

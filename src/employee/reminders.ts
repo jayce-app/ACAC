@@ -82,7 +82,7 @@ export async function ensureNotificationPermission(): Promise<NotificationPermis
   return Notification.requestPermission();
 }
 
-async function notify(title: string, body: string, tag: string) {
+export async function showEmployeeNotification(title: string, body: string, tag: string) {
   if (typeof window === "undefined" || !("Notification" in window)) return;
   if (Notification.permission !== "granted") return;
 
@@ -106,6 +106,10 @@ async function notify(title: string, body: string, tag: string) {
   }
 
   new Notification(title, options);
+}
+
+async function notify(title: string, body: string, tag: string) {
+  await showEmployeeNotification(title, body, tag);
 }
 
 export type ReminderCheckInput = {

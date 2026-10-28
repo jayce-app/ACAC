@@ -5,7 +5,7 @@ import { getLocationAccess, mapsUrl, requireGps, type LocationAccess } from "./g
 import { useClockReminders } from "./useClockReminders";
 
 export function EmployeeConsole() {
-  const { employee, entries, openEntry, clockIn, clockOut } = useEmployeeAuth();
+  const { employee, entries, openEntry, clockIn, clockOut, geofences } = useEmployeeAuth();
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -17,6 +17,10 @@ export function EmployeeConsole() {
     isClockedIn: Boolean(openEntry),
     openClockInIso: openEntry?.clockIn ?? null,
   });
+  const activeFenceCount = useMemo(
+    () => geofences.filter((fence) => fence.active).length,
+    [geofences],
+  );
 
   const notificationsOk = permission === "granted";
   const locationOk = locationReady && locationAccess !== "denied" && locationAccess !== "unsupported";
@@ -197,6 +201,7 @@ export function EmployeeConsole() {
         </div>
         <p className="emp-lede">
           Reminders are required. Set your usual clock-in and clock-out times (America/Chicago).
+          Jobsite geofences (set by admin) also nudge you when you arrive or leave.
         </p>
 
         <div className="emp-form">
@@ -241,6 +246,17 @@ export function EmployeeConsole() {
             />
             Weekdays only (Mon–Fri)
           </label>
+
+          {activeFenceCount > 0 ? (
+            <p className="emp-meta">
+              Watching {activeFenceCount} geofence{activeFenceCount === 1 ? "" : "s"} while this
+              console is open. Keep it installed / open for arrival and leave alerts.
+            </p>
+          ) : (
+            <p className="emp-meta">
+              No active geofences yet. Admins add them under Admin → Geofences.
+            </p>
+          )}
         </div>
       </section>
 

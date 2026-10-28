@@ -1,8 +1,9 @@
-import type { Employee, InternalDocument, TimeEntry } from "./types";
+import type { Employee, Geofence, InternalDocument, TimeEntry } from "./types";
 
 const EMPLOYEES_KEY = "txr-employees-v1";
 const ENTRIES_KEY = "txr-time-entries-v1";
 const DOCS_KEY = "txr-documents-v1";
+const FENCES_KEY = "txr-geofences-v1";
 const SESSION_KEY = "txr-employee-session-v1";
 
 const seedEmployees: Employee[] = [
@@ -95,6 +96,36 @@ export function loadDocuments(): InternalDocument[] {
 
 export function saveDocuments(list: InternalDocument[]) {
   writeJson(DOCS_KEY, list);
+}
+
+const seedGeofences: Geofence[] = [
+  {
+    id: "fence-shop",
+    name: "Bellville shop / yard",
+    // Approximate — admin should refine with “Use my location” on site
+    lat: 29.9508,
+    lng: -96.2572,
+    radiusM: 200,
+    active: true,
+    notifyEnter: true,
+    notifyExit: true,
+    createdBy: "local-admin",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+export function loadGeofences(): Geofence[] {
+  const list = readJson<Geofence[] | null>(FENCES_KEY, null);
+  if (list == null) {
+    writeJson(FENCES_KEY, seedGeofences);
+    return seedGeofences;
+  }
+  return list;
+}
+
+export function saveGeofences(list: Geofence[]) {
+  writeJson(FENCES_KEY, list);
 }
 
 export function loadSessionEmail(): string | null {

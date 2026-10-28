@@ -4,14 +4,23 @@ import { BrandLogo } from "../components/BrandLogo";
 import { company } from "../data/content";
 import { useEmployeeAuth } from "./EmployeeAuth";
 import { registerEmployeeServiceWorker } from "./registerEmployeeSw";
+import { useGeofenceWatch } from "./useGeofenceWatch";
 import "./employee.css";
 
 export function EmployeeLayout() {
-  const { employee, isAdmin, logout, usingCloud, openEntry } = useEmployeeAuth();
+  const { employee, isAdmin, logout, usingCloud, openEntry, geofences } =
+    useEmployeeAuth();
 
   useEffect(() => {
     registerEmployeeServiceWorker();
   }, []);
+
+  useGeofenceWatch({
+    employeeId: employee?.id ?? null,
+    fences: geofences,
+    isClockedIn: Boolean(openEntry),
+    enabled: Boolean(employee),
+  });
 
   return (
     <div className="emp-shell">

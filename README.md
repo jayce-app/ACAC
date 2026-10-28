@@ -18,10 +18,11 @@ Private crew area at **`/employee`**.
 Features:
 - Clock in/out with **required GPS** (punch blocked until location works)
 - **Required notifications** for punch reminders (punch blocked until allowed)
+- **Geofences** (admin sets circular jobsite/shop fences; crew get clock-in/out alerts on enter/exit while the console is open)
 - Personal + admin time logs (map links)
 - Reminders: clock in / clock out / long-shift
 - Internal documents (SOPs, announcements)
-- **Installable phone shell** via PWA (`manifest.webmanifest` + service worker) — native store app can wrap the same APIs later
+- **Installable phone shell** via PWA (`manifest.webmanifest` + service worker) — native store app can wrap the same APIs later for true background geofencing
 
 ### Local demo (no Supabase yet)
 

@@ -58,6 +58,24 @@ create table if not exists public.documents (
   updated_at timestamptz not null default now()
 );
 
+-- Circular geofences for jobsite / shop clock reminders
+create table if not exists public.geofences (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  lat double precision not null,
+  lng double precision not null,
+  radius_m integer not null check (radius_m >= 50 and radius_m <= 5000),
+  active boolean not null default true,
+  notify_enter boolean not null default true,
+  notify_exit boolean not null default true,
+  created_by uuid references public.employees (id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- If you already ran an older schema, add:
+-- create table if not exists public.geofences (...);
+
 create or replace function public.is_active_employee()
 returns boolean
 language sql
@@ -128,9 +146,25 @@ create trigger documents_set_updated_at
   before update on public.documents
   for each row execute procedure public.touch_document_updated_at();
 
+create or replace function public.touch_geofence_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists geofences_set_updated_at on public.geofences;
+create trigger geofences_set_updated_at
+  before update on public.geofences
+  for each row execute procedure public.touch_geofence_updated_at();
+
 alter table public.employees enable row level security;
 alter table public.time_entries enable row level security;
 alter table public.documents enable row level security;
+alter table public.geofences enable row level security;
 
 -- Employees
 create policy "Active employees read active roster"
@@ -172,6 +206,24 @@ create policy "Admins update documents"
 
 create policy "Admins delete documents"
   on public.documents for delete
+  using (public.is_admin());
+
+-- Geofences: crew reads active fences; admins manage all
+create policy "Active employees read geofences"
+  on public.geofences for select
+  using (public.is_active_employee() and (active = true or public.is_admin()));
+
+create policy "Admins insert geofences"
+  on public.geofences for insert
+  with check (public.is_admin());
+
+create policy "Admins update geofences"
+  on public.geofences for update
+  using (public.is_admin())
+  with check (public.is_admin());
+
+create policy "Admins delete geofences"
+  on public.geofences for delete
   using (public.is_admin());
 
 -- After creating your first Auth user in Supabase Dashboard, promote them:

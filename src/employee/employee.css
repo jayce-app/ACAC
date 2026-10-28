@@ -255,7 +255,7 @@
 
 .emp-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
   gap: 0.85rem;
 }
 
@@ -395,6 +395,65 @@
 
 .emp-perm-list .btn {
   justify-self: start;
+}
+
+.emp-fence-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  align-self: end;
+}
+
+.emp-fence-checks {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.emp-fence-list {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.emp-fence-list li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(22, 32, 51, 0.12);
+}
+
+.emp-fence-list li > div:first-child {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.emp-fence-list strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.emp-fence-list span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.emp-fence-list a {
+  color: var(--navy);
+}
+
+.emp-fence-row-actions {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.emp-stats {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
 }
 
 @media (max-width: 860px) {

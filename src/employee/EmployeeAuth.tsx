@@ -12,6 +12,7 @@ import {
   supabase,
   type DocumentRow,
   type EmployeeRow,
+  type GeofenceRow,
   type TimeEntryRow,
 } from "../lib/supabase";
 import { requireGps } from "./geo";
@@ -19,14 +20,24 @@ import {
   loadDocuments,
   loadEmployees,
   loadEntries,
+  loadGeofences,
   loadSessionEmail,
   newId,
   saveDocuments,
   saveEmployees,
   saveEntries,
+  saveGeofences,
   saveSessionEmail,
 } from "./localStore";
-import type { AuthResult, Employee, GeoPoint, InternalDocument, TimeEntry } from "./types";
+import type {
+  AuthResult,
+  Employee,
+  Geofence,
+  GeofenceInput,
+  GeoPoint,
+  InternalDocument,
+  TimeEntry,
+} from "./types";
 
 type EmployeeAuthValue = {
   backendReady: boolean;
@@ -36,6 +47,7 @@ type EmployeeAuthValue = {
   employees: Employee[];
   entries: TimeEntry[];
   documents: InternalDocument[];
+  geofences: Geofence[];
   openEntry: TimeEntry | null;
   login: (email: string, password: string) => Promise<AuthResult>;
   logout: () => Promise<void>;
@@ -53,6 +65,9 @@ type EmployeeAuthValue = {
     patch: Partial<Pick<InternalDocument, "kind" | "title" | "body" | "published">>,
   ) => Promise<AuthResult>;
   setEmployeeStatus: (id: string, status: Employee["status"]) => Promise<AuthResult>;
+  createGeofence: (input: GeofenceInput) => Promise<AuthResult>;
+  updateGeofence: (id: string, input: GeofenceInput) => Promise<AuthResult>;
+  deleteGeofence: (id: string) => Promise<AuthResult>;
 };
 
 const EmployeeAuthContext = createContext<EmployeeAuthValue | null>(null);
@@ -119,6 +134,36 @@ function rowToDocument(row: DocumentRow): InternalDocument {
   };
 }
 
+function rowToGeofence(row: GeofenceRow): Geofence {
+  return {
+    id: row.id,
+    name: row.name,
+    lat: row.lat,
+    lng: row.lng,
+    radiusM: row.radius_m,
+    active: row.active,
+    notifyEnter: row.notify_enter,
+    notifyExit: row.notify_exit,
+    createdBy: row.created_by,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function validateGeofenceInput(input: GeofenceInput): string | null {
+  if (!input.name.trim()) return "Fence name is required.";
+  if (!Number.isFinite(input.lat) || input.lat < -90 || input.lat > 90) {
+    return "Latitude must be between -90 and 90.";
+  }
+  if (!Number.isFinite(input.lng) || input.lng < -180 || input.lng > 180) {
+    return "Longitude must be between -180 and 180.";
+  }
+  if (!Number.isFinite(input.radiusM) || input.radiusM < 50 || input.radiusM > 5000) {
+    return "Radius must be between 50 and 5,000 meters.";
+  }
+  return null;
+}
+
 export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
   const usingCloud = isSupabaseConfigured;
   const [backendReady, setBackendReady] = useState(!usingCloud);
@@ -126,6 +171,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [entries, setEntries] = useState<TimeEntry[]>([]);
   const [documents, setDocuments] = useState<InternalDocument[]>([]);
+  const [geofences, setGeofences] = useState<Geofence[]>([]);
 
   const isAdmin = employee?.role === "admin";
 
@@ -148,6 +194,9 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
     setDocuments(
       loadDocuments().sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
     );
+    setGeofences(
+      loadGeofences().sort((a, b) => a.name.localeCompare(b.name)),
+    );
   }, []);
 
   const refreshCloud = useCallback(async () => {
@@ -160,6 +209,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       setEmployees([]);
       setEntries([]);
       setDocuments([]);
+      setGeofences([]);
       return;
     }
 
@@ -199,6 +249,12 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       .select("*")
       .order("updated_at", { ascending: false });
     setDocuments(((docs as DocumentRow[] | null) ?? []).map(rowToDocument));
+
+    const { data: fences } = await supabase
+      .from("geofences")
+      .select("*")
+      .order("name", { ascending: true });
+    setGeofences(((fences as GeofenceRow[] | null) ?? []).map(rowToGeofence));
   }, []);
 
   const refresh = useCallback(async () => {
@@ -463,6 +519,119 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
     [employee, usingCloud, refreshCloud, refreshLocal],
   );
 
+  const createGeofence = useCallback(
+    async (input: GeofenceInput): Promise<AuthResult> => {
+      if (!employee || employee.role !== "admin") {
+        return { ok: false, message: "Admin only." };
+      }
+      const invalid = validateGeofenceInput(input);
+      if (invalid) return { ok: false, message: invalid };
+
+      if (usingCloud && supabase) {
+        const { error } = await supabase.from("geofences").insert({
+          name: input.name.trim(),
+          lat: input.lat,
+          lng: input.lng,
+          radius_m: Math.round(input.radiusM),
+          active: input.active,
+          notify_enter: input.notifyEnter,
+          notify_exit: input.notifyExit,
+          created_by: employee.id,
+        });
+        if (error) return { ok: false, message: error.message };
+        await refreshCloud();
+        return { ok: true, message: "Geofence saved." };
+      }
+
+      const now = new Date().toISOString();
+      const fence: Geofence = {
+        id: newId("fence"),
+        name: input.name.trim(),
+        lat: Number(input.lat.toFixed(6)),
+        lng: Number(input.lng.toFixed(6)),
+        radiusM: Math.round(input.radiusM),
+        active: input.active,
+        notifyEnter: input.notifyEnter,
+        notifyExit: input.notifyExit,
+        createdBy: employee.id,
+        createdAt: now,
+        updatedAt: now,
+      };
+      saveGeofences([fence, ...loadGeofences()]);
+      refreshLocal();
+      return { ok: true, message: "Geofence saved." };
+    },
+    [employee, usingCloud, refreshCloud, refreshLocal],
+  );
+
+  const updateGeofence = useCallback(
+    async (id: string, input: GeofenceInput): Promise<AuthResult> => {
+      if (!employee || employee.role !== "admin") {
+        return { ok: false, message: "Admin only." };
+      }
+      const invalid = validateGeofenceInput(input);
+      if (invalid) return { ok: false, message: invalid };
+
+      if (usingCloud && supabase) {
+        const { error } = await supabase
+          .from("geofences")
+          .update({
+            name: input.name.trim(),
+            lat: input.lat,
+            lng: input.lng,
+            radius_m: Math.round(input.radiusM),
+            active: input.active,
+            notify_enter: input.notifyEnter,
+            notify_exit: input.notifyExit,
+          })
+          .eq("id", id);
+        if (error) return { ok: false, message: error.message };
+        await refreshCloud();
+        return { ok: true, message: "Geofence updated." };
+      }
+
+      const next = loadGeofences().map((fence) =>
+        fence.id === id
+          ? {
+              ...fence,
+              name: input.name.trim(),
+              lat: Number(input.lat.toFixed(6)),
+              lng: Number(input.lng.toFixed(6)),
+              radiusM: Math.round(input.radiusM),
+              active: input.active,
+              notifyEnter: input.notifyEnter,
+              notifyExit: input.notifyExit,
+              updatedAt: new Date().toISOString(),
+            }
+          : fence,
+      );
+      saveGeofences(next);
+      refreshLocal();
+      return { ok: true, message: "Geofence updated." };
+    },
+    [employee, usingCloud, refreshCloud, refreshLocal],
+  );
+
+  const deleteGeofence = useCallback(
+    async (id: string): Promise<AuthResult> => {
+      if (!employee || employee.role !== "admin") {
+        return { ok: false, message: "Admin only." };
+      }
+
+      if (usingCloud && supabase) {
+        const { error } = await supabase.from("geofences").delete().eq("id", id);
+        if (error) return { ok: false, message: error.message };
+        await refreshCloud();
+        return { ok: true, message: "Geofence deleted." };
+      }
+
+      saveGeofences(loadGeofences().filter((fence) => fence.id !== id));
+      refreshLocal();
+      return { ok: true, message: "Geofence deleted." };
+    },
+    [employee, usingCloud, refreshCloud, refreshLocal],
+  );
+
   const value = useMemo<EmployeeAuthValue>(
     () => ({
       backendReady,
@@ -472,6 +641,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       employees,
       entries,
       documents,
+      geofences,
       openEntry,
       login,
       logout,
@@ -481,6 +651,9 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       createDocument,
       updateDocument,
       setEmployeeStatus,
+      createGeofence,
+      updateGeofence,
+      deleteGeofence,
     }),
     [
       backendReady,
@@ -490,6 +663,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       employees,
       entries,
       documents,
+      geofences,
       openEntry,
       login,
       logout,
@@ -499,6 +673,9 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       createDocument,
       updateDocument,
       setEmployeeStatus,
+      createGeofence,
+      updateGeofence,
+      deleteGeofence,
     ],
   );
 

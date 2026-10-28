@@ -1,17 +1,32 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { useEmployeeAuth } from "./EmployeeAuth";
 import { formatDuration, formatWhen, kindLabel } from "./format";
-import { mapsUrl } from "./geo";
-import type { InternalDocument } from "./types";
+import { formatRadius } from "./geofence";
+import { mapsUrl, requireGps } from "./geo";
+import type { Geofence, GeofenceInput, InternalDocument } from "./types";
+
+const emptyFenceForm: GeofenceInput = {
+  name: "",
+  lat: 29.9508,
+  lng: -96.2572,
+  radiusM: 200,
+  active: true,
+  notifyEnter: true,
+  notifyExit: true,
+};
 
 export function EmployeeAdmin() {
   const {
     employees,
     entries,
     documents,
+    geofences,
     createDocument,
     updateDocument,
     setEmployeeStatus,
+    createGeofence,
+    updateGeofence,
+    deleteGeofence,
   } = useEmployeeAuth();
 
   const [kind, setKind] = useState<InternalDocument["kind"]>("announcement");
@@ -20,6 +35,11 @@ export function EmployeeAdmin() {
   const [published, setPublished] = useState(true);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+
+  const [fenceForm, setFenceForm] = useState<GeofenceInput>(emptyFenceForm);
+  const [editingFenceId, setEditingFenceId] = useState<string | null>(null);
+  const [fenceMessage, setFenceMessage] = useState("");
+  const [fenceBusy, setFenceBusy] = useState(false);
 
   const openPunches = useMemo(
     () => entries.filter((entry) => !entry.clockOut),
@@ -40,13 +60,66 @@ export function EmployeeAdmin() {
     }
   }
 
+  function startEditFence(fence: Geofence) {
+    setEditingFenceId(fence.id);
+    setFenceForm({
+      name: fence.name,
+      lat: fence.lat,
+      lng: fence.lng,
+      radiusM: fence.radiusM,
+      active: fence.active,
+      notifyEnter: fence.notifyEnter,
+      notifyExit: fence.notifyExit,
+    });
+    setFenceMessage("");
+  }
+
+  function resetFenceForm() {
+    setEditingFenceId(null);
+    setFenceForm(emptyFenceForm);
+    setFenceMessage("");
+  }
+
+  async function useMyLocationForFence() {
+    setFenceBusy(true);
+    setFenceMessage("");
+    const gps = await requireGps();
+    setFenceBusy(false);
+    if (!gps.ok) {
+      setFenceMessage(gps.message);
+      return;
+    }
+    setFenceForm((prev) => ({ ...prev, lat: gps.point.lat, lng: gps.point.lng }));
+    setFenceMessage("Center set from your current GPS.");
+  }
+
+  async function onSaveFence(event: FormEvent) {
+    event.preventDefault();
+    setFenceBusy(true);
+    const result = editingFenceId
+      ? await updateGeofence(editingFenceId, fenceForm)
+      : await createGeofence(fenceForm);
+    setFenceBusy(false);
+    setFenceMessage(result.message);
+    if (result.ok) resetFenceForm();
+  }
+
+  async function onDeleteFence(id: string, name: string) {
+    if (!window.confirm(`Delete geofence “${name}”?`)) return;
+    setFenceBusy(true);
+    const result = await deleteGeofence(id);
+    setFenceBusy(false);
+    setFenceMessage(result.message);
+    if (editingFenceId === id) resetFenceForm();
+  }
+
   return (
     <div className="emp-stack">
       <section className="emp-card">
         <p className="eyebrow">Admin</p>
         <h1>Crew overview</h1>
         <p className="emp-lede">
-          Review who is on the clock, manage documents, and activate or deactivate accounts.
+          Review who is on the clock, manage jobsite geofences, documents, and accounts.
         </p>
         <div className="emp-stats">
           <div>
@@ -58,10 +131,211 @@ export function EmployeeAdmin() {
             <span>Currently clocked in</span>
           </div>
           <div>
+            <strong>{geofences.filter((f) => f.active).length}</strong>
+            <span>Active geofences</span>
+          </div>
+          <div>
             <strong>{documents.length}</strong>
             <span>Documents</span>
           </div>
         </div>
+      </section>
+
+      <section className="emp-card">
+        <div className="emp-section-head">
+          <h2>Geofences</h2>
+        </div>
+        <p className="emp-lede">
+          When a crew member with the console open crosses a fence, they get a notification to
+          clock in (enter) or clock out (exit). Refine the center with GPS while standing on site.
+        </p>
+
+        <form className="emp-form" onSubmit={(e) => void onSaveFence(e)}>
+          <label>
+            Fence name
+            <input
+              value={fenceForm.name}
+              onChange={(e) => setFenceForm((p) => ({ ...p, name: e.target.value }))}
+              placeholder="Shop / yard, jobsite name…"
+              required
+            />
+          </label>
+
+          <div className="emp-form--inline">
+            <label>
+              Latitude
+              <input
+                type="number"
+                step="0.000001"
+                value={fenceForm.lat}
+                onChange={(e) =>
+                  setFenceForm((p) => ({ ...p, lat: Number(e.target.value) }))
+                }
+                required
+              />
+            </label>
+            <label>
+              Longitude
+              <input
+                type="number"
+                step="0.000001"
+                value={fenceForm.lng}
+                onChange={(e) =>
+                  setFenceForm((p) => ({ ...p, lng: Number(e.target.value) }))
+                }
+                required
+              />
+            </label>
+          </div>
+
+          <div className="emp-form--inline">
+            <label>
+              Radius (meters)
+              <input
+                type="number"
+                min={50}
+                max={5000}
+                step={10}
+                value={fenceForm.radiusM}
+                onChange={(e) =>
+                  setFenceForm((p) => ({ ...p, radiusM: Number(e.target.value) || 200 }))
+                }
+                required
+              />
+            </label>
+            <div className="emp-fence-actions">
+              <button
+                type="button"
+                className="btn btn--dark"
+                disabled={fenceBusy}
+                onClick={() => void useMyLocationForFence()}
+              >
+                {fenceBusy ? "Reading GPS…" : "Use my location"}
+              </button>
+              <a
+                className="emp-linkish"
+                href={mapsUrl({ lat: fenceForm.lat, lng: fenceForm.lng, accuracyM: null, capturedAt: "" }) ?? undefined}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Preview on map
+              </a>
+            </div>
+          </div>
+
+          <div className="emp-fence-checks">
+            <label className="emp-check">
+              <input
+                type="checkbox"
+                checked={fenceForm.active}
+                onChange={(e) => setFenceForm((p) => ({ ...p, active: e.target.checked }))}
+              />
+              Active
+            </label>
+            <label className="emp-check">
+              <input
+                type="checkbox"
+                checked={fenceForm.notifyEnter}
+                onChange={(e) =>
+                  setFenceForm((p) => ({ ...p, notifyEnter: e.target.checked }))
+                }
+              />
+              Notify to clock in on enter
+            </label>
+            <label className="emp-check">
+              <input
+                type="checkbox"
+                checked={fenceForm.notifyExit}
+                onChange={(e) =>
+                  setFenceForm((p) => ({ ...p, notifyExit: e.target.checked }))
+                }
+              />
+              Notify to clock out on exit
+            </label>
+          </div>
+
+          {fenceMessage ? (
+            <p
+              className={
+                /saved|updated|deleted|Center set/i.test(fenceMessage)
+                  ? "emp-flash"
+                  : "emp-error"
+              }
+            >
+              {fenceMessage}
+            </p>
+          ) : null}
+
+          <div className="emp-fence-actions">
+            <button type="submit" className="btn btn--primary" disabled={fenceBusy}>
+              {fenceBusy
+                ? "Saving…"
+                : editingFenceId
+                  ? "Update geofence"
+                  : "Add geofence"}
+            </button>
+            {editingFenceId ? (
+              <button type="button" className="btn btn--dark" onClick={resetFenceForm}>
+                Cancel edit
+              </button>
+            ) : null}
+          </div>
+        </form>
+
+        {geofences.length === 0 ? (
+          <p className="emp-empty">No geofences yet. Add the shop or a jobsite above.</p>
+        ) : (
+          <ul className="emp-fence-list">
+            {geofences.map((fence) => (
+              <li key={fence.id}>
+                <div>
+                  <strong>
+                    {fence.name}
+                    {!fence.active ? " (inactive)" : ""}
+                  </strong>
+                  <span>
+                    {formatRadius(fence.radiusM)} ·{" "}
+                    <a
+                      href={mapsUrl({
+                        lat: fence.lat,
+                        lng: fence.lng,
+                        accuracyM: null,
+                        capturedAt: "",
+                      }) ?? undefined}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {fence.lat.toFixed(5)}, {fence.lng.toFixed(5)}
+                    </a>
+                    {" · "}
+                    {[
+                      fence.notifyEnter ? "enter → clock in" : null,
+                      fence.notifyExit ? "exit → clock out" : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ") || "alerts off"}
+                  </span>
+                </div>
+                <div className="emp-fence-row-actions">
+                  <button
+                    type="button"
+                    className="emp-linkish"
+                    onClick={() => startEditFence(fence)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="emp-linkish"
+                    onClick={() => void onDeleteFence(fence.id, fence.name)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className="emp-card">
