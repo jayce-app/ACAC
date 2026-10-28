@@ -47,6 +47,14 @@ export function SeoHead() {
   }, []);
 
   useEffect(() => {
+    if (pathname.startsWith("/employee")) {
+      document.title = `Employee console | ${company.name}`;
+      upsertMeta("name", "description", "Private employee console for TX Ropers Construction.");
+      upsertMeta("name", "robots", "noindex, nofollow");
+      upsertLink("canonical", `${siteUrl}/employee`);
+      return;
+    }
+
     const page = seoForPath(pathname);
     const url = `${siteUrl}${page.path === "/" ? "/" : page.path}`;
     const image = `${siteUrl}/hero.jpg`;

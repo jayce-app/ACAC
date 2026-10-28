@@ -1,0 +1,368 @@
+.emp-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 70% 45% at 0% 0%, rgba(192, 197, 204, 0.28), transparent 55%),
+    linear-gradient(180deg, #f2f3f5 0%, var(--field-deep) 100%);
+}
+
+.emp-top {
+  background: var(--navy);
+  color: var(--white);
+  border-bottom: 1px solid rgba(230, 231, 232, 0.12);
+}
+
+.emp-top__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.emp-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+}
+
+.emp-brand__logo {
+  height: 2.4rem;
+  width: auto;
+  background: #fff;
+  padding: 0.2rem 0.45rem;
+}
+
+.emp-brand__label {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: var(--mist);
+}
+
+.emp-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  align-items: center;
+}
+
+.emp-nav__link,
+.emp-nav__logout {
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--mist);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.35rem 0.2rem;
+}
+
+.emp-nav__link.is-active,
+.emp-nav__link:hover,
+.emp-nav__logout:hover {
+  color: var(--chrome);
+}
+
+.emp-status {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.85rem;
+  align-items: center;
+  color: var(--mist);
+  font-size: 0.92rem;
+}
+
+.emp-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid rgba(230, 231, 232, 0.28);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+}
+
+.emp-pill--in {
+  border-color: rgba(63, 107, 82, 0.7);
+  color: #b7d4c2;
+}
+
+.emp-pill--demo {
+  border-color: rgba(192, 197, 204, 0.55);
+}
+
+.emp-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 3.5rem;
+}
+
+.emp-loading {
+  padding: 3rem 1.25rem;
+  text-align: center;
+}
+
+.emp-stack {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.emp-card {
+  background: var(--white);
+  border: 1px solid rgba(22, 32, 51, 0.1);
+  padding: 1.5rem 1.35rem;
+}
+
+.emp-card--narrow {
+  max-width: 28rem;
+  margin: 2rem auto 0;
+}
+
+.emp-card h1,
+.emp-card h2 {
+  margin: 0.2rem 0 0.55rem;
+}
+
+.emp-card h1 {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.emp-lede,
+.emp-meta {
+  color: var(--slate);
+  margin: 0 0 1.1rem;
+}
+
+.emp-form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.emp-form--inline {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+
+.emp-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+  color: var(--gunmetal);
+}
+
+.emp-form input,
+.emp-form textarea,
+.emp-form select {
+  width: 100%;
+  border: 1px solid rgba(22, 32, 51, 0.18);
+  background: #fff;
+  padding: 0.65rem 0.75rem;
+  color: var(--iron);
+}
+
+.emp-check {
+  display: flex !important;
+  align-items: center;
+  gap: 0.55rem;
+  grid-template-columns: none !important;
+}
+
+.emp-check input {
+  width: auto;
+}
+
+.emp-error {
+  color: #8a2f2f;
+  margin: 0;
+}
+
+.emp-flash {
+  margin: 0.85rem 0 0;
+  color: var(--success);
+}
+
+.emp-demo {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(22, 32, 51, 0.1);
+  color: var(--slate);
+  font-size: 0.95rem;
+}
+
+.emp-demo ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.emp-demo code {
+  font-size: 0.88em;
+}
+
+.emp-back {
+  margin: 1.25rem 0 0;
+}
+
+.emp-section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  margin-bottom: 0.85rem;
+}
+
+.emp-empty {
+  color: var(--zinc);
+  margin: 0;
+}
+
+.emp-table-wrap {
+  overflow-x: auto;
+}
+
+.emp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.emp-table th,
+.emp-table td {
+  text-align: left;
+  padding: 0.65rem 0.55rem;
+  border-bottom: 1px solid rgba(22, 32, 51, 0.1);
+  vertical-align: top;
+}
+
+.emp-table th {
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--gunmetal);
+}
+
+.emp-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.emp-stats div {
+  border-top: 2px solid var(--spark);
+  padding-top: 0.75rem;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.emp-stats strong {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+}
+
+.emp-stats span {
+  color: var(--slate);
+  font-size: 0.92rem;
+}
+
+.emp-docs {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.emp-doc-index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.emp-doc-index__item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(22, 32, 51, 0.1);
+  background: var(--field);
+  padding: 0.75rem 0.85rem;
+  cursor: pointer;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.emp-doc-index__item.is-active {
+  border-color: var(--navy);
+  background: #fff;
+}
+
+.emp-doc-index__kind {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--spark-deep);
+}
+
+.emp-doc-index__title {
+  font-weight: 600;
+}
+
+.emp-doc-body {
+  white-space: pre-wrap;
+  color: var(--iron);
+  line-height: 1.7;
+}
+
+.emp-admin-docs {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.emp-admin-docs li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(22, 32, 51, 0.1);
+}
+
+.emp-admin-docs span {
+  display: block;
+  color: var(--slate);
+  font-size: 0.88rem;
+  margin-top: 0.2rem;
+}
+
+.emp-linkish {
+  background: none;
+  border: none;
+  color: var(--navy);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .emp-docs,
+  .emp-stats,
+  .emp-form--inline {
+    grid-template-columns: 1fr;
+  }
+}

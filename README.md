@@ -9,6 +9,29 @@ Public website for TX Ropers Construction, LLC — Bellville, Texas.
 - **Projects** — Photo gallery (`public/projects/` + `src/data/projects.ts`)
 - **About** — Mission, credentials, service area, hours
 - **Contact** — Office phone/email and quote request form
+- **Employee console** — `/employee` clock in/out, time logs, SOPs/announcements
+
+## Employee console
+
+Private crew area at **`/employee`**.
+
+### Local demo (no Supabase yet)
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@txropersconstruction.com` | `ropers2026` |
+| Crew | `crew@txropersconstruction.com` | `crew2026` |
+
+### Production (Supabase)
+
+1. Create a **new** Supabase project (do not reuse ACAC)
+2. Run `supabase/employee-schema.sql` in the SQL editor
+3. Create Auth users for the crew (Dashboard → Authentication)
+4. Promote yourself:  
+   `update public.employees set role = 'admin' where email = 'you@…';`
+5. Set Render env vars from `.env.example`:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
 
 ## Adding project photos
 

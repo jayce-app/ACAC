@@ -14,6 +14,7 @@
     "start": "vite preview --host 0.0.0.0 --port ${PORT:-4173}"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "heic2any": "^0.0.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
