@@ -75,6 +75,10 @@ export function EmployeeLogin() {
         </div>
       ) : null}
 
+      <p className="emp-meta">
+        Have an invite link? Open it to create your account, then sign in here.
+      </p>
+
       <p className="emp-back">
         <Link to="/">← Back to {company.name}</Link>
       </p>

@@ -12,6 +12,7 @@ import {
   isSupabaseConfigured,
   supabase,
   type DocumentRow,
+  type EmployeeInviteRow,
   type EmployeeRow,
   type GeofenceRow,
   type TimeEntryRow,
@@ -23,23 +24,29 @@ import {
   validateDocumentFile,
 } from "./documentFiles";
 import { requireGps } from "./geo";
+import { expiresInDays, inviteIsOpen, inviteJoinUrl } from "./invites";
 import {
   loadDocuments,
   loadEmployees,
   loadEntries,
   loadGeofences,
+  loadInvites,
   loadSessionEmail,
   newId,
+  newInviteToken,
   saveDocuments,
   saveEmployees,
   saveEntries,
   saveGeofences,
+  saveInvites,
   saveSessionEmail,
 } from "./localStore";
 import type {
   AuthResult,
+  CreateCrewInput,
   DocumentWriteInput,
   Employee,
+  EmployeeInvite,
   Geofence,
   GeofenceInput,
   GeoPoint,
@@ -56,6 +63,7 @@ type EmployeeAuthValue = {
   entries: TimeEntry[];
   documents: InternalDocument[];
   geofences: Geofence[];
+  invites: EmployeeInvite[];
   openEntry: TimeEntry | null;
   login: (email: string, password: string) => Promise<AuthResult>;
   logout: () => Promise<void>;
@@ -74,6 +82,11 @@ type EmployeeAuthValue = {
   createGeofence: (input: GeofenceInput) => Promise<AuthResult>;
   updateGeofence: (id: string, input: GeofenceInput) => Promise<AuthResult>;
   deleteGeofence: (id: string) => Promise<AuthResult>;
+  /** Admin: create crew account (local) and/or invite link */
+  inviteCrew: (input: CreateCrewInput) => Promise<AuthResult>;
+  revokeInvite: (id: string) => Promise<AuthResult>;
+  lookupInvite: (token: string) => Promise<EmployeeInvite | null>;
+  acceptInvite: (token: string, password: string) => Promise<AuthResult>;
 };
 
 const EmployeeAuthContext = createContext<EmployeeAuthValue | null>(null);
@@ -148,6 +161,21 @@ function safeStorageFileName(name: string) {
   return name.replace(/[^\w.\-()+ ]+/g, "_").slice(0, 120) || "document";
 }
 
+function rowToInvite(row: EmployeeInviteRow): EmployeeInvite {
+  return {
+    id: row.id,
+    email: row.email,
+    name: row.full_name,
+    phone: row.phone,
+    role: row.role,
+    token: row.token,
+    createdBy: row.created_by,
+    createdAt: row.created_at,
+    expiresAt: row.expires_at,
+    acceptedAt: row.accepted_at,
+  };
+}
+
 function rowToGeofence(row: GeofenceRow): Geofence {
   return {
     id: row.id,
@@ -187,6 +215,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
   const [entries, setEntries] = useState<TimeEntry[]>([]);
   const [documents, setDocuments] = useState<InternalDocument[]>([]);
   const [geofences, setGeofences] = useState<Geofence[]>([]);
+  const [invites, setInvites] = useState<EmployeeInvite[]>([]);
 
   const isAdmin = employee?.role === "admin";
 
@@ -212,6 +241,9 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
     setGeofences(
       loadGeofences().sort((a, b) => a.name.localeCompare(b.name)),
     );
+    setInvites(
+      loadInvites().sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    );
   }, []);
 
   const refreshCloud = useCallback(async () => {
@@ -225,6 +257,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       setEntries([]);
       setDocuments([]);
       setGeofences([]);
+      setInvites([]);
       return;
     }
 
@@ -270,6 +303,16 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       .select("*")
       .order("name", { ascending: true });
     setGeofences(((fences as GeofenceRow[] | null) ?? []).map(rowToGeofence));
+
+    if (me.role === "admin") {
+      const { data: inviteRows } = await supabase
+        .from("employee_invites")
+        .select("*")
+        .order("created_at", { ascending: false });
+      setInvites(((inviteRows as EmployeeInviteRow[] | null) ?? []).map(rowToInvite));
+    } else {
+      setInvites([]);
+    }
   }, []);
 
   const refresh = useCallback(async () => {
@@ -781,6 +824,212 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
     [employee, usingCloud, refreshCloud, refreshLocal],
   );
 
+  const inviteCrew = useCallback(
+    async (input: CreateCrewInput): Promise<AuthResult> => {
+      if (!employee || employee.role !== "admin") {
+        return { ok: false, message: "Admin only." };
+      }
+      const email = input.email.trim().toLowerCase();
+      const name = input.name.trim();
+      const phone = input.phone.trim();
+      if (!name) return { ok: false, message: "Name is required." };
+      if (!email) return { ok: false, message: "Email is required." };
+
+      if (usingCloud && supabase) {
+        const token = newInviteToken();
+        const { error } = await supabase.from("employee_invites").insert({
+          email,
+          full_name: name,
+          phone,
+          role: input.role,
+          token,
+          created_by: employee.id,
+          expires_at: expiresInDays(14),
+        });
+        if (error) return { ok: false, message: error.message };
+        await refreshCloud();
+        return {
+          ok: true,
+          message: "Invite created. Copy the link and send it to the crew member.",
+          inviteUrl: inviteJoinUrl(token),
+        };
+      }
+
+      const password = input.password?.trim() || "";
+      if (password.length < 6) {
+        return { ok: false, message: "Temporary password must be at least 6 characters." };
+      }
+      const existing = loadEmployees();
+      if (existing.some((e) => e.email.toLowerCase() === email)) {
+        return { ok: false, message: "That email already has an account." };
+      }
+
+      const token = newInviteToken();
+      const now = new Date().toISOString();
+      const person: Employee = {
+        id: newId("emp"),
+        email,
+        name,
+        phone,
+        role: input.role,
+        status: "active",
+        password,
+      };
+      saveEmployees([person, ...existing]);
+
+      const invite: EmployeeInvite = {
+        id: newId("invite"),
+        email,
+        name,
+        phone,
+        role: input.role,
+        token,
+        createdBy: employee.id,
+        createdAt: now,
+        expiresAt: expiresInDays(14),
+        acceptedAt: null,
+        tempPassword: password,
+      };
+      saveInvites([invite, ...loadInvites()]);
+      refreshLocal();
+      return {
+        ok: true,
+        message: `Crew account created. They can sign in now, or use the invite link to set their own password.`,
+        inviteUrl: inviteJoinUrl(token),
+      };
+    },
+    [employee, usingCloud, refreshCloud, refreshLocal],
+  );
+
+  const revokeInvite = useCallback(
+    async (id: string): Promise<AuthResult> => {
+      if (!employee || employee.role !== "admin") {
+        return { ok: false, message: "Admin only." };
+      }
+
+      if (usingCloud && supabase) {
+        const { error } = await supabase.from("employee_invites").delete().eq("id", id);
+        if (error) return { ok: false, message: error.message };
+        await refreshCloud();
+        return { ok: true, message: "Invite revoked." };
+      }
+
+      saveInvites(loadInvites().filter((invite) => invite.id !== id));
+      refreshLocal();
+      return { ok: true, message: "Invite removed." };
+    },
+    [employee, usingCloud, refreshCloud, refreshLocal],
+  );
+
+  const lookupInvite = useCallback(
+    async (token: string): Promise<EmployeeInvite | null> => {
+      const cleaned = token.trim();
+      if (!cleaned) return null;
+
+      if (usingCloud && supabase) {
+        const { data, error } = await supabase
+          .from("employee_invites")
+          .select("*")
+          .eq("token", cleaned)
+          .maybeSingle();
+        if (error || !data) return null;
+        const invite = rowToInvite(data as EmployeeInviteRow);
+        return inviteIsOpen(invite) ? invite : null;
+      }
+
+      const invite = loadInvites().find((row) => row.token === cleaned) ?? null;
+      if (!invite || !inviteIsOpen(invite)) return null;
+      return invite;
+    },
+    [usingCloud],
+  );
+
+  const acceptInvite = useCallback(
+    async (token: string, password: string): Promise<AuthResult> => {
+      const cleaned = token.trim();
+      if (!cleaned) return { ok: false, message: "Missing invite token." };
+      if (password.trim().length < 6) {
+        return { ok: false, message: "Password must be at least 6 characters." };
+      }
+
+      if (usingCloud && supabase) {
+        const { data, error } = await supabase
+          .from("employee_invites")
+          .select("*")
+          .eq("token", cleaned)
+          .maybeSingle();
+        if (error || !data) return { ok: false, message: "Invite not found." };
+        const invite = rowToInvite(data as EmployeeInviteRow);
+        if (!inviteIsOpen(invite)) {
+          return { ok: false, message: "This invite is expired or already used." };
+        }
+
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: invite.email,
+          password: password.trim(),
+          options: {
+            data: {
+              full_name: invite.name,
+              phone: invite.phone,
+              role: invite.role,
+            },
+          },
+        });
+        if (signUpError) return { ok: false, message: signUpError.message };
+
+        await supabase
+          .from("employee_invites")
+          .update({ accepted_at: new Date().toISOString() })
+          .eq("id", invite.id);
+
+        await refreshCloud();
+        return {
+          ok: true,
+          message: "Account created. If email confirmation is required, check your inbox, then sign in.",
+        };
+      }
+
+      const invitesLocal = loadInvites();
+      const invite = invitesLocal.find((row) => row.token === cleaned) ?? null;
+      if (!invite || !inviteIsOpen(invite)) {
+        return { ok: false, message: "This invite is expired or already used." };
+      }
+
+      const people = loadEmployees();
+      const match = people.find((e) => e.email.toLowerCase() === invite.email.toLowerCase());
+      if (match) {
+        saveEmployees(
+          people.map((e) =>
+            e.id === match.id ? { ...e, password: password.trim(), status: "active" } : e,
+          ),
+        );
+      } else {
+        saveEmployees([
+          {
+            id: newId("emp"),
+            email: invite.email.toLowerCase(),
+            name: invite.name,
+            phone: invite.phone,
+            role: invite.role,
+            status: "active",
+            password: password.trim(),
+          },
+          ...people,
+        ]);
+      }
+
+      saveInvites(
+        invitesLocal.map((row) =>
+          row.id === invite.id ? { ...row, acceptedAt: new Date().toISOString() } : row,
+        ),
+      );
+      saveSessionEmail(invite.email.toLowerCase());
+      refreshLocal();
+      return { ok: true, message: "You're in. Welcome to the employee console." };
+    },
+    [usingCloud, refreshCloud, refreshLocal],
+  );
+
   const value = useMemo<EmployeeAuthValue>(
     () => ({
       backendReady,
@@ -791,6 +1040,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       entries,
       documents,
       geofences,
+      invites,
       openEntry,
       login,
       logout,
@@ -805,6 +1055,10 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       createGeofence,
       updateGeofence,
       deleteGeofence,
+      inviteCrew,
+      revokeInvite,
+      lookupInvite,
+      acceptInvite,
     }),
     [
       backendReady,
@@ -815,6 +1069,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       entries,
       documents,
       geofences,
+      invites,
       openEntry,
       login,
       logout,
@@ -829,6 +1084,10 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       createGeofence,
       updateGeofence,
       deleteGeofence,
+      inviteCrew,
+      revokeInvite,
+      lookupInvite,
+      acceptInvite,
     ],
   );
 

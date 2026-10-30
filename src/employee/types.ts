@@ -96,4 +96,28 @@ export type GeofenceInput = {
   notifyExit: boolean;
 };
 
-export type AuthResult = { ok: boolean; message: string };
+export type EmployeeInvite = {
+  id: string;
+  email: string;
+  name: string;
+  phone: string;
+  role: EmployeeRole;
+  token: string;
+  createdBy: string | null;
+  createdAt: string;
+  expiresAt: string;
+  acceptedAt: string | null;
+  /** Local-demo only: temporary password until they join (optional) */
+  tempPassword?: string;
+};
+
+export type CreateCrewInput = {
+  name: string;
+  email: string;
+  phone: string;
+  role: EmployeeRole;
+  /** Local demo: required so they can sign in immediately */
+  password?: string;
+};
+
+export type AuthResult = { ok: boolean; message: string; inviteUrl?: string };

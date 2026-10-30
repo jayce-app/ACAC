@@ -1,10 +1,12 @@
 import { useMemo, useState, type FormEvent } from "react";
+import type { EmployeeRole } from "../lib/supabase";
 import { DocumentManager } from "./DocumentManager";
 import { useEmployeeAuth } from "./EmployeeAuth";
 import { formatDuration, formatWhen } from "./format";
 import { formatRadius } from "./geofence";
 import { geocodeAddress } from "./geocode";
 import { mapsUrl, requireGps } from "./geo";
+import { inviteIsOpen, inviteJoinUrl } from "./invites";
 import type { Geofence, GeofenceInput } from "./types";
 
 const emptyFenceForm: GeofenceInput = {
@@ -24,16 +26,34 @@ export function EmployeeAdmin() {
     entries,
     documents,
     geofences,
+    invites,
+    usingCloud,
     setEmployeeStatus,
     createGeofence,
     updateGeofence,
     deleteGeofence,
+    inviteCrew,
+    revokeInvite,
   } = useEmployeeAuth();
 
   const [fenceForm, setFenceForm] = useState<GeofenceInput>(emptyFenceForm);
   const [editingFenceId, setEditingFenceId] = useState<string | null>(null);
   const [fenceMessage, setFenceMessage] = useState("");
   const [fenceBusy, setFenceBusy] = useState(false);
+
+  const [crewName, setCrewName] = useState("");
+  const [crewEmail, setCrewEmail] = useState("");
+  const [crewPhone, setCrewPhone] = useState("");
+  const [crewRole, setCrewRole] = useState<EmployeeRole>("employee");
+  const [crewPassword, setCrewPassword] = useState("");
+  const [crewMessage, setCrewMessage] = useState("");
+  const [crewInviteUrl, setCrewInviteUrl] = useState("");
+  const [crewBusy, setCrewBusy] = useState(false);
+
+  const openInvites = useMemo(
+    () => invites.filter((invite) => inviteIsOpen(invite)),
+    [invites],
+  );
 
   const openPunches = useMemo(
     () => entries.filter((entry) => !entry.clockOut),
@@ -152,6 +172,39 @@ export function EmployeeAdmin() {
     setFenceBusy(false);
     setFenceMessage(result.message);
     if (editingFenceId === id) resetFenceForm();
+  }
+
+  async function onInviteCrew(event: FormEvent) {
+    event.preventDefault();
+    setCrewBusy(true);
+    setCrewMessage("");
+    setCrewInviteUrl("");
+    const result = await inviteCrew({
+      name: crewName,
+      email: crewEmail,
+      phone: crewPhone,
+      role: crewRole,
+      password: usingCloud ? undefined : crewPassword,
+    });
+    setCrewBusy(false);
+    setCrewMessage(result.message);
+    if (result.ok) {
+      if (result.inviteUrl) setCrewInviteUrl(result.inviteUrl);
+      setCrewName("");
+      setCrewEmail("");
+      setCrewPhone("");
+      setCrewRole("employee");
+      setCrewPassword("");
+    }
+  }
+
+  async function copyInviteUrl(url: string) {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCrewMessage("Invite link copied.");
+    } catch {
+      setCrewMessage("Copy failed — select the link and copy manually.");
+    }
   }
 
   return (
@@ -463,6 +516,133 @@ export function EmployeeAdmin() {
 
       <section className="emp-card">
         <div className="emp-section-head">
+          <h2>Add crew member</h2>
+        </div>
+        <p className="emp-lede">
+          {usingCloud
+            ? "Create an invite link and send it to the crew member so they can set a password and join."
+            : "Create a local account with a temporary password (demo mode). You can also copy an invite link."}
+        </p>
+
+        <form className="emp-form" onSubmit={(e) => void onInviteCrew(e)}>
+          <label>
+            Full name
+            <input
+              value={crewName}
+              onChange={(e) => setCrewName(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Email
+            <input
+              type="email"
+              value={crewEmail}
+              onChange={(e) => setCrewEmail(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Phone
+            <input
+              type="tel"
+              value={crewPhone}
+              onChange={(e) => setCrewPhone(e.target.value)}
+              placeholder="Optional"
+            />
+          </label>
+          <label>
+            Role
+            <select
+              value={crewRole}
+              onChange={(e) => setCrewRole(e.target.value as EmployeeRole)}
+            >
+              <option value="employee">Crew</option>
+              <option value="admin">Admin</option>
+            </select>
+          </label>
+          {!usingCloud ? (
+            <label>
+              Temporary password
+              <input
+                type="text"
+                value={crewPassword}
+                onChange={(e) => setCrewPassword(e.target.value)}
+                minLength={6}
+                required
+                placeholder="At least 6 characters"
+              />
+            </label>
+          ) : null}
+
+          {crewMessage ? (
+            <p
+              className={
+                /created|copied|Invite/i.test(crewMessage) ? "emp-flash" : "emp-error"
+              }
+            >
+              {crewMessage}
+            </p>
+          ) : null}
+          {crewInviteUrl ? (
+            <div className="emp-invite-url">
+              <code>{crewInviteUrl}</code>
+              <button
+                type="button"
+                className="btn btn--dark"
+                onClick={() => void copyInviteUrl(crewInviteUrl)}
+              >
+                Copy link
+              </button>
+            </div>
+          ) : null}
+
+          <button type="submit" className="btn btn--primary" disabled={crewBusy}>
+            {crewBusy ? "Saving…" : usingCloud ? "Create invite" : "Add crew member"}
+          </button>
+        </form>
+
+        {openInvites.length > 0 ? (
+          <>
+            <div className="emp-section-head" style={{ marginTop: "1.5rem" }}>
+              <h2>Open invites</h2>
+            </div>
+            <ul className="emp-admin-docs">
+              {openInvites.map((invite) => {
+                const url = inviteJoinUrl(invite.token);
+                return (
+                  <li key={invite.id}>
+                    <div>
+                      <strong>{invite.name}</strong>
+                      <span>
+                        {invite.email} · {invite.role} · expires{" "}
+                        {formatWhen(invite.expiresAt)}
+                      </span>
+                    </div>
+                    <div className="emp-fence-row-actions">
+                      <button
+                        type="button"
+                        className="emp-linkish"
+                        onClick={() => void copyInviteUrl(url)}
+                      >
+                        Copy link
+                      </button>
+                      <button
+                        type="button"
+                        className="emp-linkish"
+                        onClick={() => void revokeInvite(invite.id)}
+                      >
+                        Revoke
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        ) : null}
+
+        <div className="emp-section-head" style={{ marginTop: "1.5rem" }}>
           <h2>Employees</h2>
         </div>
         <div className="emp-table-wrap">

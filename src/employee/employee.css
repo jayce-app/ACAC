@@ -384,6 +384,26 @@
   object-fit: contain;
 }
 
+.emp-invite-url {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(22, 32, 51, 0.12);
+}
+
+.emp-invite-url code {
+  display: block;
+  word-break: break-all;
+  font-size: 0.85rem;
+  color: var(--navy);
+  background: rgba(22, 32, 51, 0.04);
+  padding: 0.65rem 0.75rem;
+}
+
+.emp-invite-url .btn {
+  justify-self: start;
+}
+
 .emp-linkish {
   background: none;
   border: none;

@@ -23,6 +23,7 @@ Features:
 - Personal + admin time logs (map links)
 - Reminders: clock in / clock out / long-shift
 - Internal documents — admins **upload file attachments** (PDF/Word/Excel/images) under **Admin** or **Documents**; crew open/download
+- **Add crew / invites** — Admin creates accounts (demo) or invite links (`/employee/join?token=…`)
 - **Installable phone shell** via PWA (`manifest.webmanifest` + service worker) — native store app can wrap the same APIs later for true background geofencing
 
 ### Local demo (no Supabase yet)

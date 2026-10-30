@@ -6,6 +6,7 @@ import { EmployeeAuthProvider } from "./employee/EmployeeAuth";
 import { EmployeeConsole } from "./employee/EmployeeConsole";
 import { EmployeeDocuments } from "./employee/EmployeeDocuments";
 import { EmployeeLayout } from "./employee/EmployeeLayout";
+import { EmployeeJoin } from "./employee/EmployeeJoin";
 import { EmployeeLogin } from "./employee/EmployeeLogin";
 import { RequireAdmin, RequireEmployee } from "./employee/RequireEmployee";
 import { About } from "./pages/About";
@@ -24,6 +25,7 @@ export default function App() {
         <Routes>
           <Route path="/employee" element={<EmployeeLayout />}>
             <Route index element={<EmployeeLogin />} />
+            <Route path="join" element={<EmployeeJoin />} />
             <Route
               path="console"
               element={

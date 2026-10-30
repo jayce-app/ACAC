@@ -1,9 +1,10 @@
-import type { Employee, Geofence, InternalDocument, TimeEntry } from "./types";
+import type { Employee, EmployeeInvite, Geofence, InternalDocument, TimeEntry } from "./types";
 
 const EMPLOYEES_KEY = "txr-employees-v1";
 const ENTRIES_KEY = "txr-time-entries-v1";
 const DOCS_KEY = "txr-documents-v1";
 const FENCES_KEY = "txr-geofences-v1";
+const INVITES_KEY = "txr-employee-invites-v1";
 const SESSION_KEY = "txr-employee-session-v1";
 
 const seedEmployees: Employee[] = [
@@ -118,6 +119,14 @@ export function saveGeofences(list: Geofence[]) {
   writeJson(FENCES_KEY, list);
 }
 
+export function loadInvites(): EmployeeInvite[] {
+  return readJson<EmployeeInvite[]>(INVITES_KEY, []);
+}
+
+export function saveInvites(list: EmployeeInvite[]) {
+  writeJson(INVITES_KEY, list);
+}
+
 export function loadSessionEmail(): string | null {
   return localStorage.getItem(SESSION_KEY);
 }
@@ -129,4 +138,8 @@ export function saveSessionEmail(email: string | null) {
 
 export function newId(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;
+}
+
+export function newInviteToken() {
+  return crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
 }

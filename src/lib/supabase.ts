@@ -70,3 +70,16 @@ export type GeofenceRow = {
   created_at: string;
   updated_at: string;
 };
+
+export type EmployeeInviteRow = {
+  id: string;
+  email: string;
+  full_name: string;
+  phone: string;
+  role: EmployeeRole;
+  token: string;
+  created_by: string | null;
+  created_at: string;
+  expires_at: string;
+  accepted_at: string | null;
+};

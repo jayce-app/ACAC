@@ -238,6 +238,40 @@ create policy "Admins delete geofences"
   on public.geofences for delete
   using (public.is_admin());
 
+-- Invites so admins can onboard crew without the Supabase dashboard
+create table if not exists public.employee_invites (
+  id uuid primary key default gen_random_uuid(),
+  email text not null,
+  full_name text not null,
+  phone text not null default '',
+  role text not null check (role in ('employee', 'admin')) default 'employee',
+  token text not null unique,
+  created_by uuid references public.employees (id) on delete set null,
+  created_at timestamptz not null default now(),
+  expires_at timestamptz not null,
+  accepted_at timestamptz
+);
+
+create index if not exists employee_invites_token_idx
+  on public.employee_invites (token);
+
+alter table public.employee_invites enable row level security;
+
+create policy "Admins manage invites"
+  on public.employee_invites for all
+  using (public.is_admin())
+  with check (public.is_admin());
+
+-- Join page needs to read/accept an invite by secret token before sign-in
+create policy "Anyone can read open invite by token"
+  on public.employee_invites for select
+  using (accepted_at is null and expires_at > now());
+
+create policy "Anyone can accept open invite"
+  on public.employee_invites for update
+  using (accepted_at is null and expires_at > now())
+  with check (accepted_at is not null);
+
 -- Private storage for attached SOP / policy files
 insert into storage.buckets (id, name, public)
 values ('employee-docs', 'employee-docs', false)
